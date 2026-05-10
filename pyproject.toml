@@ -1,0 +1,24 @@
+[build-system]
+requires = ["setuptools>=68.0", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "evobench"
+version = "0.2.0"
+description = "EvoBench — 串行 Agent 评测基准 CLI"
+readme = "ROADMAP.md"
+requires-python = ">=3.10"
+license = {text = "MIT"}
+dependencies = [
+    "openai>=1.0.0",
+    "python-dotenv>=1.0.0",
+    "click>=8.0.0",
+    "pyyaml>=6.0",
+]
+
+[project.scripts]
+evo = "evo_cli.cli:main"
+
+[project.optional-dependencies]
+openhands = ["openhands>=0.1.0"]
+dev = ["pytest>=7.0"]

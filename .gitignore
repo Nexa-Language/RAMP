@@ -1,0 +1,48 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.egg-info/
+dist/
+build/
+*.egg
+
+# Virtual environments
+.venv*/
+venv*/
+env/
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# Environment
+.env
+!.env.example
+
+# EvoBench output
+evobench_output/
+
+# YatCC build artifacts
+YatCC/build/
+YatCC/antlr/source/
+YatCC/antlr/build/
+YatCC/llvm/build/
+YatCC/llvm/llvm/
+YatCC/llvm/clang/
+YatCC/llvm/cmake/
+YatCC/llvm/*.tar.xz
+YatCC/pybind11/source/
+YatCC/pybind11/build/
+YatCC/pybind11/*.zip
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Logs
+*.log
+logs/
