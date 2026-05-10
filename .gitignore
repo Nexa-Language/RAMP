@@ -46,3 +46,22 @@ Thumbs.db
 # Logs
 *.log
 logs/
+
+# Build artifacts in data/YatCC
+data/YatCC/build/
+data/YatCC/build_debug/
+data/YatCC/*.out
+data/YatCC/*.txt
+data/YatCC/test_*.c
+data/YatCC/temp_*.c
+data/YatCC/task/1/flex/*.o
+data/YatCC/task/1/flex/task1
+data/YatCC/task/1/flex/lex.yy.*
+
+# Eval workspaces
+eval_workspaces/
+
+# Legacy files
+.idea.md
+plans/evobench-implementation-plan.md
+plans/evo-cli-architecture.md

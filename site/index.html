@@ -9,7 +9,6 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
 </head>
 <body>
-    <!-- Particle Canvas -->
     <canvas id="particles"></canvas>
 
     <!-- Navigation -->
@@ -55,8 +54,8 @@
                     <span class="stat-label">Serial Tasks</span>
                 </div>
                 <div class="stat">
-                    <span class="stat-value">5+</span>
-                    <span class="stat-label">Agent Backends</span>
+                    <span class="stat-value">19</span>
+                    <span class="stat-label">Models Tested</span>
                 </div>
                 <div class="stat">
                     <span class="stat-value">73</span>
@@ -128,7 +127,7 @@
                 <div class="feature-card">
                     <div class="feature-icon">🤖</div>
                     <h3>Multi-Backend</h3>
-                    <p>Supports OpenHands SDK, Claude Code, Codex CLI, Kimi CLI, and raw OpenAI API. One command to switch.</p>
+                    <p>Supports OpenHands SDK, Claude Code, Codex CLI, Kimi CLI, Gemini CLI, and raw OpenAI API.</p>
                 </div>
                 <div class="feature-card">
                     <div class="feature-icon">♾️</div>
@@ -138,7 +137,7 @@
                 <div class="feature-card">
                     <div class="feature-icon">📊</div>
                     <h3>Multi-Dimensional Metrics</h3>
-                    <p>Zero-shot pass rate, node pass rate, resurrection count, and evolutionary gain.</p>
+                    <p>Mean Reward with resurrection bonus, Pass Score, pipeline score, and node pass rates.</p>
                 </div>
                 <div class="feature-card">
                     <div class="feature-icon">🎓</div>
@@ -158,14 +157,14 @@
                     <div class="step-number">01</div>
                     <div class="step-content">
                         <h3>Choose Your Agent</h3>
-                        <p>Select from OpenHands SDK, Claude Code, Codex, or any OpenAI-compatible API.</p>
+                        <p>Select from OpenHands SDK, Claude Code, Codex, Gemini CLI, or any OpenAI-compatible API.</p>
                     </div>
                 </div>
                 <div class="step">
                     <div class="step-number">02</div>
                     <div class="step-content">
                         <h3>Run the Pipeline</h3>
-                        <p><code>evo run --backend openhands --model mimo-v2.5-pro</code></p>
+                        <p><code>evo run --backend openhands --model your-model</code></p>
                     </div>
                 </div>
                 <div class="step">
@@ -222,7 +221,6 @@ evo run --backend openhands --model your-model --tasks 0-5</code></pre>
         </div>
     </footer>
 
-    <script src="assets/js/particles.min.js"></script>
     <script src="assets/js/main.js"></script>
 </body>
 </html>
