@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Leaderboard — EvoBench</title>
+    <link rel="stylesheet" href="assets/css/style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+</head>
+<body>
+    <canvas id="particles"></canvas>
+
+    <nav class="nav" id="nav">
+        <div class="nav-container">
+            <a href="/" class="nav-logo">
+                <span class="logo-icon">⚡</span>
+                <span class="logo-text">EvoBench</span>
+            </a>
+            <div class="nav-links">
+                <a href="/" class="nav-link">Home</a>
+                <a href="leaderboard.html" class="nav-link active">Leaderboard</a>
+                <a href="blog.html" class="nav-link">Blog</a>
+                <a href="https://github.com/Nexa-Language/EvoBench" class="nav-link" target="_blank">
+                    <i class="fab fa-github"></i> GitHub
+                </a>
+            </div>
+        </div>
+    </nav>
+
+    <section class="hero" style="min-height: auto; padding-top: 140px; padding-bottom: 40px;">
+        <div class="hero-content">
+            <h1 class="hero-title" style="font-size: clamp(2rem, 5vw, 3.5rem);">
+                <span class="gradient-text">Leaderboard</span>
+            </h1>
+            <p class="hero-subtitle">
+                How well can AI agents build a compiler from scratch? Real results from real agent frameworks.
+            </p>
+        </div>
+    </section>
+
+    <section style="position: relative; z-index: 1; padding: 0 24px 120px; max-width: 1200px; margin: 0 auto;">
+        <!-- Summary Cards -->
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 16px; margin-bottom: 48px;" id="summary-cards">
+        </div>
+
+        <!-- Main Table -->
+        <div style="overflow-x: auto;">
+            <table class="leaderboard-table" id="leaderboard-table">
+                <thead>
+                    <tr>
+                        <th>Rank</th>
+                        <th>Model</th>
+                        <th>Backend</th>
+                        <th>Task 0</th>
+                        <th>Task 1</th>
+                        <th>Task 2</th>
+                        <th>Task 3</th>
+                        <th>Task 4</th>
+                        <th>Task 5</th>
+                        <th>Pipeline</th>
+                        <th>Resurrections</th>
+                        <th>Tokens</th>
+                        <th>Time</th>
+                    </tr>
+                </thead>
+                <tbody id="leaderboard-body">
+                </tbody>
+            </table>
+        </div>
+
+        <div style="text-align: center; margin-top: 48px; color: var(--text-muted); font-size: 0.85rem;">
+            <p>Last updated: <span id="last-updated"></span></p>
+            <p style="margin-top: 8px;">
+                Results generated with <a href="https://github.com/Nexa-Language/EvoBench" style="color: var(--accent-primary);">EvoBench</a>
+                using OpenHands SDK and OpenAI-compatible APIs.
+            </p>
+        </div>
+    </section>
+
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-brand">
+                    <span class="logo-icon">⚡</span>
+                    <span class="logo-text">EvoBench</span>
+                </div>
+                <div class="footer-links">
+                    <a href="https://github.com/Nexa-Language/EvoBench">GitHub</a>
+                    <a href="/">Home</a>
+                    <a href="blog.html">Blog</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script src="assets/js/particles.min.js"></script>
+    <script src="assets/js/main.js"></script>
+    <script>
+    fetch('assets/data/leaderboard.json')
+        .then(r => r.json())
+        .then(data => {
+            const tbody = document.getElementById('leaderboard-body');
+            const summaryCards = document.getElementById('summary-cards');
+            let latestDate = '';
+
+            // Summary
+            const totalModels = data.length;
+            const bestScore = Math.max(...data.map(d => d.pipeline_score || 0));
+            const totalTokens = data.reduce((s, d) => s + (d.tokens || 0), 0);
+
+            summaryCards.innerHTML = `
+                <div class="feature-card" style="text-align: center;">
+                    <div class="stat-value">${totalModels}</div>
+                    <div class="stat-label">Models Evaluated</div>
+                </div>
+                <div class="feature-card" style="text-align: center;">
+                    <div class="stat-value">${bestScore.toFixed(1)}%</div>
+                    <div class="stat-label">Best Pipeline Score</div>
+                </div>
+                <div class="feature-card" style="text-align: center;">
+                    <div class="stat-value">${(totalTokens / 1000).toFixed(0)}K</div>
+                    <div class="stat-label">Total Tokens Used</div>
+                </div>
+                <div class="feature-card" style="text-align: center;">
+                    <div class="stat-value">6</div>
+                    <div class="stat-label">Serial Tasks</div>
+                </div>
+            `;
+
+            // Table rows
+            data.sort((a, b) => (b.pipeline_score || 0) - (a.pipeline_score || 0));
+            data.forEach((entry, i) => {
+                if (entry.date > latestDate) latestDate = entry.date;
+                const rank = i + 1;
+                const rankClass = rank <= 3 ? `rank-${rank}` : 'rank-other';
+                const tasks = [entry.task0, entry.task1, entry.task2, entry.task3, entry.task4, entry.task5];
+
+                const taskCells = tasks.map(t => {
+                    if (t === null || t === undefined) return '<td style="color: var(--text-muted);">—</td>';
+                    const cls = t >= 60 ? 'pass' : 'fail';
+                    return `<td><span class="${cls}">${t.toFixed(1)}%</span></td>`;
+                }).join('');
+
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                    <td><span class="rank-badge ${rankClass}">${rank}</span></td>
+                    <td><strong>${entry.model}</strong></td>
+                    <td><span style="color: var(--accent-tertiary); font-family: var(--font-mono); font-size: 0.85rem;">${entry.backend}</span></td>
+                    ${taskCells}
+                    <td><strong>${(entry.pipeline_score || 0).toFixed(1)}%</strong>
+                        <div class="score-bar"><div class="score-fill" style="width: ${entry.pipeline_score || 0}%"></div></div>
+                    </td>
+                    <td>${entry.resurrections || 0}</td>
+                    <td style="font-family: var(--font-mono); font-size: 0.85rem;">${((entry.tokens || 0) / 1000).toFixed(0)}K</td>
+                    <td style="font-family: var(--font-mono); font-size: 0.85rem;">${(entry.elapsed || 0).toFixed(0)}s</td>
+                `;
+                tbody.appendChild(row);
+            });
+
+            document.getElementById('last-updated').textContent = latestDate || 'N/A';
+        })
+        .catch(err => {
+            document.getElementById('leaderboard-body').innerHTML =
+                '<tr><td colspan="13" style="text-align:center;padding:40px;color:var(--text-muted);">No data available yet. Run some evaluations first!</td></tr>';
+        });
+    </script>
+</body>
+</html>

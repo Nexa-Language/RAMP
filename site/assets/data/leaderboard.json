@@ -1,0 +1,50 @@
+[
+  {
+    "rank": 1,
+    "model": "mimo-v2.5-pro",
+    "backend": "openhands",
+    "task0": 100.0,
+    "task1": 17.6,
+    "task2": 19.8,
+    "task3": 1.4,
+    "task4": null,
+    "task5": null,
+    "pipeline_score": 34.7,
+    "resurrections": 2,
+    "tokens": 463290,
+    "elapsed": 767.6,
+    "date": "2026-05-10"
+  },
+  {
+    "rank": 2,
+    "model": "glm-5",
+    "backend": "openai",
+    "task0": 100.0,
+    "task1": 17.6,
+    "task2": 0.0,
+    "task3": 1.4,
+    "task4": null,
+    "task5": null,
+    "pipeline_score": 29.8,
+    "resurrections": 2,
+    "tokens": 463290,
+    "elapsed": 436.1,
+    "date": "2026-05-10"
+  },
+  {
+    "rank": 3,
+    "model": "deepseek-v4-pro",
+    "backend": "openai",
+    "task0": 100.0,
+    "task1": 17.6,
+    "task2": 19.8,
+    "task3": 1.4,
+    "task4": null,
+    "task5": null,
+    "pipeline_score": 34.7,
+    "resurrections": 2,
+    "tokens": 614781,
+    "elapsed": 835.0,
+    "date": "2026-05-10"
+  }
+]

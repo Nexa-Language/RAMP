@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Blog — EvoBench</title>
+    <link rel="stylesheet" href="assets/css/style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+</head>
+<body>
+    <canvas id="particles"></canvas>
+
+    <nav class="nav" id="nav">
+        <div class="nav-container">
+            <a href="/" class="nav-logo">
+                <span class="logo-icon">⚡</span>
+                <span class="logo-text">EvoBench</span>
+            </a>
+            <div class="nav-links">
+                <a href="/" class="nav-link">Home</a>
+                <a href="leaderboard.html" class="nav-link">Leaderboard</a>
+                <a href="blog.html" class="nav-link active">Blog</a>
+                <a href="https://github.com/Nexa-Language/EvoBench" class="nav-link" target="_blank">
+                    <i class="fab fa-github"></i> GitHub
+                </a>
+            </div>
+        </div>
+    </nav>
+
+    <section class="hero" style="min-height: auto; padding-top: 140px; padding-bottom: 40px;">
+        <div class="hero-content">
+            <h1 class="hero-title" style="font-size: clamp(2rem, 5vw, 3.5rem);">
+                <span class="gradient-text">Blog</span>
+            </h1>
+            <p class="hero-subtitle">
+                Insights on AI agent evaluation, compiler construction benchmarks, and the future of autonomous coding.
+            </p>
+        </div>
+    </section>
+
+    <section style="position: relative; z-index: 1; padding: 0 24px 120px; max-width: 1000px; margin: 0 auto;">
+        <div class="blog-grid">
+            <article class="blog-card">
+                <div class="blog-card-body">
+                    <div class="blog-date">May 10, 2026</div>
+                    <h3>Introducing EvoBench: Can AI Agents Build a Compiler?</h3>
+                    <p>
+                        We present EvoBench, the first serial agent benchmark based on a real-world compiler
+                        construction course. Unlike existing benchmarks that test isolated tasks, EvoBench
+                        evaluates an agent's ability to <strong>evolve</strong> — building knowledge from
+                        lexer to code generation in a strict sequential pipeline.
+                    </p>
+                    <p style="margin-top: 12px;">
+                        Key innovation: the <strong>Resurrection Mechanism</strong>. When an agent fails at
+                        Task N, we inject golden answers so we can still evaluate Tasks N+1 through N+k.
+                        This solves the cascading failure problem that plagues serial evaluation.
+                    </p>
+                    <span class="blog-tag">Launch</span>
+                </div>
+            </article>
+
+            <article class="blog-card">
+                <div class="blog-card-body">
+                    <div class="blog-date">May 10, 2026</div>
+                    <h3>First Results: mimo-v2.5-pro vs deepseek-v4-pro on Compiler Construction</h3>
+                    <p>
+                        We ran our first evaluations using OpenHands SDK (a real agent framework with
+                        terminal, file editor, and task tracker tools). Both models successfully completed
+                        Task 0 (environment setup) but struggled significantly with Task 1 (lexical analysis)
+                        and beyond.
+                    </p>
+                    <p style="margin-top: 12px;">
+                        <strong>mimo-v2.5-pro</strong>: Pipeline score 34.7/100, 463K tokens, 768s<br>
+                        <strong>deepseek-v4-pro</strong>: Pipeline score 34.7/100, 615K tokens, 835s
+                    </p>
+                    <p style="margin-top: 12px;">
+                        The gap between Task 0 (100%) and Task 1 (~18%) reveals a massive capability cliff.
+                        Compiler construction requires understanding formal grammars, token specifications,
+                        and precise output formatting — skills that current LLMs haven't mastered.
+                    </p>
+                    <span class="blog-tag">Results</span>
+                    <span class="blog-tag" style="margin-left: 8px;">Analysis</span>
+                </div>
+            </article>
+
+            <article class="blog-card">
+                <div class="blog-card-body">
+                    <div class="blog-date">May 10, 2026</div>
+                    <h3>Why Compiler Construction Is the Ultimate Agent Benchmark</h3>
+                    <p>
+                        Existing benchmarks like SWE-bench test isolated bug fixes. But real software
+                        engineering is <strong>sequential and cumulative</strong>. You can't write a parser
+                        without a working lexer. You can't optimize IR without generating it first.
+                    </p>
+                    <p style="margin-top: 12px;">
+                        Compiler construction is uniquely suited for agent evaluation because:
+                    </p>
+                    <ul style="margin-top: 8px; padding-left: 20px; color: var(--text-secondary); line-height: 2;">
+                        <li>Strong causal dependencies between tasks</li>
+                        <li>Objective, automated grading (does the compiled program produce correct output?)</li>
+                        <li>Graduated difficulty (easy → medium → hard)</li>
+                        <li>Real-world relevance (every programmer uses compilers)</li>
+                    </ul>
+                    <span class="blog-tag">Research</span>
+                </div>
+            </article>
+
+            <article class="blog-card">
+                <div class="blog-card-body">
+                    <div class="blog-date">May 10, 2026</div>
+                    <h3>Building Evo-CLI: One Command to Rule Them All</h3>
+                    <p>
+                        We designed Evo-CLI with a Harbor-like architecture: a unified <code>AgentBackend</code>
+                        interface that abstracts over different agent frameworks. Currently supported:
+                        OpenHands SDK, Claude Code, Codex CLI, Kimi CLI, and raw OpenAI API.
+                    </p>
+                    <p style="margin-top: 12px;">
+                        The key insight: we don't try to wrap each framework's API. Instead, we give each
+                        agent a <strong>workspace</strong> (the YatCC codebase) and a <strong>task prompt</strong>,
+                        then let it operate freely. The evaluator only needs to run <code>cmake</code> and
+                        parse <code>score.json</code>.
+                    </p>
+                    <span class="blog-tag">Engineering</span>
+                </div>
+            </article>
+        </div>
+    </section>
+
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-brand">
+                    <span class="logo-icon">⚡</span>
+                    <span class="logo-text">EvoBench</span>
+                </div>
+                <div class="footer-links">
+                    <a href="https://github.com/Nexa-Language/EvoBench">GitHub</a>
+                    <a href="/">Home</a>
+                    <a href="leaderboard.html">Leaderboard</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script src="assets/js/particles.min.js"></script>
+    <script src="assets/js/main.js"></script>
+</body>
+</html>

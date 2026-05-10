@@ -1,0 +1,3 @@
+[submodule "YatCC"]
+	path = YatCC
+	url = https://github.com/arcsysu/YatCC.git
