@@ -75,4 +75,7 @@ run_openhands.py
 run_parallel_evals.sh
 eval_models.txt
 pyproject.toml
-ROADMAP.md
+ROADMAP.md-e 
+# Evaluation workspaces
+/home/agent/workspace/
+-e eval_workspaces/
