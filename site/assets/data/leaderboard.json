@@ -1,5 +1,30 @@
 [
   {
+    "model": "gpt-5.5",
+    "backend": "codex",
+    "task0": 100.0,
+    "task1": 100.0,
+    "task2": 100.0,
+    "task3": 100.0,
+    "task4": 95.0,
+    "task5": 100.0,
+    "mean_reward": 98.97,
+    "pass_score": 100.0,
+    "pipeline_score": 100.0,
+    "resurrections": 0,
+    "zero_shot_pass": true,
+    "resurrected": [
+      false,
+      false,
+      false,
+      false,
+      false,
+      false
+    ],
+    "date": "2026-05-12",
+    "rank": 1
+  },
+  {
     "model": "qwen3.6-flash",
     "backend": "openhands",
     "task0": 100.0,
@@ -21,7 +46,7 @@
       true,
       true
     ],
-    "rank": 1,
+    "rank": 2,
     "date": "2026-05-12"
   },
   {
@@ -46,7 +71,7 @@
       false,
       false
     ],
-    "rank": 2,
+    "rank": 3,
     "date": "2026-05-12"
   },
   {
@@ -71,7 +96,7 @@
       true,
       true
     ],
-    "rank": 3,
+    "rank": 4,
     "date": "2026-05-12"
   },
   {
@@ -96,7 +121,7 @@
       true,
       true
     ],
-    "rank": 4,
+    "rank": 5,
     "date": "2026-05-12"
   },
   {
@@ -121,7 +146,7 @@
       true,
       true
     ],
-    "rank": 5,
+    "rank": 6,
     "date": "2026-05-12"
   },
   {
@@ -136,7 +161,7 @@
     "task5": 100.0,
     "pipeline_score": 93.75,
     "resurrections": 1,
-    "rank": 6,
+    "rank": 7,
     "mean_reward": 92.24,
     "pass_score": 100.0
   },
@@ -162,7 +187,7 @@
       false,
       false
     ],
-    "rank": 7,
+    "rank": 8,
     "date": "2026-05-11"
   },
   {
@@ -187,7 +212,7 @@
       true,
       true
     ],
-    "rank": 8,
+    "rank": 9,
     "date": "2026-05-12"
   },
   {
@@ -212,7 +237,7 @@
       true,
       true
     ],
-    "rank": 9,
+    "rank": 10,
     "date": "2026-05-12"
   },
   {
@@ -237,7 +262,7 @@
       true,
       true
     ],
-    "rank": 10,
+    "rank": 11,
     "date": "2026-05-11"
   },
   {
@@ -262,7 +287,7 @@
       true,
       true
     ],
-    "rank": 11,
+    "rank": 12,
     "date": "2026-05-11"
   },
   {
@@ -277,7 +302,7 @@
     "task5": 100.0,
     "pipeline_score": 63.52,
     "resurrections": 2,
-    "rank": 12,
+    "rank": 13,
     "mean_reward": 67.05,
     "pass_score": 50.0
   },
@@ -293,7 +318,7 @@
     "task5": 100.0,
     "pipeline_score": 63.52,
     "resurrections": 2,
-    "rank": 13,
+    "rank": 14,
     "mean_reward": 67.05,
     "pass_score": 66.67
   },
@@ -309,7 +334,7 @@
     "task5": 100.0,
     "pipeline_score": 63.52,
     "resurrections": 2,
-    "rank": 14,
+    "rank": 15,
     "mean_reward": 67.05,
     "pass_score": 50.0
   },
@@ -335,7 +360,7 @@
       true,
       true
     ],
-    "rank": 15,
+    "rank": 16,
     "date": "2026-05-11"
   },
   {
@@ -360,7 +385,7 @@
       true,
       false
     ],
-    "rank": 16,
+    "rank": 17,
     "date": "2026-05-11"
   },
   {
@@ -385,7 +410,7 @@
       true,
       true
     ],
-    "rank": 17,
+    "rank": 18,
     "date": "2026-05-12"
   }
 ]
