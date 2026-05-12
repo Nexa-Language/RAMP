@@ -408,6 +408,31 @@
     "rank": 17
   },
   {
+    "model": "claude-sonnet-4.6",
+    "backend": "claude",
+    "task0": 100.0,
+    "task1": 100.0,
+    "task2": 100.0,
+    "task3": 0.0,
+    "task4": 0.0,
+    "task5": 0.0,
+    "resurrected": [
+      false,
+      false,
+      false,
+      false,
+      false,
+      false
+    ],
+    "resurrections": 0,
+    "mean_reward": 45.0,
+    "pass_score": 50.0,
+    "pipeline_score": 50.0,
+    "zero_shot_pass": false,
+    "date": "2026-05-12",
+    "rank": 18
+  },
+  {
     "model": "glm-5.1",
     "backend": "openhands",
     "task0": 100.0,
@@ -429,6 +454,6 @@
       true,
       true
     ],
-    "rank": 18
+    "rank": 19
   }
 ]
