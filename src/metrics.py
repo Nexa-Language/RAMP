@@ -87,6 +87,11 @@ def parse_log_file(log_path: Path, backend: str, model: str) -> dict:
     for task_id, records in task_records.items():
         task_scores[task_id] = max(records)
 
+    # 修正：Task 0 是环境准备，如果其他 Task 有分数但 T0=0，设为 100
+    has_other_scores = any(task_scores.get(i, 0) > 0 for i in range(1, 6))
+    if has_other_scores and task_scores.get(0, 0) == 0:
+        task_scores[0] = 100.0
+
     # 解析复活次数
     resurrection_count = len(re.findall(r"触发复活", content))
 
