@@ -8,41 +8,78 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     <style>
-        .blog-post { margin-bottom: 48px; background: var(--bg-card); border: 1px solid var(--border-subtle); border-radius: var(--radius-lg); overflow: hidden; transition: all 0.3s ease; }
-        .blog-post:hover { border-color: var(--border-accent); }
-        .blog-post-header { padding: 28px 32px; cursor: pointer; display: flex; justify-content: space-between; align-items: flex-start; }
-        .blog-post-header:hover { background: rgba(99,102,241,0.04); }
-        .blog-post-meta { display: flex; align-items: center; gap: 12px; margin-bottom: 12px; }
-        .blog-date { font-size: 0.8rem; color: var(--text-muted); font-family: var(--font-mono); }
-        .blog-tag { display: inline-block; padding: 3px 10px; background: rgba(99,102,241,0.1); border-radius: 100px; font-size: 0.7rem; font-weight: 600; color: var(--accent-primary); }
-        .blog-post-header h2 { font-size: 1.3rem; font-weight: 700; margin: 0; line-height: 1.4; }
-        .blog-post-header .expand-icon { font-size: 1.2rem; color: var(--text-muted); transition: transform 0.3s; flex-shrink: 0; margin-left: 16px; margin-top: 4px; }
-        .blog-post.expanded .expand-icon { transform: rotate(180deg); }
-        .blog-post-body { max-height: 0; overflow: hidden; transition: max-height 0.5s ease; }
-        .blog-post.expanded .blog-post-body { max-height: 5000px; }
-        .blog-post-content { padding: 0 32px 32px; color: var(--text-secondary); line-height: 1.8; font-size: 0.95rem; }
-        .blog-post-content h3 { color: var(--text-primary); font-size: 1.1rem; margin: 24px 0 12px; font-weight: 700; }
-        .blog-post-content h4 { color: var(--text-primary); font-size: 1rem; margin: 20px 0 8px; font-weight: 600; }
-        .blog-post-content p { margin-bottom: 12px; }
-        .blog-post-content code { background: rgba(99,102,241,0.1); padding: 2px 6px; border-radius: 4px; font-family: var(--font-mono); font-size: 0.85rem; color: var(--accent-primary); }
-        .blog-post-content pre { background: var(--bg-secondary); padding: 16px 20px; border-radius: var(--radius-md); overflow-x: auto; margin: 12px 0; border: 1px solid var(--border-subtle); }
-        .blog-post-content pre code { background: none; padding: 0; color: var(--text-primary); }
-        .blog-post-content ul, .blog-post-content ol { padding-left: 24px; margin-bottom: 12px; }
-        .blog-post-content li { margin-bottom: 6px; }
-        .blog-post-content strong { color: var(--text-primary); }
-        .blog-post-content em { color: var(--accent-tertiary); }
-        .blog-post-content table { width: 100%; border-collapse: collapse; margin: 16px 0; }
-        .blog-post-content th, .blog-post-content td { padding: 10px 14px; text-align: left; border-bottom: 1px solid var(--border-subtle); font-size: 0.9rem; }
-        .blog-post-content th { color: var(--text-muted); font-weight: 600; text-transform: uppercase; font-size: 0.75rem; letter-spacing: 0.05em; }
-        .blog-post-content blockquote { border-left: 3px solid var(--accent-primary); padding-left: 16px; margin: 16px 0; color: var(--text-muted); font-style: italic; }
-        .blog-post-content .insight { background: rgba(99,102,241,0.08); border: 1px solid var(--border-accent); border-radius: var(--radius-md); padding: 16px 20px; margin: 16px 0; }
-        .blog-post-content .insight-title { font-weight: 700; color: var(--accent-primary); margin-bottom: 8px; }
+        :root {
+            --bg-primary: #0a0a0f;
+            --bg-card: #111118;
+            --bg-secondary: #16161f;
+            --text-primary: #f0f0f5;
+            --text-secondary: #a0a0b8;
+            --text-muted: #606078;
+            --accent-primary: #6366f1;
+            --accent-secondary: #8b5cf6;
+            --accent-tertiary: #06b6d4;
+            --border-subtle: #1e1e2e;
+            --border-accent: #6366f140;
+            --radius-lg: 16px;
+            --radius-md: 10px;
+            --font-mono: 'JetBrains Mono', monospace;
+        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { background: var(--bg-primary); color: var(--text-primary); font-family: 'Inter', sans-serif; }
+
+        /* Nav */
+        .nav { position: fixed; top: 0; width: 100%; z-index: 100; background: rgba(10,10,15,0.85); backdrop-filter: blur(20px); border-bottom: 1px solid var(--border-subtle); }
+        .nav-container { max-width: 1200px; margin: 0 auto; padding: 0 24px; height: 64px; display: flex; align-items: center; justify-content: space-between; }
+        .nav-logo { display: flex; align-items: center; gap: 10px; text-decoration: none; color: var(--text-primary); font-weight: 800; font-size: 1.2rem; }
+        .logo-icon { font-size: 1.4rem; }
+        .nav-links { display: flex; gap: 8px; }
+        .nav-link { padding: 8px 16px; border-radius: 8px; text-decoration: none; color: var(--text-secondary); font-weight: 500; font-size: 0.9rem; transition: all 0.2s; }
+        .nav-link:hover, .nav-link.active { color: var(--text-primary); background: rgba(99,102,241,0.1); }
+
+        /* Hero */
+        .hero { padding: 140px 24px 40px; text-align: center; max-width: 800px; margin: 0 auto; }
+        .hero h1 { font-size: clamp(2rem, 5vw, 3.5rem); font-weight: 900; margin-bottom: 16px; }
+        .gradient-text { background: linear-gradient(135deg, var(--accent-primary), var(--accent-secondary), var(--accent-tertiary)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+        .hero p { color: var(--text-secondary); font-size: 1.1rem; line-height: 1.6; }
+
+        /* Search & Filter */
+        .filter-bar { max-width: 900px; margin: 0 auto 40px; padding: 0 24px; display: flex; gap: 12px; flex-wrap: wrap; align-items: center; }
+        .search-box { flex: 1; min-width: 250px; position: relative; }
+        .search-box input { width: 100%; padding: 12px 16px 12px 44px; background: var(--bg-card); border: 1px solid var(--border-subtle); border-radius: var(--radius-md); color: var(--text-primary); font-size: 0.95rem; font-family: 'Inter', sans-serif; outline: none; transition: border-color 0.2s; }
+        .search-box input:focus { border-color: var(--accent-primary); }
+        .search-box i { position: absolute; left: 16px; top: 50%; transform: translateY(-50%); color: var(--text-muted); }
+        .tag-filters { display: flex; gap: 8px; flex-wrap: wrap; }
+        .tag-chip { padding: 8px 16px; border-radius: 100px; font-size: 0.8rem; font-weight: 600; cursor: pointer; border: 1px solid var(--border-subtle); background: var(--bg-card); color: var(--text-secondary); transition: all 0.2s; white-space: nowrap; }
+        .tag-chip:hover, .tag-chip.active { background: rgba(99,102,241,0.15); border-color: var(--accent-primary); color: var(--accent-primary); }
+        .tag-chip .count { margin-left: 6px; font-size: 0.7rem; opacity: 0.6; }
+
+        /* Blog Grid */
+        .blog-grid { max-width: 900px; margin: 0 auto; padding: 0 24px 120px; display: grid; gap: 24px; }
+        .blog-card { background: var(--bg-card); border: 1px solid var(--border-subtle); border-radius: var(--radius-lg); overflow: hidden; transition: all 0.3s; cursor: pointer; text-decoration: none; color: inherit; display: block; }
+        .blog-card:hover { border-color: var(--border-accent); transform: translateY(-2px); box-shadow: 0 8px 32px rgba(99,102,241,0.08); }
+        .blog-card-body { padding: 28px 32px; }
+        .blog-card-meta { display: flex; align-items: center; gap: 10px; margin-bottom: 12px; }
+        .blog-card-date { font-size: 0.8rem; color: var(--text-muted); font-family: var(--font-mono); }
+        .blog-card-tags { display: flex; gap: 6px; flex-wrap: wrap; }
+        .blog-card-tag { padding: 3px 10px; border-radius: 100px; font-size: 0.7rem; font-weight: 600; background: rgba(99,102,241,0.1); color: var(--accent-primary); }
+        .blog-card h2 { font-size: 1.25rem; font-weight: 700; margin-bottom: 10px; line-height: 1.4; }
+        .blog-card p { color: var(--text-secondary); font-size: 0.9rem; line-height: 1.6; display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden; }
+        .blog-card-footer { display: flex; align-items: center; gap: 16px; margin-top: 16px; padding-top: 16px; border-top: 1px solid var(--border-subtle); }
+        .blog-card-footer span { font-size: 0.8rem; color: var(--text-muted); display: flex; align-items: center; gap: 6px; }
+
+        .no-results { text-align: center; padding: 60px 24px; color: var(--text-muted); }
+        .no-results i { font-size: 3rem; margin-bottom: 16px; display: block; opacity: 0.3; }
+
+        @media (max-width: 640px) {
+            .blog-card-body { padding: 20px 24px; }
+            .filter-bar { flex-direction: column; }
+        }
     </style>
 </head>
 <body>
     <canvas id="particles"></canvas>
 
-    <nav class="nav" id="nav">
+    <nav class="nav">
         <div class="nav-container">
             <a href="/" class="nav-logo"><span class="logo-icon">⚡</span><span class="logo-text">EvoBench</span></a>
             <div class="nav-links">
@@ -54,227 +91,133 @@
         </div>
     </nav>
 
-    <section class="hero" style="min-height: auto; padding-top: 140px; padding-bottom: 40px;">
-        <div class="hero-content">
-            <h1 class="hero-title" style="font-size: clamp(2rem, 5vw, 3.5rem);"><span class="gradient-text">Blog</span></h1>
-            <p class="hero-subtitle">Insights on AI agent evaluation, compiler construction benchmarks, and the future of autonomous coding.</p>
-        </div>
+    <section class="hero">
+        <h1><span class="gradient-text">Blog</span></h1>
+        <p>Deep dives into AI agent evaluation, compiler construction benchmarks, and the frontier of autonomous coding.</p>
     </section>
 
-    <section style="position: relative; z-index: 1; padding: 0 24px 120px; max-width: 900px; margin: 0 auto;">
-
-        <!-- Article 3: May 10, 2026 -->
-        <article class="blog-post" id="post-3">
-            <div class="blog-post-header" onclick="togglePost('post-3')">
-                <div>
-                    <div class="blog-post-meta">
-                        <span class="blog-date">May 10, 2026</span>
-                        <span class="blog-tag">Results</span>
-                        <span class="blog-tag">Analysis</span>
-                    </div>
-                    <h2>EvoBench First Results: 19 Models Evaluated on Compiler Construction</h2>
-                </div>
-                <span class="expand-icon"><i class="fas fa-chevron-down"></i></span>
-            </div>
-            <div class="blog-post-body">
-                <div class="blog-post-content">
-                    <h3>Executive Summary</h3>
-                    <p>We ran the first large-scale evaluation of 19 LLMs on EvoBench using OpenHands SDK (a real agent framework with terminal, file editor, and task tracker). The results reveal a clear capability cliff between "understanding" and "implementing" compilers.</p>
-
-                    <h3>Top Performers (Mean Reward)</h3>
-                    <table>
-                        <tr><th>Rank</th><th>Model</th><th>Mean Reward</th><th>Best Task</th><th>Resurrections</th></tr>
-                        <tr><td>1</td><td><strong>deepseek-v4-pro</strong></td><td>53.33</td><td>T0-T3: 100%</td><td>2</td></tr>
-                        <tr><td>2</td><td><strong>qwen3.6-max-preview</strong></td><td>47.53</td><td>T3: 97.3%</td><td>3</td></tr>
-                        <tr><td>3</td><td><strong>minimax-m2.7</strong></td><td>46.71</td><td>T3: 93.2%</td><td>2</td></tr>
-                        <tr><td>4</td><td><strong>deepseek-v4-flash</strong></td><td>38.64</td><td>T3: 93.2%</td><td>3</td></tr>
-                        <tr><td>5</td><td><strong>glm-5.1</strong></td><td>32.88</td><td>T3: 64.4%</td><td>3</td></tr>
-                    </table>
-
-                    <div class="insight">
-                        <div class="insight-title">💡 Key Finding</div>
-                        <p><strong>deepseek-v4-pro is the only model that achieved 100% on Tasks 0-3 without any resurrection on Task 3.</strong> This means it genuinely understood the compiler pipeline, not just copied patterns from golden answers.</p>
-                    </div>
-
-                    <h3>The Task 4/5 Wall</h3>
-                    <p><strong>Every single model scored 0% on Task 4 (IR Optimization) and Task 5 (RV64 Backend).</strong> This is not a bug — these tasks require:</p>
-                    <ul>
-                        <li><strong>Task 4</strong>: Implementing custom LLVM optimization passes (ConstantFolding, Mem2Reg, etc.) and achieving better performance than clang -O2</li>
-                        <li><strong>Task 5</strong>: Implementing 4 specific functions in <code>EmitMIR.cpp</code> for RV64 instruction selection</li>
-                    </ul>
-                    <p>The gap between Task 3 (100% achievable) and Task 4 (0% for all) represents a massive capability cliff. This is where EvoBench truly differentiates itself from simpler benchmarks.</p>
-
-                    <h3>Resurrection Mechanism Analysis</h3>
-                    <p>The resurrection mechanism worked as designed:</p>
-                    <ul>
-                        <li>Models that failed Task 1 (Lexer) were resurrected and could attempt Task 2 (Parser)</li>
-                        <li>Several models achieved 100% on Task 2 after resurrection, proving they can work with golden inputs</li>
-                        <li>The <strong>Evolutionary Gain</strong> metric (not yet computed) will quantify how much better agents do with their own code vs. golden code</li>
-                    </ul>
-
-                    <h3>Metrics Formula</h3>
-                    <p>We introduced two key metrics:</p>
-                    <ul>
-                        <li><strong>Mean Reward</strong>: Weighted average score with 1.2x bonus for direct (non-resurrected) passes</li>
-                        <li><strong>Pass Score</strong>: Weighted pass rate with 1.5x bonus for direct passes</li>
-                    </ul>
-                    <pre><code>Mean Reward = Σ(score[i] × weight[i] × bonus[i]) / Σ(weight[i])
-weight = [1, 2, 2, 3, 3, 4]  // Task 0-5, increasing importance
-bonus = 1.2 (no resurrection) / 1.0 (resurrected)</code></pre>
-
-                    <h3>What's Next</h3>
-                    <ul>
-                        <li>Improve Task 4/5 documentation to help agents understand LLVM Pass framework</li>
-                        <li>Add more agent backends (Claude Code, Gemini CLI, Codex)</li>
-                        <li>Compute Evolutionary Gain with paired experiments</li>
-                        <li>Expand to more models as they become available</li>
-                    </ul>
-                </div>
-            </div>
-        </article>
-
-        <!-- Article 2: May 3, 2026 -->
-        <article class="blog-post" id="post-2">
-            <div class="blog-post-header" onclick="togglePost('post-2')">
-                <div>
-                    <div class="blog-post-meta">
-                        <span class="blog-date">May 3, 2026</span>
-                        <span class="blog-tag">Research</span>
-                        <span class="blog-tag">Design</span>
-                    </div>
-                    <h2>Why YatCC Is the Perfect Substrate for an Agent Benchmark</h2>
-                </div>
-                <span class="expand-icon"><i class="fas fa-chevron-down"></i></span>
-            </div>
-            <div class="blog-post-body">
-                <div class="blog-post-content">
-                    <h3>The Problem with Existing Benchmarks</h3>
-                    <p>Current agent benchmarks like SWE-bench, GAIA, and AgentBench share a fundamental limitation: <strong>they test isolated, atomic tasks</strong>. Each task starts from a clean slate. There's no concept of "building on previous work" or "learning from mistakes."</p>
-                    <p>This is like testing a programmer by giving them 100 independent LeetCode problems. It measures <em>instantaneous coding ability</em>, not <em>engineering evolution</em>.</p>
-
-                    <h3>Why Compiler Construction?</h3>
-                    <p>Compiler construction is uniquely suited for evaluating agent evolution because:</p>
-
-                    <h4>1. Strong Causal Dependencies</h4>
-                    <p>You cannot write a parser without a working lexer. You cannot optimize IR without generating it first. This creates a <strong>natural serial pipeline</strong> where each task builds on the previous one.</p>
-
-                    <h4>2. Objective, Automated Grading</h4>
-                    <p>Unlike code review or documentation tasks, compiler correctness is <strong>binary</strong>: does the compiled program produce the correct output? Yes or no. This eliminates subjective evaluation.</p>
-
-                    <h4>3. Graduated Difficulty</h4>
-                    <p>The 6 tasks span from trivial (Task 0: environment setup) to extremely challenging (Task 5: RV64 backend). This creates a <strong>natural difficulty curve</strong> that can differentiate between models.</p>
-
-                    <h4>4. Real-World Relevance</h4>
-                    <p>Every programmer uses compilers. This isn't an artificial benchmark — it's a <strong>real engineering task</strong> that CS students spend a full semester on.</p>
-
-                    <h3>YatCC's Unique Advantages</h3>
-                    <p>YatCC (中山大学编译原理课程实验) has several features that make it ideal:</p>
-                    <ul>
-                        <li><strong>Complete test infrastructure</strong>: 73 test cases with automated scoring scripts</li>
-                        <li><strong>Resurrection mechanism</strong>: Built-in support for injecting golden answers when tasks fail</li>
-                        <li><strong>CMake-based build</strong>: Standard build system that any agent can understand</li>
-                        <li><strong>Graduated scaffolding</strong>: Each task provides starter code that agents can extend</li>
-                        <li><strong>Open source</strong>: Available on GitHub for reproducibility</li>
-                    </ul>
-
-                    <h3>The Resurrection Innovation</h3>
-                    <p>The key innovation of EvoBench is the <strong>Resurrection Mechanism</strong>. When an agent fails at Task N:</p>
-                    <ol>
-                        <li>The benchmark controller modifies <code>config.cmake</code> to set <code>TASK{N}_REVIVE=ON</code></li>
-                        <li>CMake reconfigures, injecting golden answers as input for Task N</li>
-                        <li>The agent can continue to Task N+1 with correct inputs</li>
-                    </ol>
-                    <p>This solves the <strong>cascading failure problem</strong>: without resurrection, a single failure at Task 1 would make it impossible to evaluate Tasks 2-5.</p>
-
-                    <blockquote>"The resurrection mechanism transforms EvoBench from a pass/fail gate into a diagnostic tool. We can see exactly where each model's capabilities break down."</blockquote>
-                </div>
-            </div>
-        </article>
-
-        <!-- Article 1: April 20, 2026 -->
-        <article class="blog-post" id="post-1">
-            <div class="blog-post-header" onclick="togglePost('post-1')">
-                <div>
-                    <div class="blog-post-meta">
-                        <span class="blog-date">April 20, 2026</span>
-                        <span class="blog-tag">Vision</span>
-                    </div>
-                    <h2>EvoBench: A Vision for Testing Agent Evolution</h2>
-                </div>
-                <span class="expand-icon"><i class="fas fa-chevron-down"></i></span>
-            </div>
-            <div class="blog-post-body">
-                <div class="blog-post-content">
-                    <h3>The Core Question</h3>
-                    <p><strong>Can AI agents evolve?</strong> Not in the biological sense, but in the engineering sense: can an agent learn from its previous work, accumulate knowledge, and apply it to increasingly complex tasks?</p>
-                    <p>Current benchmarks can't answer this question. They test agents in isolation — each task is a fresh start. But real software engineering is <strong>cumulative</strong>. A senior engineer isn't someone who can solve 100 independent problems; it's someone who can build a complex system over months, learning and adapting along the way.</p>
-
-                    <h3>The EvoBench Concept</h3>
-                    <p>EvoBench is designed to test <strong>serial agent evolution</strong>:</p>
-                    <ul>
-                        <li><strong>Sequential tasks</strong>: Task 1 → 2 → 3 → 4 → 5, each building on the previous</li>
-                        <li><strong>Resurrection on failure</strong>: When an agent fails, inject golden answers and continue</li>
-                        <li><strong>Multi-dimensional metrics</strong>: Not just pass/fail, but how well the agent evolves</li>
-                    </ul>
-
-                    <h3>Inspiration</h3>
-                    <p>The idea came from observing that:</p>
-                    <ol>
-                        <li>Existing benchmarks (SWE-bench, GAIA) test isolated tasks</li>
-                        <li>Voyager (Nvidia) showed that agents can build skill libraries in Minecraft</li>
-                        <li>Compiler construction has natural serial dependencies and objective grading</li>
-                        <li>中山大学's YatCC course has a complete test infrastructure with resurrection support</li>
-                    </ol>
-
-                    <h3>What We Want to Measure</h3>
-                    <ul>
-                        <li><strong>Zero-shot Pipeline Pass Rate</strong>: Can the agent complete all tasks without resurrection?</li>
-                        <li><strong>Node Pass Rate</strong>: Given correct inputs, can the agent complete each individual task?</li>
-                        <li><strong>Average Resurrection Count</strong>: How many times does the agent need golden answers?</li>
-                        <li><strong>Evolutionary Gain</strong>: Does the agent perform better with its own code vs. golden code?</li>
-                    </ul>
-
-                    <h3>Next Steps</h3>
-                    <p>Our immediate plan:</p>
-                    <ol>
-                        <li>Build the evaluation infrastructure (Docker sandbox, CMake automation, score parsing)</li>
-                        <li>Implement the resurrection mechanism</li>
-                        <li>Create agent tool interfaces (file read/write, command execution)</li>
-                        <li>Run the first evaluation with multiple models</li>
-                        <li>Publish results and invite the community to participate</li>
-                    </ol>
-
-                    <blockquote>"We want to test agents the way we test students: through a semester-long project that requires building on previous knowledge."</blockquote>
-                </div>
-            </div>
-        </article>
-
-    </section>
-
-    <footer class="footer">
-        <div class="container">
-            <div class="footer-content">
-                <div class="footer-brand"><span class="logo-icon">⚡</span><span class="logo-text">EvoBench</span></div>
-                <div class="footer-links">
-                    <a href="https://github.com/Nexa-Language/EvoBench">GitHub</a>
-                    <a href="/">Home</a>
-                    <a href="leaderboard.html">Leaderboard</a>
-                </div>
-            </div>
+    <div class="filter-bar">
+        <div class="search-box">
+            <i class="fas fa-search"></i>
+            <input type="text" id="searchInput" placeholder="Search posts..." oninput="filterPosts()">
         </div>
-    </footer>
+        <div class="tag-filters" id="tagFilters"></div>
+    </div>
 
-    <script src="assets/js/main.js"></script>
+    <div class="blog-grid" id="blogGrid"></div>
+
+    <div class="no-results" id="noResults" style="display:none;">
+        <i class="fas fa-search"></i>
+        <p>No posts match your search.</p>
+    </div>
+
+    <script src="assets/js/particles.min.js"></script>
     <script>
-    function togglePost(id) {
-        const post = document.getElementById(id);
-        post.classList.toggle('expanded');
-    }
-    // Auto-expand the latest post
-    document.addEventListener('DOMContentLoaded', () => {
-        const posts = document.querySelectorAll('.blog-post');
-        if (posts.length > 0) posts[0].classList.add('expanded');
-    });
+        // Particle background
+        if (typeof particlesJS !== 'undefined') {
+            particlesJS('particles', {
+                particles: { number: { value: 40 }, color: { value: '#6366f1' }, opacity: { value: 0.15 }, size: { value: 2 }, line_linked: { enable: true, color: '#6366f1', opacity: 0.08 }, move: { speed: 0.8 } },
+                interactivity: { events: { onhover: { enable: true, mode: 'grab' } } }
+            });
+        }
+
+        const posts = [
+            {
+                id: '2026-05-13-paper-draft',
+                date: 'May 13, 2026',
+                title: 'EvoBench Paper Draft Complete: A New Paradigm for Serial Agent Evaluation',
+                excerpt: 'Our paper introduces EvoBench — the first serial, artifact-dependent coding benchmark with resurrection mechanism and process-centric evaluation. Here\'s what we found across 22 model configurations.',
+                tags: ['Paper', 'Research'],
+                readTime: '8 min',
+            },
+            {
+                id: '2026-05-12-leaderboard-analysis',
+                date: 'May 12, 2026',
+                title: 'Leaderboard Deep Dive: Kimi CLI Dominates, Resurrection Reveals Hidden Capabilities',
+                excerpt: 'With 22 models now evaluated, the leaderboard tells a fascinating story. Kimi-k2.6 takes #1 with MR=99.06, but the real insight is in the resurrection data — 17/19 models gain >40 points when cascading failures are bypassed.',
+                tags: ['Leaderboard', 'Analysis', 'Results'],
+                readTime: '10 min',
+            },
+            {
+                id: '2026-05-10-first-results',
+                date: 'May 10, 2026',
+                title: 'EvoBench First Results: 19 Models Evaluated on Compiler Construction',
+                excerpt: 'The first large-scale evaluation reveals a clear capability cliff between understanding and implementing compilers. Only 2 models achieve zero-shot pipeline success.',
+                tags: ['Results', 'Analysis'],
+                readTime: '6 min',
+            },
+            {
+                id: '2026-05-03-why-yatcc',
+                date: 'May 3, 2026',
+                title: 'Why YatCC Is the Perfect Substrate for an Agent Benchmark',
+                excerpt: 'Compiler construction provides strict causal dependencies, objective grading, graduated difficulty, and real-world relevance — making it uniquely suited for evaluating agent evolution.',
+                tags: ['Research', 'Design'],
+                readTime: '5 min',
+            },
+            {
+                id: '2026-04-20-vision',
+                date: 'April 20, 2026',
+                title: 'Introducing EvoBench: Beyond Static Benchmarks',
+                excerpt: 'Current agent benchmarks test isolated tasks. Real engineering is serial. EvoBench introduces a new paradigm: evaluate agents on their ability to evolve through a dependency chain.',
+                tags: ['Vision'],
+                readTime: '4 min',
+            },
+        ];
+
+        const allTags = [...new Set(posts.flatMap(p => p.tags))];
+
+        // Render tag filters
+        const tagFiltersEl = document.getElementById('tagFilters');
+        tagFiltersEl.innerHTML = `
+            <span class="tag-chip active" onclick="selectTag('all')">All <span class="count">${posts.length}</span></span>
+            ${allTags.map(t => `<span class="tag-chip" onclick="selectTag('${t}')">${t}</span>`).join('')}
+        `;
+
+        let activeTag = 'all';
+
+        function selectTag(tag) {
+            activeTag = tag;
+            document.querySelectorAll('.tag-chip').forEach(c => c.classList.remove('active'));
+            event.target.closest('.tag-chip')?.classList.add('active');
+            filterPosts();
+        }
+
+        function filterPosts() {
+            const query = document.getElementById('searchInput').value.toLowerCase();
+            const filtered = posts.filter(p => {
+                const matchTag = activeTag === 'all' || p.tags.includes(activeTag);
+                const matchSearch = !query || p.title.toLowerCase().includes(query) || p.excerpt.toLowerCase().includes(query) || p.tags.some(t => t.toLowerCase().includes(query));
+                return matchTag && matchSearch;
+            });
+
+            const grid = document.getElementById('blogGrid');
+            const noResults = document.getElementById('noResults');
+
+            if (filtered.length === 0) {
+                grid.innerHTML = '';
+                noResults.style.display = 'block';
+            } else {
+                noResults.style.display = 'none';
+                grid.innerHTML = filtered.map(p => `
+                    <a href="blog/${p.id}.html" class="blog-card">
+                        <div class="blog-card-body">
+                            <div class="blog-card-meta">
+                                <span class="blog-card-date">${p.date}</span>
+                                <div class="blog-card-tags">${p.tags.map(t => `<span class="blog-card-tag">${t}</span>`).join('')}</div>
+                            </div>
+                            <h2>${p.title}</h2>
+                            <p>${p.excerpt}</p>
+                            <div class="blog-card-footer">
+                                <span><i class="far fa-clock"></i> ${p.readTime} read</span>
+                                <span><i class="fas fa-arrow-right"></i> Read more</span>
+                            </div>
+                        </div>
+                    </a>
+                `).join('');
+            }
+        }
+
+        filterPosts();
     </script>
 </body>
 </html>
