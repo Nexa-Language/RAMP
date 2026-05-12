@@ -576,8 +576,12 @@ body {
     transition: width 0.6s ease;
 }
 
-.pass { color: #4ade80; }
-.fail { color: #f87171; }
+/* Score color gradient: red(0%) → yellow(50%) → green(100%) */
+.score-val {
+    font-family: var(--font-mono);
+    font-weight: 600;
+    font-size: 0.85rem;
+}
 
 /* Blog */
 .blog-grid {

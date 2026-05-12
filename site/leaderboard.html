@@ -107,6 +107,14 @@
     const MODEL_COLORS = {'deepseek-v4-pro':'#4ade80','deepseek-v4-flash':'#22d3ee','deepseek-chat':'#86efac','deepseek-reasoner':'#6ee7b7','qwen3.6-max-preview':'#a78bfa','qwen3.6-flash':'#c4b5fd','qwen3.6-plus':'#ddd6fe','qwen3-coder-flash':'#e9d5ff','qwen3.5-plus-2026-02-15':'#f0abfc','qwen-omni-turbo':'#f5d0fe','glm-5.1':'#fb923c','glm-5':'#fdba74','glm-4.7':'#fed7aa','minimax-m2.7':'#f472b6','minimax-m2.5':'#f9a8d4','mimo-v2.5-pro':'#818cf8','kimi-k2.6':'#fbbf24','kimi-k2-thinking':'#fcd34d'};
     function getInitials(n){return n.split(/[-.]/).map(w=>w[0]).join('').toUpperCase().slice(0,2);}
     function getColor(n){return MODEL_COLORS[n]||'#6366f1';}
+    /** 红(0%) → 橙(25%) → 黄(50%) → 黄绿(75%) → 绿(100%) */
+    function scoreColor(v) {
+        const t = Math.max(0, Math.min(100, v)) / 100;
+        const h = t * 120;   // HSL: 0=红, 60=黄, 120=绿
+        const s = 75 + t * 20;
+        const l = 40 + t * 15;
+        return `hsl(${h}, ${s}%, ${l}%)`;
+    }
 
     function renderTable(data) {
         const tbody = document.getElementById('leaderboard-body');
@@ -115,16 +123,16 @@
             const r=i+1, rc=r<=3?`rank-${r}`:'rank-other', c=getColor(e.model);
             const tasks=['task0','task1','task2','task3','task4','task5'].map(k=>{
                 const v=e[k];if(v===null||v===undefined)return'<td><span style="color:var(--text-muted)">—</span></td>';
-                return`<td><span class="${v>=60?'pass':'fail'}">${v.toFixed(1)}%</span></td>`;
+                return`<td><span class="score-val" style="color:${scoreColor(v)}">${v.toFixed(1)}%</span></td>`;
             }).join('');
             return`<tr>
                 <td><span class="rank-badge ${rc}">${r}</span></td>
                 <td><div class="model-name"><div class="model-icon" style="color:${c};border:1px solid ${c}33">${getInitials(e.model)}</div><strong>${e.model}</strong></div></td>
                 <td><span style="color:var(--accent-tertiary);font-family:var(--font-mono);font-size:0.8rem">${e.backend}</span></td>
                 ${tasks}
-                <td><span class="metric-highlight">${(e.mean_reward||0).toFixed(2)}</span></td>
-                <td><strong>${(e.pass_score||0).toFixed(1)}%</strong><div class="score-bar"><div class="score-fill" style="width:${e.pass_score||0}%"></div></div></td>
-                <td><strong>${(e.pipeline_score||0).toFixed(1)}%</strong><div class="score-bar"><div class="score-fill" style="width:${e.pipeline_score||0}%"></div></div></td>
+                <td><span class="metric-highlight" style="color:${scoreColor(e.mean_reward||0)}">${(e.mean_reward||0).toFixed(2)}</span></td>
+                <td><strong style="color:${scoreColor(e.pass_score||0)}">${(e.pass_score||0).toFixed(1)}%</strong><div class="score-bar"><div class="score-fill" style="width:${e.pass_score||0}%"></div></div></td>
+                <td><strong style="color:${scoreColor(e.pipeline_score||0)}">${(e.pipeline_score||0).toFixed(1)}%</strong><div class="score-bar"><div class="score-fill" style="width:${e.pipeline_score||0}%"></div></div></td>
                 <td style="text-align:center">${e.resurrections||0}</td>
             </tr>`;
         }).join('');
