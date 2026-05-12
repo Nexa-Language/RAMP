@@ -241,6 +241,31 @@
     "date": "2026-05-11"
   },
   {
+    "model": "minimax-m2.7",
+    "backend": "openhands",
+    "task0": 100.0,
+    "task1": 60.5,
+    "task2": 100.0,
+    "task3": 93.2,
+    "task4": 0.0,
+    "task5": 100.0,
+    "mean_reward": 72.46,
+    "pass_score": 83.33,
+    "pipeline_score": 75.62,
+    "resurrections": 2,
+    "zero_shot_pass": false,
+    "resurrected": [
+      true,
+      true,
+      true,
+      true,
+      true,
+      true
+    ],
+    "rank": 11,
+    "date": "2026-05-12"
+  },
+  {
     "model": "kimi-k2-thinking",
     "backend": "openhands",
     "date": "2026-05-11",
@@ -252,7 +277,7 @@
     "task5": 100.0,
     "pipeline_score": 63.52,
     "resurrections": 2,
-    "rank": 11,
+    "rank": 12,
     "mean_reward": 67.05,
     "pass_score": 50.0
   },
@@ -268,7 +293,7 @@
     "task5": 100.0,
     "pipeline_score": 63.52,
     "resurrections": 2,
-    "rank": 12,
+    "rank": 13,
     "mean_reward": 67.05,
     "pass_score": 66.67
   },
@@ -284,7 +309,7 @@
     "task5": 100.0,
     "pipeline_score": 63.52,
     "resurrections": 2,
-    "rank": 13,
+    "rank": 14,
     "mean_reward": 67.05,
     "pass_score": 50.0
   },
@@ -310,7 +335,7 @@
       true,
       true
     ],
-    "rank": 14,
+    "rank": 15,
     "date": "2026-05-11"
   },
   {
@@ -335,7 +360,7 @@
       true,
       false
     ],
-    "rank": 15,
+    "rank": 16,
     "date": "2026-05-11"
   },
   {
@@ -360,31 +385,7 @@
       true,
       true
     ],
-    "rank": 16,
+    "rank": 17,
     "date": "2026-05-12"
-  },
-  {
-    "model": "minimax-m2.7",
-    "backend": "openhands",
-    "task0": 100.0,
-    "task1": 60.5,
-    "task2": 100.0,
-    "task3": 93.2,
-    "task4": 0.0,
-    "task5": 0.0,
-    "mean_reward": 44.87,
-    "pass_score": 66.67,
-    "pipeline_score": 58.95,
-    "resurrections": 2,
-    "zero_shot_pass": false,
-    "resurrected": [
-      true,
-      true,
-      true,
-      true,
-      true,
-      true
-    ],
-    "rank": 17
   }
 ]
