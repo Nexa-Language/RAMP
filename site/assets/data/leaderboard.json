@@ -1,5 +1,30 @@
 [
   {
+    "model": "qwen3.6-plus",
+    "backend": "openhands",
+    "task0": 100.0,
+    "task1": 100.0,
+    "task2": 74.0,
+    "task3": 72.6,
+    "task4": 81.1,
+    "task5": 100.0,
+    "mean_reward": 45.27,
+    "pass_score": 50.0,
+    "pipeline_score": 87.95,
+    "resurrections": 2,
+    "zero_shot_pass": false,
+    "resurrected": [
+      false,
+      false,
+      false,
+      false,
+      false,
+      false
+    ],
+    "rank": 1,
+    "date": "2026-05-11"
+  },
+  {
     "model": "glm-5",
     "backend": "openhands",
     "date": "2026-05-11",
@@ -11,7 +36,57 @@
     "task5": 100.0,
     "pipeline_score": 77.08,
     "resurrections": 1,
-    "rank": 1
+    "rank": 2
+  },
+  {
+    "model": "minimax-m2.5",
+    "backend": "openhands",
+    "task0": 100.0,
+    "task1": 100.0,
+    "task2": 0.0,
+    "task3": 72.6,
+    "task4": 80.2,
+    "task5": 100.0,
+    "mean_reward": 46.67,
+    "pass_score": 33.33,
+    "pipeline_score": 75.47,
+    "resurrections": 2,
+    "zero_shot_pass": false,
+    "resurrected": [
+      true,
+      true,
+      true,
+      true,
+      true,
+      true
+    ],
+    "rank": 3,
+    "date": "2026-05-11"
+  },
+  {
+    "model": "qwen3.5-plus-2026-02-15",
+    "backend": "openhands",
+    "task0": 100.0,
+    "task1": 100.0,
+    "task2": 0.0,
+    "task3": 53.4,
+    "task4": 86.6,
+    "task5": 100.0,
+    "mean_reward": 46.67,
+    "pass_score": 33.33,
+    "pipeline_score": 73.33,
+    "resurrections": 2,
+    "zero_shot_pass": false,
+    "resurrected": [
+      true,
+      true,
+      true,
+      true,
+      true,
+      true
+    ],
+    "rank": 4,
+    "date": "2026-05-11"
   },
   {
     "model": "deepseek-v4-pro",
@@ -35,7 +110,32 @@
       true,
       true
     ],
-    "rank": 2
+    "rank": 5
+  },
+  {
+    "model": "qwen3-coder-flash",
+    "backend": "openhands",
+    "task0": 100.0,
+    "task1": 100.0,
+    "task2": 0.0,
+    "task3": 34.2,
+    "task4": 57.8,
+    "task5": 100.0,
+    "mean_reward": 0.0,
+    "pass_score": 0.0,
+    "pipeline_score": 65.33,
+    "resurrections": 3,
+    "zero_shot_pass": false,
+    "resurrected": [
+      false,
+      false,
+      true,
+      true,
+      true,
+      false
+    ],
+    "rank": 6,
+    "date": "2026-05-11"
   },
   {
     "model": "kimi-k2-thinking",
@@ -49,7 +149,7 @@
     "task5": 100.0,
     "pipeline_score": 63.52,
     "resurrections": 2,
-    "rank": 3
+    "rank": 7
   },
   {
     "model": "deepseek-reasoner",
@@ -57,13 +157,13 @@
     "date": "2026-05-11",
     "task0": 100.0,
     "task1": 0.0,
-    "task2": 21.13,
+    "task2": 21.1,
     "task3": 100.0,
-    "task4": 59.98,
+    "task4": 60.0,
     "task5": 100.0,
     "pipeline_score": 63.52,
-    "resurrections": 1,
-    "rank": 4
+    "resurrections": 2,
+    "rank": 8
   },
   {
     "model": "deepseek-chat",
@@ -77,7 +177,7 @@
     "task5": 100.0,
     "pipeline_score": 63.52,
     "resurrections": 2,
-    "rank": 5
+    "rank": 9
   },
   {
     "model": "qwen3.6-max-preview",
@@ -101,7 +201,7 @@
       true,
       true
     ],
-    "rank": 6
+    "rank": 10
   },
   {
     "model": "minimax-m2.7",
@@ -125,7 +225,7 @@
       true,
       true
     ],
-    "rank": 7
+    "rank": 11
   },
   {
     "model": "glm-4-7",
@@ -139,55 +239,7 @@
     "task5": 100.0,
     "pipeline_score": 53.66,
     "resurrections": 1,
-    "rank": 8
-  },
-  {
-    "model": "minimax-m2.5",
-    "backend": "openhands",
-    "task0": 0.0,
-    "task1": 100.0,
-    "task2": 100.0,
-    "task3": 100.0,
-    "task4": 0.0,
-    "task5": 0.0,
-    "mean_reward": 46.67,
-    "pass_score": 33.33,
-    "pipeline_score": 50.0,
-    "resurrections": 2,
-    "zero_shot_pass": false,
-    "resurrected": [
-      true,
-      true,
-      true,
-      true,
-      true,
-      true
-    ],
-    "rank": 9
-  },
-  {
-    "model": "qwen3.5-plus-2026-02-15",
-    "backend": "openhands",
-    "task0": 0.0,
-    "task1": 100.0,
-    "task2": 100.0,
-    "task3": 100.0,
-    "task4": 0.0,
-    "task5": 0.0,
-    "mean_reward": 46.67,
-    "pass_score": 33.33,
-    "pipeline_score": 50.0,
-    "resurrections": 2,
-    "zero_shot_pass": false,
-    "resurrected": [
-      true,
-      true,
-      true,
-      true,
-      true,
-      true
-    ],
-    "rank": 10
+    "rank": 12
   },
   {
     "model": "qwen3.6-flash",
@@ -211,7 +263,7 @@
       true,
       true
     ],
-    "rank": 11
+    "rank": 13
   },
   {
     "model": "glm-4.7",
@@ -235,7 +287,7 @@
       false,
       false
     ],
-    "rank": 12
+    "rank": 14
   },
   {
     "model": "deepseek-v4-flash",
@@ -259,31 +311,32 @@
       true,
       true
     ],
-    "rank": 13
+    "rank": 15
   },
   {
-    "model": "qwen3.6-plus",
+    "model": "qwen-omni-turbo",
     "backend": "openhands",
     "task0": 0.0,
-    "task1": 100.0,
-    "task2": 100.0,
-    "task3": 93.0,
-    "task4": 0.0,
-    "task5": 0.0,
-    "mean_reward": 45.27,
-    "pass_score": 50.0,
-    "pipeline_score": 48.83,
-    "resurrections": 0,
+    "task1": 0.0,
+    "task2": 21.1,
+    "task3": 100.0,
+    "task4": 56.3,
+    "task5": 97.9,
+    "mean_reward": 0.0,
+    "pass_score": 0.0,
+    "pipeline_score": 45.88,
+    "resurrections": 4,
     "zero_shot_pass": false,
     "resurrected": [
-      false,
-      false,
-      false,
-      false,
-      false,
-      false
+      true,
+      true,
+      true,
+      true,
+      true,
+      true
     ],
-    "rank": 14
+    "rank": 16,
+    "date": "2026-05-11"
   },
   {
     "model": "glm-5.1",
@@ -307,7 +360,7 @@
       true,
       true
     ],
-    "rank": 15
+    "rank": 17
   },
   {
     "model": "mimo-v2.5-pro",
@@ -330,54 +383,6 @@
       true,
       true,
       true
-    ],
-    "rank": 16
-  },
-  {
-    "model": "qwen-omni-turbo",
-    "backend": "openhands",
-    "task0": 0.0,
-    "task1": 0.0,
-    "task2": 0.0,
-    "task3": 0.0,
-    "task4": 0.0,
-    "task5": 0.0,
-    "mean_reward": 0.0,
-    "pass_score": 0.0,
-    "pipeline_score": 0.0,
-    "resurrections": 4,
-    "zero_shot_pass": false,
-    "resurrected": [
-      true,
-      true,
-      true,
-      true,
-      true,
-      true
-    ],
-    "rank": 17
-  },
-  {
-    "model": "qwen3-coder-flash",
-    "backend": "openhands",
-    "task0": 0.0,
-    "task1": 0.0,
-    "task2": 0.0,
-    "task3": 0.0,
-    "task4": 0.0,
-    "task5": 0.0,
-    "mean_reward": 0.0,
-    "pass_score": 0.0,
-    "pipeline_score": 0.0,
-    "resurrections": 3,
-    "zero_shot_pass": false,
-    "resurrected": [
-      false,
-      false,
-      true,
-      true,
-      true,
-      false
     ],
     "rank": 18
   },

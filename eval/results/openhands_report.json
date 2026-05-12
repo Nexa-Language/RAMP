@@ -1,9 +1,9 @@
 {
   "benchmark": "EvoBench-v2",
   "agent_backend": "openhands",
-  "agent_model": "glm-4.7",
-  "timestamp": "2026-05-11T12:47:25Z",
-  "total_elapsed_seconds": 7041.707070350647,
+  "agent_model": "qwen3.6-plus",
+  "timestamp": "2026-05-11T15:48:43Z",
+  "total_elapsed_seconds": 5376.211320877075,
   "tasks": [
     {
       "task_id": 0,
@@ -12,56 +12,65 @@
       "passed": true,
       "test_count": 1,
       "passed_count": 1,
-      "elapsed_seconds": 46.02148103713989,
+      "elapsed_seconds": 38.916754484176636,
       "backend": "openhands"
     },
     {
       "task_id": 1,
-      "score": 0,
-      "max_score": 100,
-      "passed": false,
-      "test_count": 0,
-      "passed_count": 0,
-      "elapsed_seconds": 244.78863859176636,
-      "backend": "openhands"
-    },
-    {
-      "task_id": 2,
-      "score": 61.98,
-      "max_score": 100.0,
-      "passed": true,
-      "test_count": 73,
-      "passed_count": 37,
-      "elapsed_seconds": 774.9496932029724,
-      "backend": "openhands"
-    },
-    {
-      "task_id": 3,
       "score": 100.0,
       "max_score": 100.0,
       "passed": true,
       "test_count": 73,
       "passed_count": 73,
-      "elapsed_seconds": 305.9991536140442,
+      "elapsed_seconds": 409.89030742645264,
       "backend": "openhands"
     },
     {
-      "task_id": 4,
-      "score": 39.83,
-      "max_score": 100.0,
-      "passed": false,
-      "test_count": 12,
-      "passed_count": 0,
-      "elapsed_seconds": 996.8516757488251,
-      "backend": "openhands"
-    },
-    {
-      "task_id": 4,
-      "score": 59.97,
+      "task_id": 2,
+      "score": 0,
       "max_score": 100,
       "passed": false,
+      "test_count": 0,
+      "passed_count": 0,
+      "elapsed_seconds": 1230.1882231235504,
+      "backend": "openhands"
+    },
+    {
+      "task_id": 2,
+      "score": 73.97,
+      "max_score": 100,
+      "passed": true,
       "resurrected": true,
-      "elapsed_seconds": 5398.529432296753,
+      "elapsed_seconds": 1766.7589864730835,
+      "backend": "openhands"
+    },
+    {
+      "task_id": 3,
+      "score": 53.42,
+      "max_score": 100.0,
+      "passed": false,
+      "test_count": 73,
+      "passed_count": 39,
+      "elapsed_seconds": 834.1929309368134,
+      "backend": "openhands"
+    },
+    {
+      "task_id": 3,
+      "score": 72.6,
+      "max_score": 100,
+      "passed": true,
+      "resurrected": true,
+      "elapsed_seconds": 1995.212233543396,
+      "backend": "openhands"
+    },
+    {
+      "task_id": 4,
+      "score": 81.13,
+      "max_score": 100.0,
+      "passed": true,
+      "test_count": 12,
+      "passed_count": 5,
+      "elapsed_seconds": 1031.029321193695,
       "backend": "openhands"
     },
     {
@@ -71,13 +80,13 @@
       "passed": true,
       "test_count": 64,
       "passed_count": 64,
-      "elapsed_seconds": 271.4184739589691,
+      "elapsed_seconds": 134.40356421470642,
       "backend": "openhands"
     }
   ],
   "metrics": {
     "zero_shot_pass": false,
-    "resurrection_count": 1,
-    "total_iterations": 700
+    "resurrection_count": 2,
+    "total_iterations": 800
   }
 }
