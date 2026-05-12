@@ -281,7 +281,7 @@ def trigger_resurrection(failed_task: int, workspace: Path) -> None:
 
 # ──────────────────────── 指标计算 ────────────────────────
 
-WEIGHTS = [0.5, 2.0, 2.0, 3.0, 3.0, 4.0]  # Task 0-5 权重
+WEIGHTS = [0.05, 0.20, 0.20, 0.15, 0.30, 0.10]  # Task 0-5 权重 (5%, 20%, 20%, 15%, 30%, 10%)
 
 
 def compute_metrics(task_scores: dict[int, float], resurrections: dict[int, bool]) -> dict:

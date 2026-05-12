@@ -5,54 +5,28 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Leaderboard — EvoBench</title>
     <link rel="stylesheet" href="assets/css/style.css">
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
-    <style>
-        .filter-bar { display: flex; align-items: center; gap: 12px; flex-wrap: wrap; margin-bottom: 24px; }
-        .filter-bar input[type="text"] { flex: 1; min-width: 200px; padding: 10px 16px; background: var(--bg-card); border: 1px solid var(--border-subtle); border-radius: var(--radius-md); color: var(--text-primary); font-family: var(--font-sans); font-size: 0.9rem; outline: none; transition: border-color 0.2s; }
-        .filter-bar input[type="text"]:focus { border-color: var(--accent-primary); }
-        .filter-bar input[type="text"]::placeholder { color: var(--text-muted); }
-        .filter-chips { display: flex; gap: 8px; flex-wrap: wrap; }
-        .chip { padding: 6px 16px; border-radius: 100px; font-size: 0.8rem; font-weight: 600; cursor: pointer; border: 1px solid var(--border-subtle); background: transparent; color: var(--text-secondary); transition: all 0.2s; user-select: none; }
-        .chip:hover { border-color: var(--border-accent); color: var(--text-primary); }
-        .chip.active { background: var(--accent-primary); border-color: var(--accent-primary); color: white; }
-        .sort-btn { padding: 6px 16px; border-radius: 100px; font-size: 0.8rem; font-weight: 600; cursor: pointer; border: 1px solid var(--border-subtle); background: transparent; color: var(--text-secondary); transition: all 0.2s; display: flex; align-items: center; gap: 6px; }
-        .sort-btn:hover { border-color: var(--border-accent); color: var(--text-primary); }
-        .sort-btn.active { background: rgba(99,102,241,0.15); border-color: var(--accent-primary); color: var(--accent-primary); }
-        .table-wrapper { overflow-x: auto; border-radius: var(--radius-lg); border: 1px solid var(--border-subtle); }
-        .table-wrapper::-webkit-scrollbar { height: 8px; width: 8px; }
-        .table-wrapper::-webkit-scrollbar-track { background: var(--bg-secondary); border-radius: 4px; }
-        .table-wrapper::-webkit-scrollbar-thumb { background: linear-gradient(90deg, var(--accent-primary), var(--accent-secondary)); border-radius: 4px; }
-        .model-name { display: flex; align-items: center; gap: 8px; }
-        .model-icon { width: 28px; height: 28px; border-radius: 6px; background: var(--bg-secondary); display: flex; align-items: center; justify-content: center; font-size: 0.75rem; font-weight: 700; color: var(--accent-primary); flex-shrink: 0; }
-        .no-results { text-align: center; padding: 60px 20px; color: var(--text-muted); }
-        .no-results i { font-size: 2rem; margin-bottom: 12px; display: block; }
-        .metric-highlight { color: var(--accent-tertiary); font-family: var(--font-mono); font-weight: 600; }
-    </style>
 </head>
 <body>
     <canvas id="particles"></canvas>
-    <nav class="nav" id="nav">
+
+    <nav class="nav">
         <div class="nav-container">
             <a href="/" class="nav-logo"><span class="logo-icon">⚡</span><span class="logo-text">EvoBench</span></a>
             <div class="nav-links">
                 <a href="/" class="nav-link">Home</a>
                 <a href="leaderboard.html" class="nav-link active">Leaderboard</a>
                 <a href="blog.html" class="nav-link">Blog</a>
-                <a href="https://github.com/Nexa-Language/EvoBench" class="nav-link" target="_blank"><i class="fab fa-github"></i> GitHub</a>
             </div>
         </div>
     </nav>
 
-    <section class="hero" style="min-height: auto; padding-top: 140px; padding-bottom: 40px;">
-        <div class="hero-content">
-            <h1 class="hero-title" style="font-size: clamp(2rem, 5vw, 3.5rem);"><span class="gradient-text">Leaderboard</span></h1>
-            <p class="hero-subtitle">How well can AI agents build a compiler from scratch? Real results from OpenHands SDK and CLI agents with infinite self-loop iteration.</p>
-        </div>
-    </section>
+    <section style="position:relative;z-index:1;padding:120px 24px 60px;">
+        <div class="container">
+            <h1 class="section-title">🏆 Leaderboard</h1>
+            <p class="section-subtitle">Real-time evaluation results across the EvoBench pipeline</p>
 
-    <section style="position: relative; z-index: 1; padding: 0 24px 120px; max-width: 1400px; margin: 0 auto;">
-        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 16px; margin-bottom: 32px;" id="summary-cards"></div>
+            <div id="summary-cards" class="features-grid" style="margin-bottom: 40px;"></div>
 
         <div class="filter-bar">
             <input type="text" id="search-input" placeholder="🔍 Search models..." />
@@ -81,7 +55,7 @@
             <h3 style="margin-bottom: 12px; font-size: 1rem;">📊 Metrics Formula</h3>
             <div style="font-family: var(--font-mono); font-size: 0.85rem; color: var(--text-secondary); line-height: 1.8;">
                 <p><strong>Mean Reward</strong> = Σ(score[i] × weight[i] × bonus[i]) / Σ(weight[i])</p>
-                <p style="padding-left: 20px;">weight = [1, 2, 2, 3, 3, 4] | bonus = 1.2 (no resurrection) / 1.0 (resurrected)</p>
+                <p style="padding-left: 20px;">weight = [5%, 20%, 20%, 15%, 30%, 10%] | bonus = 1.2 (no resurrection) / 1.0 (resurrected)</p>
                 <p><strong>Pass Score</strong> = Σ(pass[i] × pass_bonus[i]) / (6 × 1.5) × 100</p>
                 <p style="padding-left: 20px;">pass_bonus = 1.5 (no resurrection) / 1.0 (resurrected)</p>
             </div>
@@ -104,29 +78,29 @@
     <script src="assets/js/main.js"></script>
     <script>
     let DATA = [], currentSort = 'mean_reward', currentBackend = 'all', searchQuery = '';
-    const MODEL_COLORS = {'deepseek-v4-pro':'#4ade80','deepseek-v4-flash':'#22d3ee','deepseek-chat':'#86efac','deepseek-reasoner':'#6ee7b7','qwen3.6-max-preview':'#a78bfa','qwen3.6-flash':'#c4b5fd','qwen3.6-plus':'#ddd6fe','qwen3-coder-flash':'#e9d5ff','qwen3.5-plus-2026-02-15':'#f0abfc','qwen-omni-turbo':'#f5d0fe','glm-5.1':'#fb923c','glm-5':'#fdba74','glm-4.7':'#fed7aa','minimax-m2.7':'#f472b6','minimax-m2.5':'#f9a8d4','mimo-v2.5-pro':'#818cf8','kimi-k2.6':'#fbbf24','kimi-k2-thinking':'#fcd34d'};
+    const MODEL_COLORS = {'deepseek-v4-pro':'#4ade80','deepseek-v4-flash':'#22d3ee','deepseek-chat':'#86efac','deepseek-reasoner':'#6ee7b7','qwen3.6-max-preview':'#a78bfa','qwen3.6-flash':'#c4b5fd','qwen3.6-plus':'#ddd6fe','qwen3-coder-flash':'#e9d5ff','qwen3.5-plus-2026-02-15':'#f0abfc','qwen-omni-turbo':'#f5d0fe','glm-5.1':'#fb923c','glm-5':'#fdba74','glm-4.7':'#fed7aa','minimax-m2.7':'#f472b6','minimax-m2.5':'#f9a8d4','mimo-v2.5-pro':'#818cf8','kimi-k2.6':'#fbbf24','kimi-k2-thinking':'#fcd34d','gpt-5.5':'#10b981'};
     function getInitials(n){return n.split(/[-.]/).map(w=>w[0]).join('').toUpperCase().slice(0,2);}
     function getColor(n){return MODEL_COLORS[n]||'#6366f1';}
-    /** 红(0%) → 橙(30%) → 黄(50%) → 暗绿(100%) — 暗色代码风格 */
+
+    /** 红(0%) → 正常绿(100%) */
     function scoreColor(v) {
         const t = Math.max(0, Math.min(100, v)) / 100;
-        // 红 hsl(0,70%,45%) → 橙 hsl(30,70%,45%) → 黄 hsl(50,60%,40%) → 暗绿 hsl(140,50%,35%)
-        const h = t * 140;
-        const s = 70 - t * 25;   // 70% → 45%
-        const l = 45 - t * 12;   // 45% → 33%
+        // 红 hsl(0,65%,50%) → 绿 hsl(120,50%,42%)
+        const h = t * 120;
+        const s = 65 - t * 15;
+        const l = 50 - t * 8;
         return `hsl(${h}, ${s}%, ${l}%)`;
     }
-    /** LobeHub Icons CDN — 模型/Agent 图标 */
-    const ICON_CDN = 'https://raw.githubusercontent.com/lobehub/lobe-icons/refs/heads/master/packages/static-png/avatars';
+
+    /** 本地 LobeHub SVG 图标映射 */
     const MODEL_ICONS = {
         'deepseek-v4-pro': 'deepseek', 'deepseek-v4-flash': 'deepseek', 'deepseek-chat': 'deepseek',
         'deepseek-reasoner': 'deepseek',
         'qwen3.6-max-preview': 'qwen', 'qwen3.6-flash': 'qwen', 'qwen3.6-plus': 'qwen',
-        'qwen3-coder-flash': 'qwen', 'qwen-omni-turbo': 'qwen',
-        'qwen3.5-plus-2026-02-15': 'qwen',
+        'qwen3-coder-flash': 'qwen', 'qwen-omni-turbo': 'qwen', 'qwen3.5-plus-2026-02-15': 'qwen',
         'glm-5': 'zhipu', 'glm-5.1': 'zhipu', 'glm-4.7': 'zhipu',
         'minimax-m2.7': 'minimax', 'minimax-m2.5': 'minimax',
-        'mimo-v2.5-pro': 'xiaomi',
+        'mimo-v2.5-pro': null,  // LobeHub 无小米图标
         'kimi-k2.6': 'moonshot', 'kimi-k2-thinking': 'moonshot',
         'gpt-5.5': 'openai',
     };
@@ -134,13 +108,14 @@
         'openhands': 'lobehub', 'codex': 'openai', 'claude': 'anthropic',
         'kimi': 'moonshot', 'gemini': 'google',
     };
-    function getIconUrl(id) { return `${ICON_CDN}/${id}.webp`; }
     function getModelIconSrc(model) {
         const key = Object.keys(MODEL_ICONS).find(k => model.includes(k) || model.startsWith(k));
-        return key ? getIconUrl(MODEL_ICONS[key]) : null;
+        const iconId = key ? MODEL_ICONS[key] : null;
+        return iconId ? `assets/icons/${iconId}.svg` : null;
     }
     function getBackendIconSrc(backend) {
-        return BACKEND_ICONS[backend] ? getIconUrl(BACKEND_ICONS[backend]) : null;
+        const iconId = BACKEND_ICONS[backend] || null;
+        return iconId ? `assets/icons/${iconId}.svg` : null;
     }
 
     function renderTable(data) {
@@ -148,16 +123,16 @@
         if(!data.length){tbody.innerHTML='<tr><td colspan="13"><div class="no-results"><i class="fas fa-search"></i>No models match</div></td></tr>';return;}
         tbody.innerHTML = data.map((e,i) => {
             const r=i+1, rc=r<=3?`rank-${r}`:'rank-other', c=getColor(e.model);
+            const mi = getModelIconSrc(e.model);
+            const bi = getBackendIconSrc(e.backend);
             const tasks=['task0','task1','task2','task3','task4','task5'].map(k=>{
                 const v=e[k];if(v===null||v===undefined)return'<td><span style="color:var(--text-muted)">—</span></td>';
                 return`<td><span class="score-val" style="color:${scoreColor(v)}">${v.toFixed(1)}%</span></td>`;
             }).join('');
-            const mi = getModelIconSrc(e.model);
-            const bi = getBackendIconSrc(e.backend);
             return`<tr>
                 <td><span class="rank-badge ${rc}">${r}</span></td>
-                <td><div class="model-name">${mi ? `<img src="${mi}" alt="" style="width:24px;height:24px;border-radius:6px;object-fit:cover" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">` : ''}<div class="model-icon" style="color:${c};border:1px solid ${c}33;${mi?'display:none':''}">${getInitials(e.model)}</div><strong>${e.model}</strong></div></td>
-                <td><span style="display:flex;align-items:center;gap:4px;color:var(--accent-tertiary);font-family:var(--font-mono);font-size:0.8rem">${bi ? `<img src="${bi}" alt="" style="width:16px;height:16px;border-radius:3px" onerror="this.style.display='none'">` : ''}${e.backend}</span></td>
+                <td><div class="model-name">${mi ? `<img src="${mi}" alt="" style="width:24px;height:24px;border-radius:6px;flex-shrink:0" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">` : ''}<div class="model-icon" style="color:${c};border:1px solid ${c}33;${mi?'display:none':''}">${getInitials(e.model)}</div><strong>${e.model}</strong></div></td>
+                <td><span style="display:flex;align-items:center;gap:4px;color:var(--accent-tertiary);font-family:var(--font-mono);font-size:0.8rem">${bi ? `<img src="${bi}" alt="" style="width:16px;height:16px;border-radius:3px;flex-shrink:0" onerror="this.style.display='none'">` : ''}${e.backend}</span></td>
                 ${tasks}
                 <td><span class="metric-highlight" style="color:${scoreColor(e.mean_reward||0)}">${(e.mean_reward||0).toFixed(2)}</span></td>
                 <td><strong style="color:${scoreColor(e.pass_score||0)}">${(e.pass_score||0).toFixed(1)}%</strong><div class="score-bar"><div class="score-fill" style="width:${e.pass_score||0}%"></div></div></td>

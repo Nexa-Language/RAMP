@@ -25,8 +25,8 @@ import re
 import sys
 from pathlib import Path
 
-# Task 权重（递增，Task 5 最重要）
-TASK_WEIGHTS = [1.0, 2.0, 2.0, 3.0, 3.0, 4.0]
+# Task 权重（T4 最重要：30%，然后 T1/T2 各 20%）
+TASK_WEIGHTS = [0.05, 0.20, 0.20, 0.15, 0.30, 0.10]
 
 # Bonus 系数
 NO_RESURRECTION_BONUS = 1.2   # 直接通过 +20%
