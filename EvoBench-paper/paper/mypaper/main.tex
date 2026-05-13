@@ -24,12 +24,12 @@
 \hypersetup{colorlinks=true, citecolor=darkblue, linkcolor=darkblue, urlcolor=darkblue}
 
 % Custom commands
-\newcommand{\evobench}{\textsc{EvoBench}}
+\newcommand{\eva}{\textsc{EVA}}
 \newcommand{\yatcc}{\textsc{YatCC}}
 \newcommand{\resurrection}{\textsc{Resurrection}}
 \newcommand{\serial}{\textsc{Serial}}
 
-\title{EvoBench: An Evaluation Framework for Agentic Models in Production Systems}
+\title{Beyond Benchmarks: Evaluating Agentic Models in Production Systems}
 
 \author{Anonymous Authors \\ Anonymous Institution \\ \texttt{anonymous@anonymous.org}}
 
@@ -45,19 +45,16 @@
 \maketitle
 
 \begin{abstract}
-% ABSTRACT PLACEHOLDER — will be filled after draft completion
-% Current skeleton version; final abstract must be 150-250 words per RESTRICTS.yaml
-
-Existing agent benchmarks predominantly evaluate static, isolated, one-shot task completion, making it difficult to measure cross-task evolution, cascading failure vulnerability, and process cost structure in real engineering pipelines. We introduce \evobench{}, a serial coding benchmark grounded in compiler construction, where agents must progress from lexer to parser to IR generation, optimization, and backend code generation along a strict dependency chain. To prevent predecessor failures from masking downstream capabilities, we propose a \resurrection{} mechanism that injects verified intermediate artifacts after failure, decomposing ``predecessor-unreachable'' from ``downstream-incapable.'' Beyond final task scores, \evobench{} systematically records tokens, interaction turns, shell/build/test retries, and failure types, extending agent evaluation from outcome-only to outcome--process joint analysis. Across multiple models and agent scaffolds, we show that serial benchmarks significantly reorder static rankings, that resurrection recovers diagnostic signals obscured by cascading failure, and that process cost metrics explain effectiveness differences among similarly-scoring agents. \evobench{} thus provides a benchmark paradigm closer to real engineering workflows for studying evolution, self-repair, and long-horizon coding behavior.
+Large language model agents are rapidly evolving from code assistants into autonomous software engineering systems, yet evaluation methodologies remain rooted in static, isolated, short-horizon benchmarks that fail to capture the dynamic complexity of real-world production workflows. We present \eva{} (Evaluating Agentic Models in Production Systems), a production-grounded evaluation framework built upon the \yatcc{} integrated platform. \eva{} provides a unified evaluation architecture supporting heterogeneous LLM providers and agent SDKs through standardized API access, realistic long-horizon compiler construction workloads with strict serial dependencies, a \resurrection{} mechanism that decomposes cascading failure into diagnostic components, and utility-oriented multi-dimensional metrics measuring both outcome quality and process efficiency. Across 22 model configurations, four agent backends, and two workload difficulty levels, we demonstrate that serial evaluation reveals failure patterns invisible to static benchmarks, that resurrection recovers substantial downstream diagnostic signal (median 73.65-point pipeline score recovery), and that process cost is decoupled from outcome ($R^2 = 0.007$), providing diagnostic rather than predictive value. \eva{} thus establishes a new paradigm for agent evaluation that moves beyond synthetic benchmarks toward continuous, runtime-observable, production-grounded assessment.
 \end{abstract}
 
 \input{sections/introduction}
-\input{sections/related_work}
-\input{sections/benchmark_construction}   % Design: task def, data, metrics
-\input{sections/evaluation_protocol}      % Experiment Setup: models, backends, settings
-\input{sections/results}                  % Results & Analysis: main results, ranking shift, scaffold interaction
-\input{sections/process_diagnostics}      % Results & Analysis (cont.): err analysis, cost-performance, failure taxonomy
+\input{sections/benchmark_construction}   % Framework Design
+\input{sections/evaluation_protocol}      % Metrics & Experimental Setup
+\input{sections/results}                  % Results & Analysis
+\input{sections/process_diagnostics}      % Results & Analysis (cont.)
 \input{sections/discussion}
+\input{sections/related_work}
 \input{sections/conclusion}
 
 \bibliographystyle{colm2026_conference}
