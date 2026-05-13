@@ -1,0 +1,41 @@
+\section{Introduction}
+% GOAL: Position as evaluation FRAMEWORK, not benchmark.
+% Structure: Problem → Insight → Framework Design → Contributions
+
+% === TENSION STRUCTURE ===
+% 1. Agentic models are moving to production systems → gap in evaluation
+% 2. Existing benchmarks are static, isolated, short-horizon → problem
+% 3. Real production engineering is serial, stateful, multi-stage → insight
+% 4. We design an evaluation framework (not a benchmark) → approach
+% 5. Contributions: Framework + Workloads + Metrics + Results → closure
+
+Large language model (LLM) agents are rapidly evolving from code assistants into autonomous software engineering systems capable of planning, implementing, debugging, and deploying complex infrastructure stacks~\citep{jimenez2024swebench,liu2024agentbench,frontiereng2026}.
+Yet the evaluation methodologies for these systems remain rooted in a \emph{benchmark-driven paradigm}: isolated, static, short-horizon tasks where each evaluation unit is independent and the agent is reset after every attempt.
+
+This paradigm has a fundamental limitation: \emph{real production engineering is not a collection of independent tasks}.
+Software development proceeds along dependency chains---a compiler's parser cannot function without a working lexer; a deployment pipeline cannot succeed without correct build artifacts.
+When an agent fails at an early stage, the entire downstream workflow becomes unreachable, not because the agent lacks downstream capability, but because the prerequisite artifact is missing.
+Static benchmarks cannot distinguish between these two failure modes, conflating ``cannot reach'' with ``cannot solve.''
+
+\textbf{Insight.}
+We argue that the field needs to move \emph{beyond benchmarks} toward \emph{evaluation frameworks}---systems that assess agentic models in realistic, multi-stage production environments with controlled intermediate state injection, multi-dimensional metrics, and systematic failure diagnosis.
+A benchmark provides a fixed dataset and scoring function; an evaluation framework provides a \emph{methodology} for constructing workloads, injecting controlled interventions, and measuring both outcomes and processes.
+
+\textbf{Approach.}
+We present \evobench{}, an evaluation framework for assessing agentic models in production-grounded software engineering environments.
+\evobench{} is built on four pillars:
+\begin{enumerate}[nosep]
+\item \textbf{Framework}: A unified evaluation infrastructure (\textsc{AIhub}) that supports multi-model access (21 models) and multi-SDK integration (OpenHands, Claude Code, Codex CLI, Kimi CLI), with containerized isolation for reproducible execution.
+\item \textbf{Workloads}: Two complementary compiler construction workloads---\yatcc{} (scaffolded fill-in-the-blank tasks) and \yatcc{}-Hard (full implementation from scratch with no code logic provided)---both organized as serial dependency chains where each task's output becomes the next task's input.
+\item \textbf{Metrics}: A multi-dimensional evaluation system spanning outcome metrics (Mean Reward, Pass Score, Pipeline Score), process metrics (tokens, turns, retries, elapsed time), and a five-category failure taxonomy (predecessor failure, task-local reasoning failure, execution failure, process collapse, cost overrun).
+\item \textbf{Resurrection}: A controlled intervention mechanism that injects verified intermediate artifacts after task failure, decomposing cascading failure into predecessor-unreachable and downstream-incapable, enabling node-level diagnostic evaluation even when the full pipeline is broken.
+\end{enumerate}
+
+Our contributions are as follows:
+\begin{enumerate}[nosep]
+\item We propose \evobench{} as an \emph{evaluation framework} (not a benchmark) for production-grounded assessment of agentic models, with unified multi-model/SDK access, containerized isolation, and reproducible execution.
+\item We design two complementary \emph{serial workloads}---\yatcc{} and \yatcc{}-Hard---that form causal dependency chains with verifiable intermediate states, spanning a difficulty spectrum from scaffolded implementation to full from-scratch construction.
+\item We introduce \resurrection{} as an \emph{evaluation methodology} that decomposes cascading failure into diagnostic components, recovering downstream evaluation signal that would otherwise be lost (median 73.65-point pipeline score recovery across 19 configurations).
+\item We establish a \emph{multi-dimensional metrics system} where process cost (tokens, turns, retries) is a first-class analytical object alongside outcome scores, revealing that process cost is decoupled from outcome ($R^2 = 0.007$)---a finding with direct implications for production deployment decisions.
+\item We provide empirical evidence across 22 model configurations, four agent backends, and two workload difficulty levels, demonstrating that serial evaluation preserves overall rankings ($\tau = 0.763$) but reveals specific failure patterns invisible to static benchmarks, and that the difficulty gap between \yatcc{} and \yatcc{}-Hard quantifies the value of scaffolding in agentic coding tasks.
+\end{enumerate}

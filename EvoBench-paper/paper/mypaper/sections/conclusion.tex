@@ -1,0 +1,13 @@
+\section{Conclusion}
+
+We presented \evobench{}, an evaluation framework for assessing agentic models in production-grounded software engineering environments.
+Unlike traditional benchmarks that provide fixed datasets and scoring functions, \evobench{} provides a \emph{methodology}---a unified evaluation infrastructure (\textsc{AIhub}) supporting 21 models and four agent backends, two complementary serial workloads (\yatcc{} and \yatcc{}-Hard) spanning a difficulty spectrum from scaffolded implementation to full from-scratch construction, a multi-dimensional metrics system where process cost is a first-class analytical object alongside outcome scores, and a \resurrection{} mechanism that decomposes cascading failure into diagnostic components.
+
+Our empirical results across 22 model configurations, four agent backends, and two workload difficulty levels demonstrate that:
+(1)~serial evaluation preserves overall rankings ($\tau = 0.763$) but reveals specific failure patterns invisible to static benchmarks;
+(2)~resurrection recovers substantial downstream signal (median 73.65-point pipeline score recovery, 17/19 configurations with $>40$-point improvement);
+(3)~process cost is decoupled from outcome ($R^2 = 0.007$), providing diagnostic rather than predictive value;
+(4)~the difficulty gap between \yatcc{} and \yatcc{}-Hard (up to 34.4-point decline for top models) quantifies the value of scaffolding and reveals which models depend on provided structure versus which can operate autonomously.
+
+\evobench{} thus provides an evaluation paradigm that is closer to real production workflows and more diagnostic than existing static, independent-task benchmarks.
+We release \evobench{} as an open-source framework with complete evaluation infrastructure, scoring scripts, containerized execution environments, and reproducible workflows, enabling the community to adopt production-grounded evaluation methodology for studying evolution, self-repair, and long-horizon coding behavior in AI agents.

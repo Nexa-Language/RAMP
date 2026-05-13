@@ -1,0 +1,82 @@
+\section{Framework Design}
+% GOAL: Describe the evaluation framework — AIhub unified access, containerized isolation, workload design, resurrection protocol.
+
+\subsection{Unified Evaluation Infrastructure (AIhub)}
+
+\evobench{} is built on \textsc{AIhub}, a unified API gateway (\url{https://aihub.arcsysu.cn}) that provides standardized access to 21 large language models spanning both proprietary and open-weight families.
+This design serves two purposes:
+(1)~\emph{model diversity}: the framework can evaluate any model accessible through an OpenAI-compatible API, enabling systematic comparison across model families, scales, and training paradigms;
+(2)~\emph{backend diversity}: the framework supports multiple agent scaffolds---OpenHands SDK (full agent framework with unlimited self-loop), Claude Code (file I/O + command execution), Codex CLI (autonomous coding with sandboxed execution), and Kimi CLI (conversational coding with plan management)---each representing a distinct interaction paradigm.
+
+All models are accessed through a unified interface, eliminating API-specific integration overhead and ensuring that evaluation differences reflect model and scaffold capabilities rather than infrastructure variability.
+
+\subsection{Containerized Isolation}
+
+Each evaluation run operates in an isolated workspace containing a complete copy of the target repository with all dependencies (ANTLR, LLVM 14, pybind11) pre-installed.
+For \yatcc{}-Hard, each run additionally launches a fresh container environment that is destroyed after completion, ensuring zero cross-run contamination.
+The workspace is configured via CMake with a fixed toolchain; scoring scripts are deterministic, producing identical scores for identical code regardless of execution order or timing.
+
+\subsection{Workload Design: Serial Dependency Chains}
+
+\evobench{} provides two complementary workloads grounded in compiler construction, a domain chosen for its strict causal dependencies, well-defined intermediate artifacts, and objective automated scoring:
+
+\subsubsection{\yatcc{}: Scaffolded Implementation}
+
+The original \yatcc{} workload~\citep{yatcc2024} organizes six tasks along the compiler construction pipeline (Table~\ref{tab:tasks}).
+Each task provides \emph{scaffolded starter code}---the agent fills in missing implementation details within a provided framework.
+This workload measures an agent's ability to \emph{complete} a partially-implemented system.
+
+\begin{table}[t]
+\centering
+\small
+\begin{tabular}{clll}
+\toprule
+\textbf{Task} & \textbf{Name} & \textbf{Objective} & \textbf{Input Artifact} \\
+\midrule
+0 & Environment Setup & Build \& verify toolchain & --- \\
+1 & Lexer & Tokenize C source code & Preprocessed source \\
+2 & Parser & Construct AST/ASG & Token stream (from T1) \\
+3 & IR Generation & Emit LLVM IR & AST/JSON (from T2) \\
+4 & IR Optimization & Implement LLVM Pass & Raw IR (from T3) \\
+5 & Code Generation & Produce RV64 assembly & Optimized IR (from T4) \\
+\bottomrule
+\end{tabular}
+\caption{\evobench{} task chain. Each task consumes the output artifact of its predecessor, forming a strict serial dependency.}
+\label{tab:tasks}
+\end{table}
+
+\subsubsection{\yatcc{}-Hard: Full From-Scratch Implementation}
+
+\yatcc{}-Hard removes all code logic from the original tasks, retaining only file dependency relationships to ensure automated scripts remain functional.
+Agents receive \emph{no compiler construction knowledge} and \emph{no implementation framework}---they must implement the full compiler from scratch.
+The task descriptions are reduced to experiment requirements and scoring script usage instructions, with all code logic explanations and framework references removed.
+
+This workload measures an agent's ability to \emph{construct} a complete system from minimal specification, representing a fundamentally harder evaluation setting.
+The difficulty gap between \yatcc{} and \yatcc{}-Hard quantifies the value of scaffolding in agentic coding tasks.
+
+\subsection{Resurrection Protocol}
+
+The \resurrection{} mechanism addresses the fundamental evaluation challenge of serial workloads: when an agent fails at Task~$k$, downstream tasks become unreachable.
+\resurrection{} injects the \emph{golden intermediate artifact} (the correct output from the reference implementation) after failure, allowing the agent to continue to Task~$k+1$ with corrected state.
+
+\textbf{Definition.}
+When Task~$k$ scores below the passing threshold (60\%), \resurrection{} is triggered:
+(1)~the agent's failed artifact is replaced with the golden artifact;
+(2)~the build system is reconfigured via \texttt{config.cmake} (\texttt{TASK\_k\_REVIVE=ON});
+(3)~the agent continues to Task~$k+1$ with the corrected state.
+
+\textbf{Design rationale.}
+Resurrection is an \emph{evaluation protocol}, not a scoring adjustment.
+It decomposes the compound failure ``cannot reach Task~$k+1$'' into two independent measurements:
+(1)~\emph{predecessor failure}: the agent could not produce a passing artifact at Task~$k$;
+(2)~\emph{downstream capability}: given correct prerequisites, can the agent succeed at Task~$k+1$?
+
+This decomposition enables node-level pass rate reporting even when the full pipeline is broken, significantly improving diagnostic resolution.
+Agents are \emph{not informed} about resurrection---the mechanism is triggered externally by the evaluation orchestrator, eliminating moral hazard.
+
+\subsection{Intermediate Artifacts and Verification}
+
+Each task produces a well-defined intermediate artifact:
+Task~1 produces a \emph{token stream}; Task~2 produces an \emph{AST/ASG}; Task~3 produces \emph{LLVM IR}; Task~4 produces \emph{optimized IR}; Task~5 produces \emph{RV64 assembly}.
+Scoring is performed by dedicated test suites that execute the agent's code against comprehensive test cases.
+Each task's score ranges from 0 to 100, with a passing threshold of 60\%.

@@ -1,0 +1,70 @@
+\documentclass{article}
+\usepackage[submission]{colm2026_conference}
+
+\usepackage{microtype}
+\usepackage{hyperref}
+\usepackage{url}
+\usepackage{booktabs}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{xcolor}
+\usepackage{graphicx}
+\usepackage{algorithm}
+\usepackage{algorithmic}
+\usepackage{subcaption}
+\usepackage{multirow}
+\usepackage{enumitem}
+
+% NOTE: geometry package must use "pass" flag per template instructions
+\usepackage[pass]{geometry}
+
+\usepackage{lineno}
+
+\definecolor{darkblue}{rgb}{0, 0, 0.5}
+\hypersetup{colorlinks=true, citecolor=darkblue, linkcolor=darkblue, urlcolor=darkblue}
+
+% Custom commands
+\newcommand{\evobench}{\textsc{EvoBench}}
+\newcommand{\yatcc}{\textsc{YatCC}}
+\newcommand{\resurrection}{\textsc{Resurrection}}
+\newcommand{\serial}{\textsc{Serial}}
+
+\title{EvoBench: An Evaluation Framework for Agentic Models in Production Systems}
+
+\author{Anonymous Authors \\ Anonymous Institution \\ \texttt{anonymous@anonymous.org}}
+
+\newcommand{\fix}{\marginpar{FIX}}
+\newcommand{\new}{\marginpar{NEW}}
+
+\begin{document}
+
+\ifcolmsubmission
+\linenumbers
+\fi
+
+\maketitle
+
+\begin{abstract}
+% ABSTRACT PLACEHOLDER — will be filled after draft completion
+% Current skeleton version; final abstract must be 150-250 words per RESTRICTS.yaml
+
+Existing agent benchmarks predominantly evaluate static, isolated, one-shot task completion, making it difficult to measure cross-task evolution, cascading failure vulnerability, and process cost structure in real engineering pipelines. We introduce \evobench{}, a serial coding benchmark grounded in compiler construction, where agents must progress from lexer to parser to IR generation, optimization, and backend code generation along a strict dependency chain. To prevent predecessor failures from masking downstream capabilities, we propose a \resurrection{} mechanism that injects verified intermediate artifacts after failure, decomposing ``predecessor-unreachable'' from ``downstream-incapable.'' Beyond final task scores, \evobench{} systematically records tokens, interaction turns, shell/build/test retries, and failure types, extending agent evaluation from outcome-only to outcome--process joint analysis. Across multiple models and agent scaffolds, we show that serial benchmarks significantly reorder static rankings, that resurrection recovers diagnostic signals obscured by cascading failure, and that process cost metrics explain effectiveness differences among similarly-scoring agents. \evobench{} thus provides a benchmark paradigm closer to real engineering workflows for studying evolution, self-repair, and long-horizon coding behavior.
+\end{abstract}
+
+\input{sections/introduction}
+\input{sections/related_work}
+\input{sections/benchmark_construction}   % Design: task def, data, metrics
+\input{sections/evaluation_protocol}      % Experiment Setup: models, backends, settings
+\input{sections/results}                  % Results & Analysis: main results, ranking shift, scaffold interaction
+\input{sections/process_diagnostics}      % Results & Analysis (cont.): err analysis, cost-performance, failure taxonomy
+\input{sections/discussion}
+\input{sections/conclusion}
+
+\bibliographystyle{colm2026_conference}
+\bibliography{references}
+
+\appendix
+\input{sections/appendix_details}
+\input{sections/appendix_experiments}
+
+\end{document}

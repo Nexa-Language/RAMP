@@ -1,0 +1,57 @@
+\section{Discussion}
+% GOAL: 400-600 words. Interpretation, limitations, future directions.
+
+\subsection{Why Serial Benchmarks Matter}
+
+Our results demonstrate that serial dependency introduces an evaluation axis invisible to static benchmarks.
+When tasks are independent, an agent's failure at one task does not affect others, and the benchmark can measure each capability in isolation.
+When tasks are serially dependent, failure propagates, and the benchmark must distinguish between ``cannot reach'' and ``cannot solve''---a distinction that resurrection enables.
+This is not merely a technical detail but a fundamental shift in what benchmarks measure: from \emph{can the agent solve task~$k$?} to \emph{can the agent progress along the dependency chain, and if not, where and why?}
+
+\subsection{Resurrection as Methodology, Not Assistance}
+
+A natural concern is that resurrection ``helps'' the agent by providing correct intermediate artifacts, thereby inflating scores.
+We emphasize that resurrection is an \emph{evaluation protocol}, not a scoring adjustment.
+The no-resurrection setting (Setting~2) provides the ``strict'' measurement of zero-shot pipeline capability.
+The resurrection setting (Setting~1) provides the ``diagnostic'' measurement of node-level capability given correct prerequisites.
+Both are reported independently; neither replaces the other.
+The value of resurrection lies in the \emph{comparison} between the two settings, which reveals how much downstream signal is lost to cascading failure.
+
+\textbf{Potential biases.}
+We acknowledge three potential biases introduced by resurrection:
+(1)~\emph{State discontinuity}: the golden artifact may differ in style or structure from the agent's own output, creating an unnatural transition that could affect downstream performance;
+(2)~\emph{Selection bias}: only failed tasks are resurrected, creating a non-random sample of downstream measurements;
+(3)~\emph{Moral hazard}: if agents were aware of the resurrection mechanism, they might reduce early-stage effort.
+We mitigate bias~(3) by ensuring that agents are \emph{not informed} about resurrection---the mechanism is triggered externally by the evaluation orchestrator, not by the agent itself.
+Biases~(1) and~(2) are inherent to the methodology and cannot be fully eliminated; we report them as known limitations and note that the \emph{direction} of bias~(1) is ambiguous---a golden artifact may actually \emph{help} downstream performance (by providing cleaner input) or \emph{hinder} it (by creating unfamiliar state), and our data shows both effects across different models.
+
+\subsection{Limitations}
+
+\textbf{Domain specificity.}
+\evobench{} is grounded in compiler construction, a domain with particularly clean intermediate artifact specifications.
+Other serial workflows---ML pipelines, DevOps chains, data engineering flows---may have less well-defined intermediate states, making resurrection harder to implement.
+We do not claim that \evobench{} generalizes to all serial settings, but argue that the \emph{evaluation methodology} (serial dependency + resurrection + process metrics) is transferable.
+
+\textbf{Task count and statistical power.}
+With six tasks, \evobench{} provides limited statistical power for per-task analysis compared to benchmarks with hundreds or thousands of instances.
+However, the serial structure means that each task carries \emph{qualitatively different} information (different dependency depth, different failure propagation pattern), which compensates for the small task count with structural diversity.
+Additionally, each model configuration is evaluated only once per pipeline run; we do not report variance across multiple seeds.
+The primary source of randomness in our evaluation is the LLM's stochastic generation, not the benchmark itself (scoring scripts are deterministic).
+We acknowledge that single-run evaluation limits variance estimation and recommend multi-seed evaluation as future work.
+
+\textbf{Contamination risk.}
+As with any benchmark based on public code, there is a risk that models have seen the \yatcc{} codebase during training.
+\yatcc{} is an open-source course project hosted on GitHub, and frontier models may have been trained on its contents.
+However, \evobench{}'s key challenge is not reproducing known solutions but maintaining \emph{serial continuity}---producing correct intermediate artifacts that integrate across the pipeline.
+Memorizing individual task solutions does not guarantee correct cross-task artifact flow.
+Furthermore, the resurrection setting specifically tests whether agents can \emph{continue} from a given state, which requires integration capability rather than recall.
+We note that SWE-bench~\citep{jimenez2024swebench} faces similar contamination concerns and has addressed them through task deduplication and temporal splitting; future versions of \evobench{} could adopt analogous safeguards.
+
+\subsection{Future Directions}
+
+\begin{itemize}[nosep]
+\item \emph{Multi-domain serial benchmarks}: extending the serial evaluation methodology to ML engineering, DevOps, and data science pipelines.
+\item \emph{Evolutionary gain measurement}: comparing agent performance when inheriting self-produced vs.\ golden intermediate artifacts, quantifying how well agents ``understand their own code.''
+\item \emph{Dynamic resurrection}: allowing agents to request resurrection proactively rather than having it triggered automatically, studying self-diagnosis capability.
+\item \emph{Expanded model and scaffold coverage}: evaluating additional frontier models and agent frameworks as they become available.
+\end{itemize}
