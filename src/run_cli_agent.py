@@ -171,7 +171,8 @@ def run_cli_agent(backend: str, task_id: int, workspace: Path, timeout_sec: int 
     elif backend == "codex":
         cmd = ["codex", "exec", prompt]
     elif backend == "kimi":
-        cmd = ["kimi", "--model", "kimi-k2.6", "--yes", "-p", prompt]
+        model_flag = model_name if model_name and model_name != "kimi-unknown" else "kimi-k2.6"
+        cmd = ["kimi", "--model", model_flag, "--yes", "-p", prompt]
     else:
         return {"task_id": task_id, "error": f"Unknown backend: {backend}"}
 
