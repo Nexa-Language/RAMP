@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>YatCC-Hard Leaderboard — EvoBench</title>
+    <link rel="stylesheet" href="assets/css/style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <style>
+        :root {
+            --bg-primary: #0a0a0f; --bg-card: #111118; --bg-secondary: #16161f;
+            --text-primary: #f0f0f5; --text-secondary: #a0a0b8; --text-muted: #606078;
+            --accent-primary: #6366f1; --accent-secondary: #8b5cf6; --accent-tertiary: #06b6d4;
+            --border-subtle: #1e1e2e; --border-accent: #6366f140;
+            --radius-lg: 16px; --radius-md: 10px; --font-mono: 'JetBrains Mono', monospace;
+        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { background: var(--bg-primary); color: var(--text-primary); font-family: 'Inter', sans-serif; }
+        .nav { position: fixed; top: 0; width: 100%; z-index: 100; background: rgba(10,10,15,0.85); backdrop-filter: blur(20px); border-bottom: 1px solid var(--border-subtle); }
+        .nav-container { max-width: 1400px; margin: 0 auto; padding: 0 24px; height: 64px; display: flex; align-items: center; justify-content: space-between; }
+        .nav-logo { display: flex; align-items: center; gap: 10px; text-decoration: none; color: var(--text-primary); font-weight: 800; font-size: 1.2rem; }
+        .nav-links { display: flex; gap: 8px; }
+        .nav-link { padding: 8px 16px; border-radius: 8px; text-decoration: none; color: var(--text-secondary); font-weight: 500; font-size: 0.9rem; transition: all 0.2s; }
+        .nav-link:hover, .nav-link.active { color: var(--text-primary); background: rgba(99,102,241,0.1); }
+
+        .container { max-width: 1400px; margin: 0 auto; padding: 100px 24px 80px; }
+        .header { text-align: center; margin-bottom: 32px; }
+        .header h1 { font-size: 2rem; font-weight: 900; }
+        .gradient-text { background: linear-gradient(135deg, var(--accent-primary), var(--accent-secondary), var(--accent-tertiary)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+        .header p { color: var(--text-secondary); margin-top: 8px; font-size: 0.95rem; }
+
+        /* Tab switcher */
+        .tab-bar { display: flex; justify-content: center; gap: 4px; margin-bottom: 32px; background: var(--bg-card); border-radius: var(--radius-md); padding: 4px; border: 1px solid var(--border-subtle); max-width: 400px; margin-left: auto; margin-right: auto; }
+        .tab-btn { padding: 10px 24px; border-radius: 8px; border: none; background: transparent; color: var(--text-secondary); font-weight: 600; font-size: 0.9rem; cursor: pointer; transition: all 0.2s; font-family: 'Inter', sans-serif; }
+        .tab-btn.active { background: var(--accent-primary); color: #fff; }
+        .tab-btn:hover:not(.active) { color: var(--text-primary); }
+
+        /* Table */
+        .table-wrap { overflow-x: auto; background: var(--bg-card); border: 1px solid var(--border-subtle); border-radius: var(--radius-lg); }
+        table { width: 100%; border-collapse: collapse; font-size: 0.9rem; }
+        th { padding: 14px 16px; text-align: left; color: var(--text-muted); font-weight: 600; text-transform: uppercase; font-size: 0.7rem; letter-spacing: 0.05em; border-bottom: 1px solid var(--border-subtle); background: var(--bg-secondary); }
+        td { padding: 12px 16px; border-bottom: 1px solid var(--border-subtle); }
+        tr:hover td { background: rgba(99,102,241,0.04); }
+        .rank { font-weight: 700; color: var(--text-muted); width: 50px; }
+        .rank-1 { color: #f59e0b !important; }
+        .rank-2 { color: #94a3b8 !important; }
+        .rank-3 { color: #d97706 !important; }
+        .model-name { font-weight: 600; }
+        .score-pass { color: #22c55e; font-weight: 700; }
+        .score-fail { color: #ef4444; }
+        .score-mid { color: #f59e0b; }
+        .res-badge { display: inline-block; padding: 2px 8px; border-radius: 100px; font-size: 0.75rem; font-weight: 600; }
+        .res-0 { background: rgba(34,197,94,0.15); color: #22c55e; }
+        .res-1-2 { background: rgba(245,158,11,0.15); color: #f59e0b; }
+        .res-3-4 { background: rgba(239,68,68,0.15); color: #ef4444; }
+
+        .info-box { background: rgba(99,102,241,0.08); border: 1px solid var(--border-accent); border-radius: var(--radius-md); padding: 16px 20px; margin-bottom: 24px; font-size: 0.9rem; color: var(--text-secondary); line-height: 1.6; }
+        .info-box strong { color: var(--accent-primary); }
+
+        @media (max-width: 768px) { .container { padding: 80px 16px 60px; } th, td { padding: 8px 10px; font-size: 0.8rem; } }
+    </style>
+</head>
+<body>
+    <canvas id="fluid-bg"></canvas>
+    <nav class="nav">
+        <div class="nav-container">
+            <a href="/" class="nav-logo"><span class="logo-icon">⚡</span><span class="logo-text">EvoBench</span></a>
+            <div class="nav-links">
+                <a href="/" class="nav-link">Home</a>
+                <a href="leaderboard.html" class="nav-link">Leaderboard</a>
+                <a href="blog.html" class="nav-link">Blog</a>
+                <a href="https://github.com/Nexa-Language/EvoBench" class="nav-link" target="_blank"><i class="fab fa-github"></i> GitHub</a>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container">
+        <div class="header">
+            <h1><span class="gradient-text">YatCC-Hard</span> Leaderboard</h1>
+            <p>Real compiler implementation — no fill-in-the-blank scaffolding. Agents must build the entire compiler from scratch.</p>
+        </div>
+
+        <div class="tab-bar">
+            <a href="leaderboard.html" class="tab-btn">YatCC</a>
+            <a href="leaderboard-hard.html" class="tab-btn active">YatCC-Hard</a>
+        </div>
+
+        <div class="info-box">
+            <strong>🔬 YatCC-Hard</strong> removes all code logic from the original YatCC tasks, keeping only file dependency relationships. Agents receive no compiler construction knowledge or implementation framework — they must implement the full compiler from scratch. Each evaluation runs in an isolated container environment that is destroyed after completion.
+        </div>
+
+        <div class="table-wrap">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Rank</th>
+                        <th>Model</th>
+                        <th>T0</th>
+                        <th>T1</th>
+                        <th>T2</th>
+                        <th>T3</th>
+                        <th>T4</th>
+                        <th>T5</th>
+                        <th>MR</th>
+                        <th>PL</th>
+                        <th>Res</th>
+                        <th>Time</th>
+                    </tr>
+                </thead>
+                <tbody id="tableBody"></tbody>
+            </table>
+        </div>
+    </div>
+
+    <script>
+        // Fluid background
+        (function() {
+            const canvas = document.getElementById('fluid-bg');
+            const ctx = canvas.getContext('2d');
+            let w, h, particles = [];
+            const colors = ['#6366f1', '#8b5cf6', '#06b6d4', '#3b82f6', '#a855f7'];
+            function resize() { w = canvas.width = window.innerWidth; h = canvas.height = window.innerHeight; }
+            resize(); window.addEventListener('resize', resize);
+            class Particle {
+                constructor() { this.reset(); this.y = Math.random() * h; }
+                reset() { this.x = Math.random() * w; this.y = -20; this.size = Math.random() * 80 + 40; this.speed = Math.random() * 0.3 + 0.1; this.opacity = Math.random() * 0.15 + 0.03; this.color = colors[Math.floor(Math.random() * colors.length)]; this.wobble = Math.random() * Math.PI * 2; this.wobbleSpeed = (Math.random() - 0.5) * 0.01; this.wobbleAmp = Math.random() * 60 + 20; }
+                update() { this.y += this.speed; this.wobble += this.wobbleSpeed; this.x += Math.sin(this.wobble) * 0.3; if (this.y > h + 100) this.reset(); }
+                draw(ctx) { const g = ctx.createRadialGradient(this.x, this.y, 0, this.x, this.y, this.size); g.addColorStop(0, this.color + '40'); g.addColorStop(0.5, this.color + '15'); g.addColorStop(1, 'transparent'); ctx.fillStyle = g; ctx.beginPath(); ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2); ctx.fill(); }
+            }
+            for (let i = 0; i < 50; i++) particles.push(new Particle());
+            let mx = -1000, my = -1000;
+            document.addEventListener('mousemove', e => { mx = e.clientX; my = e.clientY; });
+            function animate() { ctx.clearRect(0, 0, w, h); particles.forEach(p => { const dx = mx - p.x, dy = my - p.y, dist = Math.sqrt(dx*dx+dy*dy); if (dist < 200) { p.x += dx * 0.002; p.y += dy * 0.002; } p.update(); p.draw(ctx); }); requestAnimationFrame(animate); }
+            animate();
+        })();
+
+        // Load data
+        fetch('assets/data/leaderboard-hard.json')
+            .then(r => r.json())
+            .then(data => {
+                const tbody = document.getElementById('tableBody');
+                tbody.innerHTML = data.map((e, i) => {
+                    const rankClass = e.rank <= 3 ? `rank-${e.rank}` : '';
+                    const scoreClass = (s) => s >= 60 ? 'score-pass' : (s > 0 ? 'score-mid' : 'score-fail');
+                    const resClass = e.resurrections === 0 ? 'res-0' : (e.resurrections <= 2 ? 'res-1-2' : 'res-3-4');
+                    const timeStr = e.elapsed > 0 ? `${(e.elapsed/3600).toFixed(1)}h` : '—';
+                    return `<tr>
+                        <td class="rank ${rankClass}">${e.rank}</td>
+                        <td class="model-name">${e.model}</td>
+                        <td class="${scoreClass(e.task0)}">${e.task0.toFixed(1)}</td>
+                        <td class="${scoreClass(e.task1)}">${e.task1.toFixed(1)}</td>
+                        <td class="${scoreClass(e.task2)}">${e.task2.toFixed(1)}</td>
+                        <td class="${scoreClass(e.task3)}">${e.task3.toFixed(1)}</td>
+                        <td class="${scoreClass(e.task4)}">${e.task4.toFixed(1)}</td>
+                        <td class="${scoreClass(e.task5)}">${e.task5.toFixed(1)}</td>
+                        <td><strong>${e.mean_reward.toFixed(1)}</strong></td>
+                        <td>${e.pipeline_score.toFixed(1)}</td>
+                        <td><span class="res-badge ${resClass}">${e.resurrections}</span></td>
+                        <td style="color:var(--text-muted);font-size:0.8rem;">${timeStr}</td>
+                    </tr>`;
+                }).join('');
+            });
+    </script>
+</body>
+</html>
