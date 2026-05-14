@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.22 (TeX Live 2022/dev/Debian) (preloaded format=pdflatex 2026.4.14)  14 MAY 2026 18:50
+This is pdfTeX, Version 3.141592653-2.6-1.40.22 (TeX Live 2022/dev/Debian) (preloaded format=pdflatex 2026.4.14)  14 MAY 2026 18:53
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -625,7 +625,7 @@ Underfull \vbox (badness 10000) has occurred while \output is active []
 
 
 ]
-<figures/fig1_sys_arch.png, id=155, 2826.56pt x 1541.76pt>
+<figures/fig1_sys_arch.png, id=191, 2826.56pt x 1541.76pt>
 File: figures/fig1_sys_arch.png Graphic file (type png)
 <use figures/fig1_sys_arch.png>
 Package pdftex.def Info: figures/fig1_sys_arch.png  used on input line 42.
@@ -645,7 +645,7 @@ Underfull \hbox (badness 3240) in paragraph at lines 56--59
 LaTeX Font Warning: Font shape `OT1/ptm/m/scit' undefined
 (Font)              using `OT1/ptm/m/sc' instead on input line 81.
 
-<figures/fig2_task_rec.png, id=159, 2119.92pt x 965.85844pt>
+<figures/fig2_task_rec.png, id=195, 2119.92pt x 965.85844pt>
 File: figures/fig2_task_rec.png Graphic file (type png)
 <use figures/fig2_task_rec.png>
 Package pdftex.def Info: figures/fig2_task_rec.png  used on input line 92.
@@ -673,14 +673,14 @@ Underfull \hbox (badness 6625) in paragraph at lines 42--45
 \OT1/ptm/m/n/10 (+20) (GPT-5.5/Codex, deepseek-v4-pro/OpenHands, and glm-
  []
 
-<figures/fig_resurrection_gain.png, id=182, 498.4221pt x 281.853pt>
+<figures/fig_resurrection_gain.png, id=219, 498.4221pt x 281.853pt>
 File: figures/fig_resurrection_gain.png Graphic file (type png)
 <use figures/fig_resurrection_gain.png>
 Package pdftex.def Info: figures/fig_resurrection_gain.png  used on input line 
 54.
 (pdftex.def)             Requested size: 252.0pt x 142.50452pt.
 [4]
-<figures/fig_score_heatmap.png, id=191, 1149.093pt x 317.0244pt>
+<figures/fig_score_heatmap.png, id=227, 1149.093pt x 317.0244pt>
 File: figures/fig_score_heatmap.png Graphic file (type png)
 <use figures/fig_score_heatmap.png>
 Package pdftex.def Info: figures/fig_score_heatmap.png  used on input line 75.
@@ -699,14 +699,14 @@ LaTeX Font Warning: Font shape `OT1/ptm/m/scit' undefined
 (Font)              using `OT1/ptm/m/sc' instead on input line 92.
 
 [5 <./figures/fig_resurrection_gain.png>]
-<figures/fig_cost_performance.png, id=200, 423.2613pt x 281.853pt>
+<figures/fig_cost_performance.png, id=236, 423.2613pt x 281.853pt>
 File: figures/fig_cost_performance.png Graphic file (type png)
 <use figures/fig_cost_performance.png>
 Package pdftex.def Info: figures/fig_cost_performance.png  used on input line 1
 48.
 (pdftex.def)             Requested size: 252.0pt x 167.80998pt.
  [6 <./figures/fig_score_heatmap.png>]
-<figures/fig_failure_taxonomy.png, id=208, 498.663pt x 281.853pt>
+<figures/fig_failure_taxonomy.png, id=244, 498.663pt x 281.853pt>
 File: figures/fig_failure_taxonomy.png Graphic file (type png)
 <use figures/fig_failure_taxonomy.png>
 Package pdftex.def Info: figures/fig_failure_taxonomy.png  used on input line 1
@@ -725,6 +725,54 @@ you're probably due for more error messages, and you
 might try typing `S' now just to see what is salvageable.
 
 [8]) (./sections/07_conclusion.tex) (./main.bbl [9])
+(./sections/08_appendix_details.tex
+Underfull \hbox (badness 2065) in paragraph at lines 25--28
+\OT1/ptm/m/n/10 (+20) ple-ments RISC-V 64-bit as-sem-bly emis-sion from op-ti-
+ []
+
+
+Underfull \hbox (badness 1728) in paragraph at lines 25--28
+\OT1/ptm/m/n/10 (+20) mized IR. Scor-ing uses the ``clas-sic'' eval-u-a-tion mo
+de
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 46--47
+[]\OT1/ptm/m/n/10 (+20) Each task's scor-ing script (\OT1/pcr/m/n/10 score.py \
+OT1/ptm/m/n/10 (+20) or
+ []
+
+LaTeX Font Info:    Font shape `OT1/pcr/m/it' in size <10> not available
+(Font)              Font shape `OT1/pcr/m/sl' tried instead on input line 48.
+
+Underfull \hbox (badness 10000) in paragraph at lines 48--49
+[]\OT1/ptm/m/n/10 (+20) Build the tar-get: \OT1/pcr/m/n/10 cmake --build build 
+-t
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 49--50
+[]\OT1/ptm/m/n/10 (+20) Run the scorer: \OT1/pcr/m/n/10 cmake --build build -t
+ []
+
+) (./sections/09_appendix_experiments.tex
+
+LaTeX Warning: Reference `tab:full_leaderboard' on page 10 undefined on input l
+ine 8.
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 23--24
+[]\OT1/ptm/m/n/10 (+20) Late-heavy weights: $\OML/cmm/m/it/10 w \OT1/cmr/m/n/10
+ =
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 24--25
+[]\OT1/ptm/m/n/10 (+20) Early-heavy weights: $\OML/cmm/m/it/10 w \OT1/cmr/m/n/1
+0 =
+ []
+
+)
 
 ** Conference Paper **
 Before submitting the final camera ready copy, remember to:
@@ -736,18 +784,19 @@ Before submitting the final camera ready copy, remember to:
  uses only Type 1 fonts and that every step in the generation
  process uses the appropriate paper size.
 
-[10
+[10] (./main.aux)
 
-] (./main.aux)
+LaTeX Warning: There were undefined references.
+
 Package rerunfilecheck Info: File `main.out' has not changed.
-(rerunfilecheck)             Checksum: D12C0D5A9397358FDABD1773C8090F69;6476.
+(rerunfilecheck)             Checksum: EA7F479497CF857892EBF24570CEE25E;8482.
  ) 
 Here is how much of TeX's memory you used:
- 15619 strings out of 479654
- 252504 string characters out of 5883416
- 599445 words of memory out of 5000000
- 32942 multiletter control sequences out of 15000+600000
- 536519 words of font info for 411 fonts, out of 8000000 for 9000
+ 15670 strings out of 479654
+ 253577 string characters out of 5883416
+ 599452 words of memory out of 5000000
+ 32963 multiletter control sequences out of 15000+600000
+ 537368 words of font info for 417 fonts, out of 8000000 for 9000
  309 hyphenation exceptions out of 8191
  67i,11n,77p,1551b,495s stack positions out of 5000i,500n,10000p,200000b,80000s
 {/usr/share/texlive/texmf-dist/fonts/enc/dvips/base/8r.enc}</usr/share/texliv
@@ -759,16 +808,17 @@ ublic/amsfonts/cm/cmr10.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/a
 msfonts/cm/cmr6.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/
 cm/cmr7.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmr9.
 pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy10.pfb></
-usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/symbols/msam10.pfb></u
-sr/share/texlive/texmf-dist/fonts/type1/urw/courier/ucrr8a.pfb></usr/share/texl
-ive/texmf-dist/fonts/type1/urw/times/utmb8a.pfb></usr/share/texlive/texmf-dist/
-fonts/type1/urw/times/utmbi8a.pfb></usr/share/texlive/texmf-dist/fonts/type1/ur
-w/times/utmr8a.pfb></usr/share/texlive/texmf-dist/fonts/type1/urw/times/utmri8a
-.pfb>
-Output written on main.pdf (10 pages, 6784252 bytes).
+usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy7.pfb></usr/sha
+re/texlive/texmf-dist/fonts/type1/public/amsfonts/symbols/msam10.pfb></usr/shar
+e/texlive/texmf-dist/fonts/type1/urw/courier/ucrr8a.pfb></usr/share/texlive/tex
+mf-dist/fonts/type1/urw/courier/ucrro8a.pfb></usr/share/texlive/texmf-dist/font
+s/type1/urw/times/utmb8a.pfb></usr/share/texlive/texmf-dist/fonts/type1/urw/tim
+es/utmbi8a.pfb></usr/share/texlive/texmf-dist/fonts/type1/urw/times/utmr8a.pfb>
+</usr/share/texlive/texmf-dist/fonts/type1/urw/times/utmri8a.pfb>
+Output written on main.pdf (10 pages, 6803464 bytes).
 PDF statistics:
- 363 PDF objects out of 1000 (max. 8388607)
- 305 compressed objects within 4 object streams
- 78 named destinations out of 1000 (max. 500000)
- 67359 words of extra memory for PDF output out of 74296 (max. 10000000)
+ 419 PDF objects out of 1000 (max. 8388607)
+ 357 compressed objects within 4 object streams
+ 94 named destinations out of 1000 (max. 500000)
+ 67943 words of extra memory for PDF output out of 74296 (max. 10000000)
 
