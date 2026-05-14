@@ -51,17 +51,16 @@
 \@writefile{toc}{\contentsline {subsection}{\numberline {\mbox  {IV-E}}\textsc  {YatCC}{} vs. \textsc  {YatCC}{}-Hard: The Scaffolding Gap}{5}{subsection.4.5}\protected@file@percent }
 \@writefile{lot}{\contentsline {table}{\numberline {IV}{\ignorespaces \textsc  {YatCC}{}-Hard leaderboard (top 8 of 18). Scores drop significantly compared to \textsc  {YatCC}{}---the best model achieves only PL=94.5 on Hard vs.\ PL=99.3 on \textsc  {YatCC}{}.\relax }}{5}{table.caption.6}\protected@file@percent }
 \newlabel{tab:hard}{{IV}{5}{\yatcc {}-Hard leaderboard (top 8 of 18). Scores drop significantly compared to \yatcc {}---the best model achieves only PL=94.5 on Hard vs.\ PL=99.3 on \yatcc {}.\relax }{table.caption.6}{}}
-\@writefile{toc}{\contentsline {section}{\numberline {V}Results \& Analysis (cont.)}{5}{section.5}\protected@file@percent }
-\@writefile{toc}{\contentsline {subsection}{\numberline {\mbox  {V-A}}Cost-Performance Frontier}{5}{subsection.5.1}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {\mbox  {IV-F}}Cost-Performance Frontier}{5}{subsection.4.6}\protected@file@percent }
 \@writefile{lof}{\contentsline {figure}{\numberline {3}{\ignorespaces Cost-performance frontier: elapsed time vs.\ pipeline score. The Pareto frontier highlights configurations achieving the best performance per unit time. The 8x cost difference between similarly-scoring agents (kimi-k2-thinking at 1,909s vs.\ deepseek-reasoner at 15,987s, both PL$\approx $63.5) demonstrates that outcome-only evaluation misses critical deployment information.\relax }}{6}{figure.caption.7}\protected@file@percent }
 \newlabel{fig:cost_frontier}{{3}{6}{Cost-performance frontier: elapsed time vs.\ pipeline score. The Pareto frontier highlights configurations achieving the best performance per unit time. The 8x cost difference between similarly-scoring agents (kimi-k2-thinking at 1,909s vs.\ deepseek-reasoner at 15,987s, both PL$\approx $63.5) demonstrates that outcome-only evaluation misses critical deployment information.\relax }{figure.caption.7}{}}
-\@writefile{toc}{\contentsline {subsection}{\numberline {\mbox  {V-B}}Failure Taxonomy}{6}{subsection.5.2}\protected@file@percent }
-\@writefile{toc}{\contentsline {section}{\numberline {VI}Discussion}{6}{section.6}\protected@file@percent }
-\@writefile{toc}{\contentsline {subsection}{\numberline {\mbox  {VI-A}}Why Production-Grounded Evaluation Matters}{6}{subsection.6.1}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {\mbox  {IV-G}}Failure Taxonomy}{6}{subsection.4.7}\protected@file@percent }
+\@writefile{toc}{\contentsline {section}{\numberline {V}Discussion}{6}{section.5}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {\mbox  {V-A}}Why Production-Grounded Evaluation Matters}{6}{subsection.5.1}\protected@file@percent }
 \@writefile{lof}{\contentsline {figure}{\numberline {4}{\ignorespaces Failure taxonomy composition. Predecessor failure dominates without resurrection but is largely eliminated by resurrection, revealing the underlying task-local and execution failure distribution.\relax }}{6}{figure.caption.8}\protected@file@percent }
 \newlabel{fig:failure_taxonomy}{{4}{6}{Failure taxonomy composition. Predecessor failure dominates without resurrection but is largely eliminated by resurrection, revealing the underlying task-local and execution failure distribution.\relax }{figure.caption.8}{}}
-\@writefile{toc}{\contentsline {subsection}{\numberline {\mbox  {VI-B}}Resurrection as Methodology, Not Assistance}{6}{subsection.6.2}\protected@file@percent }
-\@writefile{toc}{\contentsline {subsection}{\numberline {\mbox  {VI-C}}Process Cost as Diagnostic Signal}{6}{subsection.6.3}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {\mbox  {V-B}}Resurrection as Methodology, Not Assistance}{6}{subsection.5.2}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {\mbox  {V-C}}Process Cost as Diagnostic Signal}{6}{subsection.5.3}\protected@file@percent }
 \citation{jimenez2024swebench}
 \citation{chen2021codexhumaneval}
 \citation{chowdhury2024swebenchverified}
@@ -81,10 +80,10 @@
 \citation{rebench2024}
 \citation{paperbench2025}
 \citation{wang2023voyager}
-\@writefile{toc}{\contentsline {subsection}{\numberline {\mbox  {VI-D}}The Scaffolding Gap}{7}{subsection.6.4}\protected@file@percent }
-\@writefile{toc}{\contentsline {subsection}{\numberline {\mbox  {VI-E}}Limitations}{7}{subsection.6.5}\protected@file@percent }
-\@writefile{toc}{\contentsline {subsection}{\numberline {\mbox  {VI-F}}Future Directions}{7}{subsection.6.6}\protected@file@percent }
-\@writefile{toc}{\contentsline {section}{\numberline {VII}Related Work}{7}{section.7}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {\mbox  {V-D}}The Scaffolding Gap}{7}{subsection.5.4}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {\mbox  {V-E}}Limitations}{7}{subsection.5.5}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {\mbox  {V-F}}Future Directions}{7}{subsection.5.6}\protected@file@percent }
+\@writefile{toc}{\contentsline {section}{\numberline {VI}Related Work}{7}{section.6}\protected@file@percent }
 \citation{jimenez2024swebench}
 \citation{liu2024agentbench}
 \citation{mialon2024gaia}
@@ -117,6 +116,6 @@
 \bibcite{wang2023voyager}{20}
 \@writefile{lot}{\contentsline {table}{\numberline {V}{\ignorespaces Benchmark comparison. \text  {$\mathsurround \z@ \mathchar "458$}= supported, --- = not supported. \emph  {Serial} = tasks form a dependency chain; \emph  {Exec.} = execution-grounded scoring; \emph  {Resurr.} = resurrection mechanism; \emph  {Process} = process metrics as first-class output; \emph  {Artifact} = intermediate artifact continuity tracked.\relax }}{8}{table.caption.9}\protected@file@percent }
 \newlabel{tab:benchmark_comparison}{{V}{8}{Benchmark comparison. \checkmark = supported, --- = not supported. \emph {Serial} = tasks form a dependency chain; \emph {Exec.} = execution-grounded scoring; \emph {Resurr.} = resurrection mechanism; \emph {Process} = process metrics as first-class output; \emph {Artifact} = intermediate artifact continuity tracked.\relax }{table.caption.9}{}}
-\@writefile{toc}{\contentsline {section}{\numberline {VIII}Conclusion}{8}{section.8}\protected@file@percent }
+\@writefile{toc}{\contentsline {section}{\numberline {VII}Conclusion}{8}{section.7}\protected@file@percent }
 \@writefile{toc}{\contentsline {section}{References}{8}{section*.10}\protected@file@percent }
-\gdef \@abspage@last{9}
+\gdef \@abspage@last{8}
