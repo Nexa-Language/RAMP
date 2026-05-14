@@ -217,6 +217,54 @@
     "rank": 9
   },
   {
+    "model": "qwen3.6-flash",
+    "backend": "kimi",
+    "task0": 100.0,
+    "task1": 100.0,
+    "task2": 100.0,
+    "task3": 98.6,
+    "task4": 100.0,
+    "task5": 0.0,
+    "mean_reward": 90.28,
+    "pass_score": 77.78,
+    "pipeline_score": 83.1,
+    "resurrections": 4,
+    "zero_shot_pass": false,
+    "resurrected": [
+      false,
+      false,
+      true,
+      true,
+      true,
+      true
+    ],
+    "rank": 10
+  },
+  {
+    "model": "glm-5",
+    "backend": "kimi",
+    "task0": 100.0,
+    "task1": 100.0,
+    "task2": 100.0,
+    "task3": 98.6,
+    "task4": 99.9,
+    "task5": 0.0,
+    "mean_reward": 90.25,
+    "pass_score": 77.78,
+    "pipeline_score": 83.08,
+    "resurrections": 4,
+    "zero_shot_pass": false,
+    "resurrected": [
+      false,
+      false,
+      true,
+      true,
+      true,
+      true
+    ],
+    "rank": 11
+  },
+  {
     "model": "qwen3.6-max-preview",
     "backend": "openhands",
     "task0": 100.0,
@@ -238,7 +286,79 @@
     "pass_score": 66.67,
     "pipeline_score": 92.0,
     "zero_shot_pass": false,
-    "rank": 10
+    "rank": 12
+  },
+  {
+    "model": "deepseek-v4-pro",
+    "backend": "kimi",
+    "task0": 100.0,
+    "task1": 100.0,
+    "task2": 100.0,
+    "task3": 98.6,
+    "task4": 98.8,
+    "task5": 0.0,
+    "mean_reward": 89.93,
+    "pass_score": 77.78,
+    "pipeline_score": 82.9,
+    "resurrections": 4,
+    "zero_shot_pass": false,
+    "resurrected": [
+      false,
+      false,
+      true,
+      true,
+      true,
+      true
+    ],
+    "rank": 13
+  },
+  {
+    "model": "deepseek-chat",
+    "backend": "kimi",
+    "task0": 100.0,
+    "task1": 100.0,
+    "task2": 100.0,
+    "task3": 98.6,
+    "task4": 98.4,
+    "task5": 0.0,
+    "mean_reward": 89.82,
+    "pass_score": 77.78,
+    "pipeline_score": 82.83,
+    "resurrections": 4,
+    "zero_shot_pass": false,
+    "resurrected": [
+      false,
+      false,
+      true,
+      true,
+      true,
+      true
+    ],
+    "rank": 14
+  },
+  {
+    "model": "glm-4.7",
+    "backend": "kimi",
+    "task0": 100.0,
+    "task1": 100.0,
+    "task2": 100.0,
+    "task3": 98.6,
+    "task4": 96.8,
+    "task5": 0.0,
+    "mean_reward": 89.36,
+    "pass_score": 77.78,
+    "pipeline_score": 82.57,
+    "resurrections": 4,
+    "zero_shot_pass": false,
+    "resurrected": [
+      false,
+      false,
+      true,
+      true,
+      true,
+      true
+    ],
+    "rank": 15
   },
   {
     "model": "glm-5",
@@ -262,7 +382,7 @@
       true,
       true
     ],
-    "rank": 11
+    "rank": 16
   },
   {
     "model": "qwen3.6-plus",
@@ -286,7 +406,7 @@
       true,
       true
     ],
-    "rank": 12
+    "rank": 17
   },
   {
     "model": "deepseek-v4-flash",
@@ -310,7 +430,7 @@
     "pass_score": 55.56,
     "pipeline_score": 80.45,
     "zero_shot_pass": false,
-    "rank": 13
+    "rank": 18
   },
   {
     "model": "glm-4.7",
@@ -334,7 +454,7 @@
     "pass_score": 55.56,
     "pipeline_score": 75.92,
     "zero_shot_pass": false,
-    "rank": 14
+    "rank": 19
   },
   {
     "model": "minimax-m2.5",
@@ -358,7 +478,7 @@
       true,
       true
     ],
-    "rank": 15
+    "rank": 20
   },
   {
     "model": "qwen3.5-plus-2026-02-15",
@@ -382,7 +502,7 @@
       true,
       true
     ],
-    "rank": 16
+    "rank": 21
   },
   {
     "model": "qwen3-coder-flash",
@@ -406,7 +526,7 @@
       true,
       true
     ],
-    "rank": 17
+    "rank": 22
   },
   {
     "model": "mimo-v2.5-pro",
@@ -430,7 +550,7 @@
     "pass_score": 44.44,
     "pipeline_score": 70.77,
     "zero_shot_pass": false,
-    "rank": 18
+    "rank": 23
   },
   {
     "model": "deepseek-chat",
@@ -454,7 +574,7 @@
       true,
       true
     ],
-    "rank": 19
+    "rank": 24
   },
   {
     "model": "deepseek-reasoner",
@@ -478,7 +598,7 @@
       true,
       true
     ],
-    "rank": 20
+    "rank": 25
   },
   {
     "model": "kimi-k2-thinking",
@@ -502,7 +622,7 @@
       true,
       true
     ],
-    "rank": 21
+    "rank": 26
   },
   {
     "model": "qwen-omni-turbo",
@@ -526,6 +646,6 @@
       true,
       true
     ],
-    "rank": 22
+    "rank": 27
   }
 ]
