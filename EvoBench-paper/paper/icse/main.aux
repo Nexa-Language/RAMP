@@ -50,20 +50,21 @@
 \newlabel{fig:resurrection_gain}{{3}{5}{Resurrection recovers downstream evaluation signal. Without resurrection, most agents can only be evaluated at 1--2 tasks before cascading failure blocks further measurement. With resurrection, all 6 tasks become reachable, revealing hidden downstream capability.\relax }{figure.caption.6}{}}
 \@writefile{toc}{\contentsline {subsection}{\numberline {\mbox  {IV-C}}Serial Evaluation Preserves Overall Ranking but Reveals Specific Failure Patterns}{5}{subsection.4.3}\protected@file@percent }
 \@writefile{toc}{\contentsline {subsection}{\numberline {\mbox  {IV-D}}Model--Scaffold Interaction}{5}{subsection.4.4}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {\mbox  {IV-E}}\textsc  {YatCC}{} vs. \textsc  {YatCC}{}-Hard: The Scaffolding Gap}{5}{subsection.4.5}\protected@file@percent }
 \@writefile{lof}{\contentsline {figure}{\numberline {4}{\ignorespaces Per-task score matrix across 22 model configurations. Models (columns) × Tasks (rows). Green = high score, red = low score. The heatmap reveals distinct failure patterns: some models fail at early tasks (T1/T2) while others fail at later tasks (T4).\relax }}{6}{figure.caption.7}\protected@file@percent }
 \newlabel{fig:ranking_shift}{{4}{6}{Per-task score matrix across 22 model configurations. Models (columns) × Tasks (rows). Green = high score, red = low score. The heatmap reveals distinct failure patterns: some models fail at early tasks (T1/T2) while others fail at later tasks (T4).\relax }{figure.caption.7}{}}
 \@writefile{lot}{\contentsline {table}{\numberline {IV}{\ignorespaces \textsc  {YatCC}{}-Hard leaderboard (top 8 of 18). Scores drop significantly compared to \textsc  {YatCC}{}---the best model achieves only PL=94.5 on Hard vs.\ PL=99.3 on \textsc  {YatCC}{}.\relax }}{6}{table.caption.8}\protected@file@percent }
 \newlabel{tab:hard}{{IV}{6}{\yatcc {}-Hard leaderboard (top 8 of 18). Scores drop significantly compared to \yatcc {}---the best model achieves only PL=94.5 on Hard vs.\ PL=99.3 on \yatcc {}.\relax }{table.caption.8}{}}
-\@writefile{toc}{\contentsline {subsection}{\numberline {\mbox  {IV-E}}\textsc  {YatCC}{} vs. \textsc  {YatCC}{}-Hard: The Scaffolding Gap}{6}{subsection.4.5}\protected@file@percent }
 \@writefile{toc}{\contentsline {subsection}{\numberline {\mbox  {IV-F}}Cost-Performance Frontier}{6}{subsection.4.6}\protected@file@percent }
 \@writefile{lof}{\contentsline {figure}{\numberline {5}{\ignorespaces Cost-performance frontier: elapsed time vs.\ pipeline score. The Pareto frontier highlights configurations achieving the best performance per unit time. The 8x cost difference between similarly-scoring agents (kimi-k2-thinking at 1,909s vs.\ deepseek-reasoner at 15,987s, both PL$\approx $63.5) demonstrates that outcome-only evaluation misses critical deployment information.\relax }}{7}{figure.caption.9}\protected@file@percent }
 \newlabel{fig:cost_frontier}{{5}{7}{Cost-performance frontier: elapsed time vs.\ pipeline score. The Pareto frontier highlights configurations achieving the best performance per unit time. The 8x cost difference between similarly-scoring agents (kimi-k2-thinking at 1,909s vs.\ deepseek-reasoner at 15,987s, both PL$\approx $63.5) demonstrates that outcome-only evaluation misses critical deployment information.\relax }{figure.caption.9}{}}
 \@writefile{toc}{\contentsline {subsection}{\numberline {\mbox  {IV-G}}Failure Taxonomy}{7}{subsection.4.7}\protected@file@percent }
-\@writefile{lof}{\contentsline {figure}{\numberline {6}{\ignorespaces Failure taxonomy composition. Predecessor failure dominates without resurrection but is largely eliminated by resurrection, revealing the underlying task-local and execution failure distribution.\relax }}{7}{figure.caption.10}\protected@file@percent }
-\newlabel{fig:failure_taxonomy}{{6}{7}{Failure taxonomy composition. Predecessor failure dominates without resurrection but is largely eliminated by resurrection, revealing the underlying task-local and execution failure distribution.\relax }{figure.caption.10}{}}
 \@writefile{toc}{\contentsline {section}{\numberline {V}Discussion}{7}{section.5}\protected@file@percent }
 \@writefile{toc}{\contentsline {subsection}{\numberline {\mbox  {V-A}}Why Production-Grounded Evaluation Matters}{7}{subsection.5.1}\protected@file@percent }
+\@writefile{lof}{\contentsline {figure}{\numberline {6}{\ignorespaces Failure taxonomy composition. Predecessor failure dominates without resurrection but is largely eliminated by resurrection, revealing the underlying task-local and execution failure distribution.\relax }}{7}{figure.caption.10}\protected@file@percent }
+\newlabel{fig:failure_taxonomy}{{6}{7}{Failure taxonomy composition. Predecessor failure dominates without resurrection but is largely eliminated by resurrection, revealing the underlying task-local and execution failure distribution.\relax }{figure.caption.10}{}}
 \@writefile{toc}{\contentsline {subsection}{\numberline {\mbox  {V-B}}Resurrection as Methodology, Not Assistance}{7}{subsection.5.2}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {\mbox  {V-C}}Process Cost as Diagnostic Signal}{7}{subsection.5.3}\protected@file@percent }
 \citation{jimenez2024swebench}
 \citation{chen2021codexhumaneval}
 \citation{chowdhury2024swebenchverified}
@@ -83,7 +84,6 @@
 \citation{rebench2024}
 \citation{paperbench2025}
 \citation{wang2023voyager}
-\@writefile{toc}{\contentsline {subsection}{\numberline {\mbox  {V-C}}Process Cost as Diagnostic Signal}{8}{subsection.5.3}\protected@file@percent }
 \@writefile{toc}{\contentsline {subsection}{\numberline {\mbox  {V-D}}The Scaffolding Gap}{8}{subsection.5.4}\protected@file@percent }
 \@writefile{toc}{\contentsline {subsection}{\numberline {\mbox  {V-E}}Limitations}{8}{subsection.5.5}\protected@file@percent }
 \@writefile{toc}{\contentsline {subsection}{\numberline {\mbox  {V-F}}Future Directions}{8}{subsection.5.6}\protected@file@percent }
@@ -109,12 +109,12 @@
 \bibcite{yang2025swebenchmobile}{9}
 \bibcite{hwbench2026}{10}
 \bibcite{feabench2025}{11}
+\bibcite{mialon2024gaia}{12}
+\bibcite{xie2024osworld}{13}
 \@writefile{lot}{\contentsline {table}{\numberline {V}{\ignorespaces Benchmark comparison. \text  {$\mathsurround \z@ \mathchar "458$}= supported, --- = not supported. \emph  {Serial} = tasks form a dependency chain; \emph  {Exec.} = execution-grounded scoring; \emph  {Resurr.} = resurrection mechanism; \emph  {Process} = process metrics as first-class output; \emph  {Artifact} = intermediate artifact continuity tracked.\relax }}{9}{table.caption.11}\protected@file@percent }
 \newlabel{tab:benchmark_comparison}{{V}{9}{Benchmark comparison. \checkmark = supported, --- = not supported. \emph {Serial} = tasks form a dependency chain; \emph {Exec.} = execution-grounded scoring; \emph {Resurr.} = resurrection mechanism; \emph {Process} = process metrics as first-class output; \emph {Artifact} = intermediate artifact continuity tracked.\relax }{table.caption.11}{}}
 \@writefile{toc}{\contentsline {section}{\numberline {VII}Conclusion}{9}{section.7}\protected@file@percent }
 \@writefile{toc}{\contentsline {section}{References}{9}{section*.12}\protected@file@percent }
-\bibcite{mialon2024gaia}{12}
-\bibcite{xie2024osworld}{13}
 \bibcite{zhou2024webarena}{14}
 \bibcite{merrill2026terminalbench}{15}
 \bibcite{li2026skillsbench}{16}
