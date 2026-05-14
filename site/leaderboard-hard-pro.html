@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>YatCC-Hard Leaderboard — EvoBench</title>
+    <title>YatCC-Hard-Pro Leaderboard — EvoBench</title>
     <link rel="stylesheet" href="assets/css/style.css">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
@@ -13,9 +13,6 @@
         .filter-bar input[type="text"]:focus { border-color: var(--accent-primary); }
         .filter-bar input[type="text"]::placeholder { color: var(--text-muted); }
         .filter-chips { display: flex; gap: 8px; flex-wrap: wrap; }
-        .chip { padding: 6px 16px; border-radius: 100px; font-size: 0.8rem; font-weight: 600; cursor: pointer; border: 1px solid var(--border-subtle); background: transparent; color: var(--text-secondary); transition: all 0.2s; user-select: none; }
-        .chip:hover { border-color: var(--border-accent); color: var(--text-primary); }
-        .chip.active { background: var(--accent-primary); border-color: var(--accent-primary); color: white; }
         .sort-btn { padding: 6px 16px; border-radius: 100px; font-size: 0.8rem; font-weight: 600; cursor: pointer; border: 1px solid var(--border-subtle); background: transparent; color: var(--text-secondary); transition: all 0.2s; display: flex; align-items: center; gap: 6px; }
         .sort-btn:hover { border-color: var(--border-accent); color: var(--text-primary); }
         .sort-btn.active { background: rgba(99,102,241,0.15); border-color: var(--accent-primary); color: var(--accent-primary); }
@@ -46,17 +43,16 @@
 
     <section class="hero" style="min-height: auto; padding-top: 100px; padding-bottom: 24px;">
         <div class="hero-content">
-            <h1 class="hero-title" style="font-size: clamp(1.6rem, 4vw, 2.5rem);"><span class="gradient-text">YatCC-Hard</span> Leaderboard</h1>
-            <p class="hero-subtitle" style="font-size:0.9rem;">Real compiler implementation — no fill-in-the-blank scaffolding. Agents must build the entire compiler from scratch in isolated container environments.</p>
+            <h1 class="hero-title" style="font-size: clamp(1.6rem, 4vw, 2.5rem);"><span class="gradient-text">YatCC-Hard-Pro</span> Leaderboard</h1>
+            <p class="hero-subtitle" style="font-size:0.9rem;">Pipeline-mode hard benchmark with fully isolated runs and strict task chaining. Data is normalized from container run summaries.</p>
         </div>
     </section>
 
     <section style="position: relative; z-index: 1; padding: 0 24px 120px; max-width: 1400px; margin: 0 auto;">
-        <!-- Tab switcher -->
         <div style="display: flex; justify-content: center; gap: 4px; margin-bottom: 32px; background: var(--bg-card); border-radius: 10px; padding: 4px; border: 1px solid var(--border-subtle); max-width: 620px; margin-left: auto; margin-right: auto;">
             <a href="leaderboard.html" style="padding: 10px 24px; border-radius: 8px; background: transparent; color: var(--text-secondary); font-weight: 600; font-size: 0.9rem; text-decoration: none;">YatCC</a>
-            <a href="leaderboard-hard.html" style="padding: 10px 24px; border-radius: 8px; background: var(--accent-primary); color: #fff; font-weight: 600; font-size: 0.9rem; text-decoration: none;">YatCC-Hard</a>
-            <a href="leaderboard-hard-pro.html" style="padding: 10px 24px; border-radius: 8px; background: transparent; color: var(--text-secondary); font-weight: 600; font-size: 0.9rem; text-decoration: none;">YatCC-Hard-Pro</a>
+            <a href="leaderboard-hard.html" style="padding: 10px 24px; border-radius: 8px; background: transparent; color: var(--text-secondary); font-weight: 600; font-size: 0.9rem; text-decoration: none;">YatCC-Hard</a>
+            <a href="leaderboard-hard-pro.html" style="padding: 10px 24px; border-radius: 8px; background: var(--accent-primary); color: #fff; font-weight: 600; font-size: 0.9rem; text-decoration: none;">YatCC-Hard-Pro</a>
         </div>
 
         <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 16px; margin-bottom: 32px;" id="summary-cards"></div>
@@ -66,7 +62,7 @@
             <div class="filter-chips" id="sort-chips">
                 <button class="sort-btn active" data-sort="mean_reward">Mean Reward <i class="fas fa-sort-down"></i></button>
                 <button class="sort-btn" data-sort="pipeline">Pipeline <i class="fas fa-sort"></i></button>
-                <button class="sort-btn" data-sort="task4">Task 4 <i class="fas fa-sort"></i></button>
+                <button class="sort-btn" data-sort="task2">Task 2 <i class="fas fa-sort"></i></button>
                 <button class="sort-btn" data-sort="resurrections">Resurrections <i class="fas fa-sort"></i></button>
             </div>
         </div>
@@ -83,10 +79,10 @@
         </div>
 
         <div style="margin-top: 32px; padding: 24px; background: var(--bg-card); border: 1px solid var(--border-subtle); border-radius: var(--radius-lg);">
-            <h3 style="margin-bottom: 12px; font-size: 1rem;">🔬 About YatCC-Hard</h3>
+            <h3 style="margin-bottom: 12px; font-size: 1rem;">🧪 About YatCC-Hard-Pro</h3>
             <div style="font-size: 0.9rem; color: var(--text-secondary); line-height: 1.8;">
-                <p><strong>YatCC-Hard</strong> removes all code logic from the original YatCC tasks, keeping only file dependency relationships. Agents receive no compiler construction knowledge or implementation framework — they must implement the full compiler from scratch.</p>
-                <p>Each evaluation runs in an <strong>isolated container environment</strong> that is destroyed after completion, ensuring zero cross-run contamination.</p>
+                <p><strong>YatCC-Hard-Pro</strong> is built from raw <code>container-runs-summary-pipeline.json</code> records, then normalized to the same leaderboard schema as YatCC and YatCC-Hard.</p>
+                <p><strong>Mean Reward</strong> uses weighted task aggregation with weights [5%, 20%, 20%, 15%, 30%, 10%]. Empty or missing task outputs are treated as 0.</p>
             </div>
         </div>
 
@@ -159,12 +155,12 @@
     function applyFilters() {
         let f=[...DATA];
         if(searchQuery){const q=searchQuery.toLowerCase();f=f.filter(d=>d.model.toLowerCase().includes(q));}
-        const sk=currentSort==='pipeline'?'pipeline_score':currentSort==='resurrections'?'resurrections':currentSort==='task4'?'task4':currentSort;
+        const sk=currentSort==='pipeline'?'pipeline_score':currentSort==='resurrections'?'resurrections':currentSort==='task2'?'task2':currentSort;
         f.sort((a,b)=>{const va=a[sk]??-1,vb=b[sk]??-1;return sk==='resurrections'?va-vb:vb-va;});
         renderTable(f);
     }
 
-    fetch('assets/data/leaderboard-hard.json').then(r=>r.json()).then(data=>{
+    fetch('assets/data/leaderboard-hard-pro.json').then(r=>r.json()).then(data=>{
         DATA=data;
         const total=data.length,best=Math.max(...data.map(d=>d.pipeline_score||0)),bestMR=Math.max(...data.map(d=>d.mean_reward||0)),avgRes=(data.reduce((s,d)=>s+(d.resurrections||0),0)/total).toFixed(1);
         document.getElementById('summary-cards').innerHTML=`
@@ -176,7 +172,7 @@
         document.getElementById('search-input').addEventListener('input',e=>{searchQuery=e.target.value;applyFilters();});
         document.querySelectorAll('.sort-btn[data-sort]').forEach(b=>b.addEventListener('click',()=>{document.querySelectorAll('.sort-btn').forEach(x=>x.classList.remove('active'));b.classList.add('active');currentSort=b.dataset.sort;applyFilters();}));
         applyFilters();
-    });
+    }).catch(()=>{document.getElementById('leaderboard-body').innerHTML='<tr><td colspan="11"><div class="no-results"><i class="fas fa-exclamation-triangle"></i>No data</div></td></tr>';});
     </script>
 </body>
 </html>
