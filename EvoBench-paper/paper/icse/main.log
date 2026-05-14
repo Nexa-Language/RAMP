@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.22 (TeX Live 2022/dev/Debian) (preloaded format=pdflatex 2026.4.14)  14 MAY 2026 17:09
+This is pdfTeX, Version 3.141592653-2.6-1.40.22 (TeX Live 2022/dev/Debian) (preloaded format=pdflatex 2026.4.14)  14 MAY 2026 17:25
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -634,35 +634,18 @@ Underfull \hbox (badness 3240) in paragraph at lines 51--54
  []
 
 
-! LaTeX Error: \begin{table*} on input line 55 ended by \end{table}.
-
-See the LaTeX manual or LaTeX Companion for explanation.
-Type  H <return>  for immediate help.
- ...                                              
-                                                  
-l.72 \end{table}
-                
-Your command was ignored.
-Type  I <command> <return>  to replace it with another command,
-or  <return>  to continue without it.
+Overfull \hbox (65.71896pt too wide) in paragraph at lines 58--70
+ [][] 
+ []
 
 
 LaTeX Font Warning: Font shape `OT1/ptm/m/scit' undefined
 (Font)              using `OT1/ptm/m/sc' instead on input line 76.
 
 [2]) (./sections/03_metrics_and_setup.tex
-
-! LaTeX Error: \begin{table*} on input line 32 ended by \end{table}.
-
-See the LaTeX manual or LaTeX Companion for explanation.
-Type  H <return>  for immediate help.
- ...                                              
-                                                  
-l.47 \end{table}
-                
-Your command was ignored.
-Type  I <command> <return>  to replace it with another command,
-or  <return>  to continue without it.
+Overfull \hbox (99.7902pt too wide) in paragraph at lines 35--45
+ [][] 
+ []
 
 
 LaTeX Font Warning: Font shape `OT1/ptm/m/scit' undefined
@@ -706,25 +689,17 @@ LaTeX Font Warning: Font shape `OT1/ptm/m/scit' undefined
 (Font)              using `OT1/ptm/m/sc' instead on input line 92.
 
 
-! LaTeX Error: \begin{table*} on input line 97 ended by \end{table}.
+Overfull \hbox (58.76935pt too wide) in paragraph at lines 100--114
+ [][] 
+ []
 
-See the LaTeX manual or LaTeX Companion for explanation.
-Type  H <return>  for immediate help.
- ...                                              
-                                                  
-l.116 \end{table}
-                 
-Your command was ignored.
-Type  I <command> <return>  to replace it with another command,
-or  <return>  to continue without it.
-
-<figures/fig_cost_performance.png, id=188, 423.2613pt x 281.853pt>
+[5 <./figures/fig_score_heatmap.png>]
+<figures/fig_cost_performance.png, id=196, 423.2613pt x 281.853pt>
 File: figures/fig_cost_performance.png Graphic file (type png)
 <use figures/fig_cost_performance.png>
 Package pdftex.def Info: figures/fig_cost_performance.png  used on input line 1
 48.
 (pdftex.def)             Requested size: 252.0pt x 167.80998pt.
-[5 <./figures/fig_score_heatmap.png>]
 <figures/fig_failure_taxonomy.png, id=197, 498.663pt x 281.853pt>
 File: figures/fig_failure_taxonomy.png Graphic file (type png)
 <use figures/fig_failure_taxonomy.png>
@@ -745,20 +720,11 @@ you're probably due for more error messages, and you
 might try typing `S' now just to see what is salvageable.
 
 [7]
+Overfull \hbox (63.1808pt too wide) in paragraph at lines 55--71
+ [][] 
+ []
 
-! LaTeX Error: \begin{table*} on input line 52 ended by \end{table}.
-
-See the LaTeX manual or LaTeX Companion for explanation.
-Type  H <return>  for immediate help.
- ...                                              
-                                                  
-l.73 \end{table}
-                
-Your command was ignored.
-Type  I <command> <return>  to replace it with another command,
-or  <return>  to continue without it.
-
-) (./sections/07_conclusion.tex) (./main.bbl)
+) (./sections/07_conclusion.tex) (./main.bbl [8])
 
 ** Conference Paper **
 Before submitting the final camera ready copy, remember to:
@@ -770,7 +736,9 @@ Before submitting the final camera ready copy, remember to:
  uses only Type 1 fonts and that every step in the generation
  process uses the appropriate paper size.
 
-[8] (./main.aux)
+[9
+
+] (./main.aux)
 
 LaTeX Warning: There were undefined references.
 
@@ -778,13 +746,13 @@ Package rerunfilecheck Info: File `main.out' has not changed.
 (rerunfilecheck)             Checksum: 7852E42C0C1C9FC2E7D7B2C0E1982F33;6476.
  ) 
 Here is how much of TeX's memory you used:
- 15526 strings out of 479654
- 250602 string characters out of 5883416
- 593151 words of memory out of 5000000
+ 15527 strings out of 479654
+ 250608 string characters out of 5883416
+ 594151 words of memory out of 5000000
  32870 multiletter control sequences out of 15000+600000
  536055 words of font info for 406 fonts, out of 8000000 for 9000
  309 hyphenation exceptions out of 8191
- 67i,11n,77p,1551b,392s stack positions out of 5000i,500n,10000p,200000b,80000s
+ 67i,11n,77p,1551b,489s stack positions out of 5000i,500n,10000p,200000b,80000s
 {/usr/share/texlive/texmf-dist/fonts/enc/dvips/base/8r.enc}</usr/share/texliv
 e/texmf-dist/fonts/type1/public/amsfonts/cm/cmex10.pfb></usr/share/texlive/texm
 f-dist/fonts/type1/public/amsfonts/cm/cmmi10.pfb></usr/share/texlive/texmf-dist
@@ -800,10 +768,10 @@ ive/texmf-dist/fonts/type1/urw/times/utmb8a.pfb></usr/share/texlive/texmf-dist/
 fonts/type1/urw/times/utmbi8a.pfb></usr/share/texlive/texmf-dist/fonts/type1/ur
 w/times/utmr8a.pfb></usr/share/texlive/texmf-dist/fonts/type1/urw/times/utmri8a
 .pfb>
-Output written on main.pdf (8 pages, 769386 bytes).
+Output written on main.pdf (9 pages, 769755 bytes).
 PDF statistics:
- 347 PDF objects out of 1000 (max. 8388607)
- 296 compressed objects within 3 object streams
- 74 named destinations out of 1000 (max. 500000)
+ 351 PDF objects out of 1000 (max. 8388607)
+ 299 compressed objects within 3 object streams
+ 75 named destinations out of 1000 (max. 500000)
  65301 words of extra memory for PDF output out of 74296 (max. 10000000)
 
