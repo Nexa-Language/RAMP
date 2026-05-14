@@ -61,12 +61,13 @@ Thumbs.db
 logs/
 
 # Docker
-Dockerfile.evo
-docker-compose.evo.yml
+docker/
 
 # Legacy / internal files
 idea.md
 ROADMAP.md
+AGENTS.md
+*.zip
 evobench_runner/
 plans/
 EvoBench-paper/

@@ -70,12 +70,12 @@ To test whether serial evaluation provides different information than static eva
 A Kendall $\tau$ correlation of 0.763 ($p < 0.001$) between the no-resurrection serial ranking and the independent-task ranking confirms that the two rankings are \emph{strongly correlated}---serial evaluation does not wholesale reorder the leaderboard.
 However, $\tau = 0.763$ is not 1.0: specific models experience large directional shifts invisible in aggregate correlation statistics.
 
-\begin{figure}[t]
+\begin{figure*}[!t]
 \centering
-\includegraphics[width=\linewidth]{figures/fig_score_heatmap.png}
-\caption{Per-task score matrix across 22 configurations. The heatmap reveals distinct failure patterns: some models fail at early tasks (T1/T2) while others fail at later tasks (T4), demonstrating that serial evaluation captures qualitatively different information than independent-task benchmarks.}
+\includegraphics[width=\textwidth]{figures/fig_score_heatmap.png}
+\caption{Per-task score matrix across 22 model configurations. Models (columns) × Tasks (rows). Green = high score, red = low score. The heatmap reveals distinct failure patterns: some models fail at early tasks (T1/T2) while others fail at later tasks (T4).}
 \label{fig:ranking_shift}
-\end{figure}
+\end{figure*}
 
 The most dramatic rank shifts occur for models that fail at early tasks but demonstrate strong downstream capability:
 \texttt{deepseek-v4-flash} drops from independent-task rank~8 to no-resurrection rank~14 (shift of 6 positions), because its Task~1 failure blocks the entire pipeline despite achieving 93.2\% on Task~3 and 89.5\% on Task~4 with resurrection.
