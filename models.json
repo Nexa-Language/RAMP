@@ -1,0 +1,21 @@
+[
+  "gpt-5.5",
+  "qwen3.6-plus",
+  "deepseek-reasoner",
+  "deepseek-v4-pro",
+  "glm-5.1",
+  "glm-5",
+  "minimax-m2.7",
+  "kimi-k2-thinking",
+  "mimo-v2.5-pro",
+  "deepseek-v4-flash",
+  "kimi-k2.6",
+  "qwen3-coder-flash",
+  "qwen3.6-flash",
+  "deepseek-chat",
+  "minimax-m2.5",
+  "qwen3.5-plus-2026-02-15",
+  "qwen3.6-max-preview",
+  "glm-4.7",
+  "qwen-omni-turbo"
+]
