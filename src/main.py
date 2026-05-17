@@ -25,6 +25,8 @@ def build_parser() -> argparse.ArgumentParser:
 def main(argv: list[str] | None = None) -> int:
     from lib._patch_litellm import patch_litellm_keep_cache_control
     patch_litellm_keep_cache_control()
+    from lib._patch_openhands import  patch_openhands_cache_whitelist
+    patch_openhands_cache_whitelist()
 
     parser = build_parser()
     args = parser.parse_args(argv)
