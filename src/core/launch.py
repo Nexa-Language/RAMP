@@ -41,6 +41,7 @@ def write_metadata(
     *,
     output_dir: Path,
     spec: ExperimentSpec,
+    backend: str,
     image: str,
     api_base: str,
     key_entry: ApiKeyEntry,
@@ -53,6 +54,7 @@ def write_metadata(
     output_dir.mkdir(parents=True, exist_ok=True)
     metadata = {
         "run_id": spec.run_id,
+        "backend": backend,
         "model": spec.model,
         "tasks": spec.tasks,
         "context_mode": context_mode,
@@ -70,12 +72,12 @@ def write_metadata(
     (output_dir / "metadata.json").write_text(json.dumps(metadata, ensure_ascii=False, indent=2), encoding="utf-8")
 
 
-def _inner_command(spec: ExperimentSpec, max_iterations: int, context_mode: str, max_agent_hours: int) -> str:
+def _inner_command(spec: ExperimentSpec, backend: str, max_iterations: int, context_mode: str, max_agent_hours: int) -> str:
     cmd = [
         "python3",
-        "src/main.py",
-        "runner",
-        "openhands",
+        "-m",
+        "core._runner",
+        backend,
         "--model",
         spec.model,
         "--tasks",
@@ -102,6 +104,7 @@ def launch_one(
     spec: ExperimentSpec,
     key_entry: ApiKeyEntry,
     output_root: Path,
+    backend: str,
     image: str,
     api_base: str,
     context_mode: str,
@@ -115,6 +118,7 @@ def launch_one(
     write_metadata(
         output_dir=output_dir,
         spec=spec,
+        backend=backend,
         image=image,
         api_base=api_base,
         key_entry=key_entry,
@@ -143,6 +147,8 @@ def launch_one(
         "-e",
         f"OPENAI_MODEL_NAME={spec.model}",
         "-e",
+        "PYTHONPATH=/workspace/EvoBench/src",
+        "-e",
         f"OPENHANDS_CACHING_PROMPT={env['OPENHANDS_CACHING_PROMPT']}",
         "-e",
         f"OPENHANDS_PROMPT_CACHE_RETENTION={env['OPENHANDS_PROMPT_CACHE_RETENTION']}",
@@ -160,7 +166,7 @@ def launch_one(
             image,
             "bash",
             "-lc",
-            _inner_command(spec, max_iterations, context_mode, max_agent_hours),
+            _inner_command(spec, backend, max_iterations, context_mode, max_agent_hours),
         ]
     )
     print(f"[启动] {spec.run_id} | model={spec.model} | tasks={spec.tasks} | key={key_entry.name}")
@@ -290,6 +296,7 @@ def run_batch(
     specs: list[ExperimentSpec],
     key_entries: list[ApiKeyEntry],
     output_root: Path,
+    backend: str,
     image: str,
     context_mode: str,
     max_iterations: int,
@@ -326,6 +333,7 @@ def run_batch(
                         spec=spec,
                         key_entry=key_entry,
                         output_root=output_root,
+                        backend=backend,
                         image=image,
                         api_base=key_entry.base_url,
                         context_mode=context_mode,
@@ -388,7 +396,7 @@ def build_specs_from_args(args: argparse.Namespace) -> list[ExperimentSpec]:
         selected_models=selected,
         explicit_specs=explicit,
         default_tasks=args.tasks,
-        run_prefix=args.run_prefix,
+        run_prefix=f"{args.run_prefix}-{args.backend}",
     )
 
 
@@ -407,7 +415,8 @@ def cmd_launch(args: argparse.Namespace) -> int:
             print(json.dumps(trace.__dict__, ensure_ascii=False))
         return 2
     print("==========================================")
-    print("OpenHands Docker 并行评测计划")
+    print("EvoBench Docker 并行评测计划")
+    print(f"Backend: {args.backend}")
     print(f"镜像: {args.image}")
     print("API Base: 各模型使用密钥表中对应行的 base_url")
     print(f"上下文模式: {args.context_mode}")
@@ -427,6 +436,7 @@ def cmd_launch(args: argparse.Namespace) -> int:
         specs=specs,
         key_entries=key_entries,
         output_root=Path(args.output_dir),
+        backend=args.backend,
         image=args.image,
         context_mode=args.context_mode,
         max_iterations=args.max_iterations,
@@ -444,8 +454,9 @@ def cmd_test_cache(args: argparse.Namespace) -> int:
 
 
 def add_parser(subparsers: argparse._SubParsersAction[argparse.ArgumentParser]) -> None:
-    parser = subparsers.add_parser("launch", help="启动 OpenHands Docker 评测")
+    parser = subparsers.add_parser("launch", help="启动 EvoBench Docker 评测")
     parser.add_argument("launch_action", nargs="?", choices=["test-cache"])
+    parser.add_argument("--backend", choices=["openhands", "kimi", "claude", "codex"], required=True)
     parser.add_argument("--all-models", action="store_true")
     parser.add_argument("--model", action="append")
     parser.add_argument("--models", default="", help="逗号分隔的额外模型列表（与 --model 可叠加；launch test-cache 亦支持）")

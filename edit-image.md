@@ -22,6 +22,8 @@ docker run -dit \
   bash
 ```
 
+修改过程略。
+
 在容器内完成修改后，自行验证（例如 `docker exec -it evobench-openhands-fix bash`）。
 
 ---
@@ -57,8 +59,6 @@ docker rm -f evobench-openhands-fix
 - 修改应尽量可复现：长期维护更推荐改 `Dockerfile` 再 `docker build`，`commit` 适合应急修补或快速验证。
 - Windows PowerShell 下若需等价时间戳，可自行改用 `Get-Date -Format yyyyMMdd-HHmmss` 等生成标签后缀。
 - 提交前务必在容器内确认功能正常，避免把错误状态固化进新镜像。
-
-
 
 改名
 

@@ -8,14 +8,13 @@ from pathlib import Path
 if __package__ is None:
     sys.path.insert(0, str(Path(__file__).resolve().parent))
 
-from core import job_manage, launch, resume, runner, summarize
+from core import job_manage, launch, resume, summarize
 
 
 def build_parser() -> argparse.ArgumentParser:
-    parser = argparse.ArgumentParser(description="EvoBench OpenHands Python CLI")
+    parser = argparse.ArgumentParser(description="EvoBench Agent Python CLI")
     subparsers = parser.add_subparsers(dest="command", required=True)
     launch.add_parser(subparsers)
-    runner.add_parser(subparsers)
     summarize.add_parser(subparsers)
     job_manage.add_parser(subparsers)
     resume.add_parser(subparsers)
@@ -25,6 +24,8 @@ def build_parser() -> argparse.ArgumentParser:
 def main(argv: list[str] | None = None) -> int:
     from lib._patch_litellm import patch_litellm_keep_cache_control
     patch_litellm_keep_cache_control()
+    from lib._patch_openhands import patch_openhands_cache_whitelist
+    patch_openhands_cache_whitelist()
 
     parser = build_parser()
     args = parser.parse_args(argv)

@@ -234,6 +234,7 @@ def run_openhands(args: argparse.Namespace) -> int:
         signal.signal(signal.SIGINT, old_int)
         signal.signal(signal.SIGTERM, old_term)
         report = build_report(
+            backend="openhands",
             model=args.model,
             context_mode=args.context_mode,
             run_id=run_id,
@@ -271,6 +272,7 @@ def add_parser(subparsers: argparse._SubParsersAction[argparse.ArgumentParser]) 
     report.add_argument("--model", default="")
     report.add_argument("--run-id", default="")
     report.add_argument("--context-mode", default="per-task")
+    report.add_argument("--backend", default="openhands")
     report.set_defaults(func=cmd_emit_report)
 
 
@@ -282,6 +284,7 @@ def cmd_score(args: argparse.Namespace) -> int:
 
 def cmd_emit_report(args: argparse.Namespace) -> int:
     report = build_report(
+        backend=args.backend,
         model=args.model,
         context_mode=args.context_mode,
         run_id=args.run_id,

@@ -10,6 +10,7 @@ from lib._metrics import prior_non_full_score_count
 
 def build_report(
     *,
+    backend: str = "openhands",
     model: str,
     context_mode: str,
     run_id: str,
@@ -24,7 +25,7 @@ def build_report(
             scores[task_id] = float(result.get("score") or 0)
     report = {
         "benchmark": "EvoBench-v2",
-        "agent_backend": "openhands",
+        "agent_backend": backend,
         "agent_model": model,
         "context_mode": context_mode,
         "run_id": run_id,

@@ -7,6 +7,7 @@ from pathlib import Path
 from typing import Any
 
 from lib import _docker
+from lib._agent_events import agent_error_events, agent_successful_llm_call_count
 from lib._metrics import compute_mean_reward, compute_pass_score, prior_non_full_flags, prior_non_full_score_count
 from lib._openhands_events import (
     base_state_execution_status,
@@ -132,12 +133,13 @@ def collect_one(run_dir: Path, *, include_tokens: bool = True) -> dict[str, Any]
     tasks = [task for task in raw_tasks if isinstance(task, dict)] if isinstance(raw_tasks, list) else []
     latest = _latest_task_entries(tasks)
     scores: list[float] = []
+    backend = str(metadata.get("backend") or report.get("agent_backend") or "openhands")
     row: dict[str, Any] = {
         "model": metadata.get("model") or report.get("agent_model") or _model_from_run_id(run_id),
         "run_id": run_id,
         "tasks": tasks_spec,
         "context_mode": context_mode,
-        "backend": report.get("agent_backend", "openhands"),
+        "backend": backend,
         "image": metadata.get("image", ""),
         "container": container,
         "api_base": metadata.get("api_base", ""),
@@ -148,7 +150,7 @@ def collect_one(run_dir: Path, *, include_tokens: bool = True) -> dict[str, Any]
         "output_dir_exists": run_dir.is_dir(),
         "has_report": report_path.is_file(),
         "has_openhands_state": (run_dir / "openhands-state").is_dir(),
-        "has_openhands_events": (run_dir / "openhands-events").is_dir(),
+        "has_openhands_events": (run_dir / "openhands-events").is_dir() or (run_dir / "agent-events").is_dir(),
         "max_iterations": metadata.get("max_iterations", ""),
         "max_agent_hours": metadata.get("max_agent_hours", ""),
         "elapsed_seconds": round(safe_float(report.get("total_elapsed_seconds")), 2),
@@ -172,12 +174,17 @@ def collect_one(run_dir: Path, *, include_tokens: bool = True) -> dict[str, Any]
     row["zero_shot_pass"] = all(score >= 60.0 for score in scores)
 
     row.update(collect_agent_llm_rounds(run_dir, context_mode, report))
+    if backend != "openhands" and (run_dir / "agent-events").is_dir():
+        count = agent_successful_llm_call_count(run_dir)
+        if count:
+            row["agent_llm_rounds_source"] = "agent-events"
+            row["run_agent_llm_rounds"] = count
     if include_tokens:
         row.update(collect_llm_metrics(run_dir, context_mode))
         row.update(cache_hit_info(run_dir))
-    errors = collect_error_events(run_dir)
+    errors = agent_error_events(run_dir) if backend != "openhands" and (run_dir / "agent-events").is_dir() else collect_error_events(run_dir)
     last_error = errors[-1] if errors else {}
-    successful = successful_llm_call_count(run_dir)
+    successful = agent_successful_llm_call_count(run_dir) if backend != "openhands" and (run_dir / "agent-events").is_dir() else successful_llm_call_count(run_dir)
     failed = len([err for err in errors if err.get("code")])
     max_iterations = int(row["max_iterations"] or 0) if str(row["max_iterations"]).isdigit() else 0
     row["successful_llm_calls"] = successful
@@ -185,7 +192,7 @@ def collect_one(run_dir: Path, *, include_tokens: bool = True) -> dict[str, Any]
     row["remaining_iterations"] = max(max_iterations - successful, 0) if max_iterations else ""
     max_hours = safe_float(row.get("max_agent_hours"))
     row["remaining_wall_seconds"] = max(round(max_hours * 3600 - safe_float(row.get("elapsed_seconds")), 2), 0) if max_hours else ""
-    row["openhands_execution_status"] = base_state_execution_status(run_dir)
+    row["openhands_execution_status"] = base_state_execution_status(run_dir) if backend == "openhands" else ""
     row["last_error_code"] = last_error.get("code", "")
     row["last_error_kind"] = last_error.get("kind", "")
     row["last_error_detail"] = str(last_error.get("detail", ""))[:1000]
@@ -198,6 +205,8 @@ def collect_one(run_dir: Path, *, include_tokens: bool = True) -> dict[str, Any]
     for name in ("metadata.json", "exit_code", "openhands_report.json"):
         if not (run_dir / name).exists():
             missing.append(name)
+    if backend != "openhands" and not (run_dir / "agent-events").is_dir():
+        missing.append("agent-events")
     row["missing_outputs"] = ",".join(missing)
     term = classify_termination(
         exit_code=exit_code,
@@ -223,13 +232,15 @@ def collect_launch_status_row(run_dir: Path) -> dict[str, Any]:
     latest = _latest_task_entries(tasks)
     row: dict[str, Any] = {
         "max_iterations": metadata.get("max_iterations", ""),
-        "successful_llm_calls": successful_llm_call_count(run_dir),
+        "successful_llm_calls": agent_successful_llm_call_count(run_dir)
+        if str(metadata.get("backend") or "openhands") != "openhands" and (run_dir / "agent-events").is_dir()
+        else successful_llm_call_count(run_dir),
         "failed_llm_calls": 0,
     }
     for task_id in range(6):
         task = latest.get(task_id, {})
         row[f"task{task_id}"] = safe_float(task.get("score"))
-    errors = collect_error_events_from_jsonl(run_dir)
+    errors = agent_error_events(run_dir) if str(metadata.get("backend") or "openhands") != "openhands" and (run_dir / "agent-events").is_dir() else collect_error_events_from_jsonl(run_dir)
     row["failed_llm_calls"] = len([e for e in errors if e.get("code")])
     return row
 

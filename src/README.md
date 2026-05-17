@@ -1,4 +1,4 @@
-# EvoBench OpenHands CLI（`main.py`）
+# EvoBench Agent CLI（`main.py`）
 
 本项目是一个在宿主机（非本机）起容器执行 agent 任务评测的框架。一次评测任务称为job，评测任务中 agent 所执行的任务称为 task 。  
 
@@ -9,7 +9,7 @@
 python src/main.py <子命令> ...
 ```
 
-容器内由宿主机 `launch` 拼出的命令为 `python3 src/main.py runner openhands ...`（工作目录为挂载后的仓库根）。
+容器内由宿主机 `launch` 拼出的内部命令为 `python3 -m core._runner <backend> ...`（工作目录为挂载后的仓库根，`PYTHONPATH=/workspace/EvoBench/src`）。
 
 ---
 
@@ -19,7 +19,6 @@ python src/main.py <子命令> ...
 | 子命令          | 作用                                                              |
 | ------------ | --------------------------------------------------------------- |
 | `launch`     | 宿主机：解析实验、冲突预检、Docker 并行启动评测容器                                   |
-| `runner`     | 容器内：OpenHands 执行评测（一般由 `launch` 调用）                             |
 | `summarize`  | 读取已有 `eval/container-runs/<run_id>/` 产物，生成汇总 JSON/CSV 或单 run 诊断 |
 | `job_manage` | 展示/删除 run 痕迹，或检查 `run_id` 是否与已有目录/容器冲突                          |
 | `resume`     | 在容器仍存在时尝试 `docker start -a` 复用同一容器续跑（见下文说明）                     |
@@ -29,15 +28,16 @@ python src/main.py <子命令> ...
 
 ## 现有行为与输出契约（单次 run 目录）
 
-宿主机 `launch` 与容器内 `runner` 共同保证原始产物；`summarize` **只读**这些目录，不代为生成 run 内原始文件。
+宿主机 `launch` 与容器内私有 runner 共同保证原始产物；`summarize` **只读**这些目录，不代为生成 run 内原始文件。
 
 单次任务输出目录（默认在 `eval/container-runs/<run_id>/`）通常包含：
 
-- `**metadata.json`**：启动参数、`run_id`、`model`、`tasks`、`context_mode`、镜像、`api_base`（与所选密钥表行中的 `base_url` 一致）、cache 配置、容器名、`started_at`、`max_iterations`、`max_agent_hours` 等。
+- `**metadata.json`**：启动参数、`run_id`、`backend`、`model`、`tasks`、`context_mode`、镜像、`api_base`（与所选密钥表行中的 `base_url` 一致）、cache 配置、容器名、`started_at`、`max_iterations`、`max_agent_hours` 等。
 - `**exit_code**`：容器主进程退出码；`124` 表示外层 `timeout` 超时。
 - `**console.log**`：容器内 `runner` 的标准输出/错误重定向（由 `launch` 拼入的内层 shell 重定向）。
 - `**openhands_report.json**`：benchmark、backend、model、`context_mode`、`run_id`、时间戳、耗时、`tasks`、`metrics` 等。
-- `**openhands-events/*.jsonl**`：runner 记录的 OpenHands 事件流。
+- `**openhands-events/*.jsonl**`：OpenHands backend 记录的 OpenHands 事件流。
+- `**agent-events/*.jsonl**`：非 OpenHands backend 的归一化事件流。
 - `**openhands-state/<task\|pipeline>/<uuid>/base_state.json**`：OpenHands 持久化状态、`execution_status`、LLM 用量与费用等。
 - `**openhands-state/.../events/event-*.json**`：OpenHands 内部事件，可用于诊断末尾 `ConversationErrorEvent` 等。
 
@@ -70,13 +70,13 @@ python src/main.py <子命令> ...
 ### 通用用法
 
 ```bash
-python src/main.py launch [可选 test-cache] [选择项] [选项]
+python src/main.py launch --backend <openhands|kimi|claude|codex> [可选 test-cache] [选择项] [选项]
 ```
 
 **实验规格** `MODEL[:TASKS[:RUN_ID]]`：
 
 - 未写 `TASKS` 时用全局 `--tasks`（默认 `0-5`）。
-- 未写 `RUN_ID` 时由 `--run-prefix` 与模型名、任务范围自动生成并做安全字符清洗；批次内 `run_id` 不得重复。
+- 未写 `RUN_ID` 时由 `--run-prefix`、backend、模型名、任务范围自动生成并做安全字符清洗；批次内 `run_id` 不得重复。
 
 **选择项（可组合）**
 
@@ -92,6 +92,7 @@ python src/main.py launch [可选 test-cache] [选择项] [选项]
 | 选项                         | 说明                                                  |
 | -------------------------- | --------------------------------------------------- |
 | `--models-file`            | 默认 `models.json`                                    |
+| `--backend`                | 必填：`openhands`、`kimi`、`claude` 或 `codex`；不提供默认值 |
 | `--api-keys`               | 默认优先仓库根 `api_keys.local.md`，否则 `_api_keys.local.md`（Markdown 表四列：名字、模型、Key、base_url；每行须含非空 base_url） |
 | `--image`                  | **常规 `launch` 必填** Docker 镜像；未指定则不启动评测 job。`launch test-cache` 可不填，缺省为 `evobench-openhands:bachelor` |
 | `--output-dir`             | run 根目录，默认 `eval/container-runs`                    |
@@ -106,7 +107,9 @@ python src/main.py launch [可选 test-cache] [选择项] [选项]
 | `--dry-run`                | 只打印计划，不启动容器                                         |
 
 
-**API Base**：已移除 `--api-base` 与环境变量/`.env` 推导；宿主机 `launch` 与容器内 `runner openhands` 均按 `--model` 在密钥表中选中行，使用该行 **`base_url`** 作为 LLM 网关（写入 `metadata.json` 的 `api_base` 并注入 `OPENAI_API_BASE`）。
+**API Base**：已移除 `--api-base` 与环境变量/`.env` 推导；宿主机 `launch` 与容器内 runner 均按 `--model` 在密钥表中选中行，使用该行 **`base_url`** 作为 LLM 网关（写入 `metadata.json` 的 `api_base` 并注入容器环境）。
+
+**Backend 前置条件**：`openhands` 使用镜像内 OpenHands SDK。`claude` 需要镜像内同时具备 Claude Code CLI 与 `cc-switch`，并通过 `cc-switch` 适配 OpenAI-compatible 网关。`codex` 需要 Codex CLI。`kimi` 需要 Kimi Code CLI。项目不会在评测运行时动态安装这些工具；缺失时对应 backend 会清晰失败并在 report/事件中留下错误。
 
 **冲突预检**：启动前对本次批次所有 `run_id` 检查「输出子目录已存在」或「名为 `oh-<run_id>` 的容器已存在」；任一冲突则**整批不启动**，退出码 `2`。
 
@@ -118,21 +121,21 @@ python src/main.py launch [可选 test-cache] [选择项] [选项]
 
 ```bash
 # 全模型 + 默认任务（须显式 --image）
-python src/main.py launch --image evobench-openhands:latest --all-models --parallel 4
+python src/main.py launch --backend openhands --image evobench-openhands:latest --all-models --parallel 4
 
 # 多模型 + 默认任务范围
-python src/main.py launch --image evobench-openhands:latest --models qwen3.6-plus,glm-5 --parallel 2
+python src/main.py launch --backend openhands --image evobench-openhands:latest --models qwen3.6-plus,glm-5 --parallel 2
 
 # 显式实验与自定义 run_id
-python src/main.py launch --image evobench-openhands:latest \
+python src/main.py launch --backend openhands --image evobench-openhands:latest \
   --experiment qwen3.6-plus:0-2:qwen-t0t2 \
   --experiment glm-5:3-5:glm-t3t5
 
 # 从文件读入多行 spec
-python src/main.py launch --image evobench-openhands:latest --experiments-file path/to/experiments.txt
+python src/main.py launch --backend openhands --image evobench-openhands:latest --experiments-file path/to/experiments.txt
 
 # 仅打印计划
-python src/main.py launch --image evobench-openhands:latest --model mimo-v2.5-pro --dry-run
+python src/main.py launch --backend openhands --image evobench-openhands:latest --model mimo-v2.5-pro --dry-run
 ```
 
 ### `launch test-cache`
@@ -140,8 +143,8 @@ python src/main.py launch --image evobench-openhands:latest --model mimo-v2.5-pr
 测试指定模型在开启 prompt cache 后是否出现 cache read 等命中信号（跑最小任务集，具体 `tasks` 由你指定）：
 
 ```bash
-python src/main.py launch test-cache --model <MODEL> --tasks <TASKS> [--run-id <RUN_ID>] [其它与 launch 相同的通用选项]
-python src/main.py launch test-cache --models <M1>,<M2> --tasks <TASKS> [--run-prefix <PREFIX>]
+python src/main.py launch --backend openhands test-cache --model <MODEL> --tasks <TASKS> [--run-id <RUN_ID>] [其它与 launch 相同的通用选项]
+python src/main.py launch --backend openhands test-cache --models <M1>,<M2> --tasks <TASKS> [--run-prefix <PREFIX>]
 ```
 
 - 使用与 `launch` 相同的 `--output-dir`、`--api-keys`、`--context-mode`、`--max-iterations`、`--max-agent-hours`、`--dry-run`、`--parallel` 等；**不要求** `--image`（未指定时使用内置默认镜像）。
@@ -151,10 +154,10 @@ python src/main.py launch test-cache --models <M1>,<M2> --tasks <TASKS> [--run-p
 
 ---
 
-## `runner`：容器内执行（通常不手动调用）
+## 内部 runner：容器内执行（通常不手动调用）
 
 ```bash
-python src/main.py runner openhands \
+python3 -m core._runner <openhands|kimi|claude|codex> \
   --model <MODEL> \
   --tasks <RANGE> \
   --max-iterations <N> \
@@ -173,9 +176,11 @@ python src/main.py runner openhands \
 辅助子命令：
 
 ```bash
-python src/main.py runner score --workspace <YatCC根> --task <0-5>
-python src/main.py runner emit-report --output-dir <DIR> [--model ...] [--run-id ...] [--context-mode ...]
+python3 -m core._runner score --workspace <YatCC根> --task <0-5>
+python3 -m core._runner emit-report --output-dir <DIR> [--backend ...] [--model ...] [--run-id ...] [--context-mode ...]
 ```
+
+非 OpenHands backend 的归一化事件写入 `agent-events/*.jsonl`，隔离配置或原生状态写入 `agent-state/<backend>/`。OpenHands 继续写入 `openhands-events/` 与 `openhands-state/`。
 
 `**build_task_prompt` 上下文要点**（与计划一致，最终实现于 `core/_prompt.py`）：
 

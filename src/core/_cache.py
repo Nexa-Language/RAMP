@@ -14,7 +14,7 @@ from lib._specs import ExperimentSpec, add_csv_models, safe_name
 
 def _default_test_cache_run_id(args: argparse.Namespace, model: str) -> str:
     prefix = getattr(args, "run_prefix", "") or "test-cache"
-    return safe_name(f"{prefix}-{model}-tasks-{args.tasks}")
+    return safe_name(f"{prefix}-{args.backend}-{model}-tasks-{args.tasks}")
 
 
 def _test_cache_model_list(args: argparse.Namespace) -> list[str]:
@@ -61,6 +61,7 @@ def test_cache(args: argparse.Namespace) -> int:
         specs=specs,
         key_entries=key_entries,
         output_root=output_root,
+        backend=args.backend,
         image=args.image or DEFAULT_IMAGE,
         context_mode=args.context_mode,
         max_iterations=args.max_iterations,
