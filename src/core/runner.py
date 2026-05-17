@@ -15,7 +15,8 @@ from dotenv import load_dotenv
 from core._prompt import TaskGuides, build_task_prompt
 from core._report import build_report, write_report
 from core._score import build_and_score, build_answers, configure_workspace
-from lib._paths import ROOT
+from lib._api_keys import load_api_keys, select_api_key
+from lib._paths import DEFAULT_API_KEYS_FILE, ROOT
 from lib._run_budget import format_wall_remaining_display, remaining_iterations_budget, remaining_wall_seconds
 from lib._specs import parse_tasks, safe_name
 
@@ -125,7 +126,8 @@ def run_openhands(args: argparse.Namespace) -> int:
     caching_prompt = _caching_enabled(args.no_caching_prompt)
     retention = (args.prompt_cache_retention or "").strip()
     prompt_cache_retention = retention if caching_prompt and retention else None
-    api_base = os.getenv("OPENAI_API_BASE", "")
+    key_entry = select_api_key(load_api_keys(Path(args.api_keys)), args.model)
+    api_base = key_entry.base_url
     api_key = os.getenv("OPENAI_API_KEY", "")
     results: list[dict[str, Any]] = []
     start = time.time()
@@ -250,6 +252,7 @@ def add_parser(subparsers: argparse._SubParsersAction[argparse.ArgumentParser]) 
     sub = parser.add_subparsers(dest="runner_cmd", required=True)
     openhands = sub.add_parser("openhands", help="运行 OpenHands 评测")
     openhands.add_argument("--model", default=os.getenv("OPENAI_MODEL_NAME", "mimo-v2.5-pro"))
+    openhands.add_argument("--api-keys", default=str(DEFAULT_API_KEYS_FILE), help="含 base_url 列的 Markdown 密钥表路径")
     openhands.add_argument("--tasks", default="0-5")
     openhands.add_argument("--max-iterations", type=int, default=50)
     openhands.add_argument("--workspace", default=None)

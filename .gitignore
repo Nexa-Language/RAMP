@@ -61,3 +61,7 @@ ROADMAP.md-e
 # Evaluation workspaces
 /home/agent/workspace/
 eval_workspaces/
+
+api_keys.local.md
+_api_keys.local.md
+_models_status.json

@@ -1,6 +1,9 @@
 # EvoBench OpenHands CLI（`main.py`）
 
-统一入口为 [`main.py`](main.py)。在仓库根目录执行时推荐：
+本项目是一个在宿主机（非本机）起容器执行 agent 任务评测的框架。一次评测任务称为job，评测任务中 agent 所执行的任务称为 task 。  
+
+
+统一入口为 `[main.py](main.py)`。在仓库根目录执行时推荐：
 
 ```bash
 python src/main.py <子命令> ...
@@ -12,13 +15,15 @@ python src/main.py <子命令> ...
 
 ## 子命令一览
 
-| 子命令 | 作用 |
-|--------|------|
-| `launch` | 宿主机：解析实验、冲突预检、Docker 并行启动评测容器 |
-| `runner` | 容器内：OpenHands 执行评测（一般由 `launch` 调用） |
-| `summarize` | 读取已有 `eval/container-runs/<run_id>/` 产物，生成汇总 JSON/CSV 或单 run 诊断 |
-| `job_manage` | 展示/删除 run 痕迹，或检查 `run_id` 是否与已有目录/容器冲突 |
-| `resume` | 在容器仍存在时尝试 `docker start -a` 复用同一容器续跑（见下文说明） |
+
+| 子命令          | 作用                                                              |
+| ------------ | --------------------------------------------------------------- |
+| `launch`     | 宿主机：解析实验、冲突预检、Docker 并行启动评测容器                                   |
+| `runner`     | 容器内：OpenHands 执行评测（一般由 `launch` 调用）                             |
+| `summarize`  | 读取已有 `eval/container-runs/<run_id>/` 产物，生成汇总 JSON/CSV 或单 run 诊断 |
+| `job_manage` | 展示/删除 run 痕迹，或检查 `run_id` 是否与已有目录/容器冲突                          |
+| `resume`     | 在容器仍存在时尝试 `docker start -a` 复用同一容器续跑（见下文说明）                     |
+
 
 ---
 
@@ -28,15 +33,15 @@ python src/main.py <子命令> ...
 
 单次任务输出目录（默认在 `eval/container-runs/<run_id>/`）通常包含：
 
-- **`metadata.json`**：启动参数、`run_id`、`model`、`tasks`、`context_mode`、镜像、`api_base`、cache 配置、容器名、`started_at`、`max_iterations`、`max_agent_hours` 等。
-- **`exit_code`**：容器主进程退出码；`124` 表示外层 `timeout` 超时。
-- **`console.log`**：容器内 `runner` 的标准输出/错误重定向（由 `launch` 拼入的内层 shell 重定向）。
-- **`openhands_report.json`**：benchmark、backend、model、`context_mode`、`run_id`、时间戳、耗时、`tasks`、`metrics` 等。
-- **`openhands-events/*.jsonl`**：runner 记录的 OpenHands 事件流。
-- **`openhands-state/<task\|pipeline>/<uuid>/base_state.json`**：OpenHands 持久化状态、`execution_status`、LLM 用量与费用等。
-- **`openhands-state/.../events/event-*.json`**：OpenHands 内部事件，可用于诊断末尾 `ConversationErrorEvent` 等。
+- `**metadata.json`**：启动参数、`run_id`、`model`、`tasks`、`context_mode`、镜像、`api_base`（与所选密钥表行中的 `base_url` 一致）、cache 配置、容器名、`started_at`、`max_iterations`、`max_agent_hours` 等。
+- `**exit_code**`：容器主进程退出码；`124` 表示外层 `timeout` 超时。
+- `**console.log**`：容器内 `runner` 的标准输出/错误重定向（由 `launch` 拼入的内层 shell 重定向）。
+- `**openhands_report.json**`：benchmark、backend、model、`context_mode`、`run_id`、时间戳、耗时、`tasks`、`metrics` 等。
+- `**openhands-events/*.jsonl**`：runner 记录的 OpenHands 事件流。
+- `**openhands-state/<task\|pipeline>/<uuid>/base_state.json**`：OpenHands 持久化状态、`execution_status`、LLM 用量与费用等。
+- `**openhands-state/.../events/event-*.json**`：OpenHands 内部事件，可用于诊断末尾 `ConversationErrorEvent` 等。
 
-汇总文件形态与计划一致：由 **`summarize`**（默认行为，等同原 `aggregate`）生成，例如：
+汇总文件形态与计划一致：由 `**summarize**`（默认行为，等同原 `aggregate`）生成，例如：
 
 - `eval/container-runs-summary-pipeline.json` / `.csv`
 - `eval/container-runs-summary-per-task.json` / `.csv`
@@ -83,22 +88,25 @@ python src/main.py launch [可选 test-cache] [选择项] [选项]
 
 **常用选项**
 
-| 选项 | 说明 |
-|------|------|
-| `--models-file` | 默认 `models.json` |
-| `--api-keys` | 默认 `api_keys.local.md`（Markdown 表格：`名字 \| 模型 \| Key`） |
-| `--api-base` | 显式 API Base；否则 `OPENAI_API_BASE` 或 `.env` 或默认网关 |
-| `--image` | 默认 `evobench-openhands:latest` |
-| `--output-dir` | run 根目录，默认 `eval/container-runs` |
-| `--tasks` | 仅作用于「未在 spec 中写 tasks」的模型展开，默认 `0-5` |
-| `--max-iterations` | 传入容器内 runner，默认 `200` |
-| `--context-mode` | `per-task` 或 `pipeline` |
-| `--parallel` | 并行容器数，默认 `2` |
-| `--run-prefix` | 生成 `run_id` 的前缀，默认 `run-YYYYmmdd-HHMMSS` |
-| `--prompt-cache-retention` | 默认 `24h`，注入容器环境 |
-| `--litellm-log-level` | 可选，如 `DEBUG` |
-| `--max-agent-hours` | 容器内 `timeout` 墙钟上限（小时），`0` 表示不包 timeout |
-| `--dry-run` | 只打印计划，不启动容器 |
+
+| 选项                         | 说明                                                  |
+| -------------------------- | --------------------------------------------------- |
+| `--models-file`            | 默认 `models.json`                                    |
+| `--api-keys`               | 默认仓库根 `_api_keys.local.md`（Markdown 表四列：名字、模型、Key、base_url；每行须含非空 base_url） |
+| `--image`                  | **常规 `launch` 必填** Docker 镜像；未指定则不启动评测 job。`launch test-cache` 可不填，缺省为 `evobench-openhands:latest` |
+| `--output-dir`             | run 根目录，默认 `eval/container-runs`                    |
+| `--tasks`                  | 仅作用于「未在 spec 中写 tasks」的模型展开，默认 `0-5`                |
+| `--max-iterations`         | 传入容器内 runner，默认 `200`                               |
+| `--context-mode`           | `per-task` 或 `pipeline`                             |
+| `--parallel`               | 并行容器数，默认 `2`                                        |
+| `--run-prefix`             | 生成 `run_id` 的前缀，默认 `run-YYYYmmdd-HHMMSS`            |
+| `--prompt-cache-retention` | 默认 `24h`，注入容器环境                                     |
+| `--litellm-log-level`      | 可选，如 `DEBUG`                                        |
+| `--max-agent-hours`        | 容器内 `timeout` 墙钟上限（小时），`0` 表示不包 timeout             |
+| `--dry-run`                | 只打印计划，不启动容器                                         |
+
+
+**API Base**：已移除 `--api-base` 与环境变量/`.env` 推导；宿主机 `launch` 与容器内 `runner openhands` 均按 `--model` 在密钥表中选中行，使用该行 **`base_url`** 作为 LLM 网关（写入 `metadata.json` 的 `api_base` 并注入 `OPENAI_API_BASE`）。
 
 **冲突预检**：启动前对本次批次所有 `run_id` 检查「输出子目录已存在」或「名为 `oh-<run_id>` 的容器已存在」；任一冲突则**整批不启动**，退出码 `2`。
 
@@ -109,22 +117,22 @@ python src/main.py launch [可选 test-cache] [选择项] [选项]
 ### 示例
 
 ```bash
-# 全模型 + 默认任务
-python src/main.py launch --all-models --parallel 4
+# 全模型 + 默认任务（须显式 --image）
+python src/main.py launch --image evobench-openhands:latest --all-models --parallel 4
 
 # 多模型 + 默认任务范围
-python src/main.py launch --models qwen3.6-plus,glm-5 --parallel 2
+python src/main.py launch --image evobench-openhands:latest --models qwen3.6-plus,glm-5 --parallel 2
 
 # 显式实验与自定义 run_id
-python src/main.py launch \
+python src/main.py launch --image evobench-openhands:latest \
   --experiment qwen3.6-plus:0-2:qwen-t0t2 \
   --experiment glm-5:3-5:glm-t3t5
 
 # 从文件读入多行 spec
-python src/main.py launch --experiments-file path/to/experiments.txt
+python src/main.py launch --image evobench-openhands:latest --experiments-file path/to/experiments.txt
 
 # 仅打印计划
-python src/main.py launch --model mimo-v2.5-pro --dry-run
+python src/main.py launch --image evobench-openhands:latest --model mimo-v2.5-pro --dry-run
 ```
 
 ### `launch test-cache`
@@ -133,10 +141,13 @@ python src/main.py launch --model mimo-v2.5-pro --dry-run
 
 ```bash
 python src/main.py launch test-cache --model <MODEL> --tasks <TASKS> [--run-id <RUN_ID>] [其它与 launch 相同的通用选项]
+python src/main.py launch test-cache --models <M1>,<M2> --tasks <TASKS> [--run-prefix <PREFIX>]
 ```
 
-- 使用与 `launch` 相同的 `--output-dir`、`--api-keys`、`--context-mode`、`--max-iterations`、`--max-agent-hours`、`--dry-run` 等。
-- `--run-id` 仅用于 test-cache；未指定时自动生成 `<run-prefix>-<safe_model>-tasks-<safe_tasks>`。
+- 使用与 `launch` 相同的 `--output-dir`、`--api-keys`、`--context-mode`、`--max-iterations`、`--max-agent-hours`、`--dry-run`、`--parallel` 等；**不要求** `--image`（未指定时使用内置默认镜像）。
+- 模型选择：与常规 `launch` 一致，可使用 `**--model`（可重复）** 与 `**--models a,b,c`**（逗号分隔），二者**叠加**。
+- 多模型时每个模型单独生成 `run_id`（`<run-prefix>-<safe_model>-tasks-<safe_tasks>`），**不可**再传 `--run-id`；请用 `--run-prefix` 区分批次。
+- `**--run-id` 仅单模型 test-cache**；未指定 `run_id` 时按上式自动生成。
 
 ---
 
@@ -151,10 +162,12 @@ python src/main.py runner openhands \
   --workspace /workspace/YatCC \
   --run-id <RUN_ID> \
   --output-dir /workspace/output \
+  [--api-keys <与宿主机相同的密钥表路径>] \
   [--no-caching-prompt] \
   [--prompt-cache-retention <STR>]
 ```
 
+- **`--api-keys`**：默认 `_api_keys.local.md`；`base_url` 必须在该表对应模型行中填写，**不再**从 `OPENAI_API_BASE` 读取。`OPENAI_API_KEY` 仍由 `launch` 注入容器环境。
 - 任务用户消息中会附带**资源预算**句：根据 `--output-dir/metadata.json` 的 `started_at` 与 `max_agent_hours` 估算剩余墙钟；**pipeline** 模式下根据 `openhands-events/pipeline.jsonl` 已出现的 `llm_response_id` 估算剩余迭代轮数；**per-task** 下每个 Task 为新对话，剩余轮数即 `--max-iterations`（见 `lib/_run_budget.py`）。
 
 辅助子命令：
@@ -164,7 +177,7 @@ python src/main.py runner score --workspace <YatCC根> --task <0-5>
 python src/main.py runner emit-report --output-dir <DIR> [--model ...] [--run-id ...] [--context-mode ...]
 ```
 
-**`build_task_prompt` 上下文要点**（与计划一致，最终实现于 `core/_prompt.py`）：
+`**build_task_prompt` 上下文要点**（与计划一致，最终实现于 `core/_prompt.py`）：
 
 - 路径说明：`/YatCC` 文档路径与实际 workspace 等价说明。
 - **资源预算**：每次向 Agent 发送任务消息前，根据 `output_dir/metadata.json`（`started_at`、`max_agent_hours`）估算剩余墙钟，并结合 `openhands-events/pipeline.jsonl`（仅 pipeline 模式）估算已用 LLM 响应数以得到**剩余轮数**；在提示中写明「你的所剩时间为…，所剩轮数为…。你应当在当前预算下，拿到尽可能高的分数。」（逻辑见 `lib/_run_budget.py`）。
@@ -188,7 +201,7 @@ python src/main.py summarize \
   [--no-tokens]
 ```
 
-- `--glob`：作用于 `runs-dir` 下的**子目录名**（例如 `run-pipeline-*`），不是 run 内部文件 glob。
+- `--glob`：作用于 `runs-dir` 下的**子目录名**（例如 `run-pipeline-`*），不是 run 内部文件 glob。
 - `--output-prefix`：写入 `<前缀>.json` 与 `<前缀>.csv`；省略时使用上文默认规则。
 - `--no-tokens`：不读取 `openhands-state/**/base_state.json` 中的 token/费用列（仍会尽量从事件解析轮次等）。
 
@@ -227,7 +240,7 @@ python src/main.py resume <run_id> [--runs-dir <DIR>] [--dry-run]
 
 - `--dry-run`：只打印诊断信息，不启动容器。
 - **当前行为**：若 `summarize` 判定为已 `success_*` 正常结束，则直接退出；否则若 Docker 仍存在同名容器 `oh-<run_id>`，则执行 `docker start -a <容器>`；容器已删除时会报错退出。
-- `resume` 侧 `--max-iterations` / `--max-agent-hours` 仍为 CLI 预留项（见 `resume.py`）；任务提示中的墙钟/轮数预算以输出目录内 **`metadata.json`**（由首次 `launch` 写入）为准。
+- `resume` 侧 `--max-iterations` / `--max-agent-hours` 仍为 CLI 预留项（见 `resume.py`）；任务提示中的墙钟/轮数预算以输出目录内 `**metadata.json`**（由首次 `launch` 写入）为准。
 
 ---
 

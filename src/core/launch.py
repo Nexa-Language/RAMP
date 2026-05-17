@@ -8,6 +8,7 @@ import shutil
 import signal
 import subprocess
 import sys
+import textwrap
 import time
 from datetime import datetime
 from concurrent.futures import FIRST_COMPLETED, Future, ThreadPoolExecutor, wait
@@ -18,7 +19,7 @@ from core.job_manage import check_conflicts
 from core.summarize import collect_launch_status_row
 from lib import _docker
 from lib._api_keys import ApiKeyEntry, load_api_keys, select_api_key
-from lib._paths import DEFAULT_API_KEYS_FILE, DEFAULT_IMAGE, DEFAULT_MODELS_FILE, DEFAULT_RUNS_DIR, ROOT, load_api_base
+from lib._paths import DEFAULT_API_KEYS_FILE, DEFAULT_MODELS_FILE, DEFAULT_RUNS_DIR, ROOT
 from lib._specs import (
     DEFAULT_TASKS,
     ExperimentSpec,
@@ -235,11 +236,53 @@ def _status_segment(spec: ExperimentSpec, output_dir: Path) -> str:
         return f"{spec.run_id}: starting"
 
 
-def _status_line(runs: list[tuple[ExperimentSpec, Path]], *, max_width: int | None) -> str:
-    line = " | ".join(_status_segment(spec, output_dir) for spec, output_dir in runs)
-    if max_width is not None and len(line) > max_width:
-        return line[:max_width]
-    return line
+def _terminal_width() -> int:
+    return max(shutil.get_terminal_size((120, 20)).columns - 1, 20)
+
+
+def _wrap_status_text(text: str, width: int) -> list[str]:
+    w = max(int(width), 12)
+    t = text.rstrip()
+    if not t:
+        return [""]
+    parts = textwrap.wrap(t, width=w, break_long_words=True, break_on_hyphens=False, replace_whitespace=False)
+    return parts if parts else [t[:w]]
+
+
+def _live_status_lines(runs: list[tuple[ExperimentSpec, Path]], width: int) -> list[str]:
+    """每个 job 独立成行；过长 segment 按终端宽度自动换行。"""
+    w = max(int(width), 12)
+    if not runs:
+        return ["(无运行中 job)"]
+    lines: list[str] = []
+    for spec, output_dir in runs:
+        seg = _status_segment(spec, output_dir)
+        lines.extend(_wrap_status_text(seg, w))
+    return lines
+
+
+def _flush_live_status(lines: list[str], prev_line_count: int, width: int) -> int:
+    """用 ANSI 光标上移重绘多行状态块；返回本帧占用行数（含为擦除旧内容而补的空行）。"""
+    w = max(int(width), 12)
+    block = [ln[:w] for ln in lines]
+    fill = max(len(block), prev_line_count)
+    while len(block) < fill:
+        block.append("")
+    if prev_line_count > 0:
+        sys.stdout.write(f"\033[{prev_line_count}A\r")
+    for i, ln in enumerate(block):
+        sys.stdout.write(ln.ljust(w) + "\n")
+    sys.stdout.flush()
+    return len(block)
+
+
+def _status_block_for_print(runs: list[tuple[ExperimentSpec, Path]], *, width: int | None) -> str:
+    """换行文本块（用于 [状态] / 最终状态）；width 为 None 时不换行，仅每 job 一行。"""
+    if not runs:
+        return "(无 job)"
+    if width is None:
+        return "\n".join(_status_segment(spec, od) for spec, od in runs)
+    return "\n".join(_live_status_lines(runs, width))
 
 
 def run_batch(
@@ -248,7 +291,6 @@ def run_batch(
     key_entries: list[ApiKeyEntry],
     output_root: Path,
     image: str,
-    api_base: str,
     context_mode: str,
     max_iterations: int,
     prompt_cache_retention: str,
@@ -262,6 +304,7 @@ def run_batch(
     containers: list[str] = []
     failures = 0
     interrupted = False
+    live_status_line_count = 0
 
     def stop_all(_signum: int, _frame: Any) -> None:
         nonlocal interrupted
@@ -284,7 +327,7 @@ def run_batch(
                         key_entry=key_entry,
                         output_root=output_root,
                         image=image,
-                        api_base=api_base,
+                        api_base=key_entry.base_url,
                         context_mode=context_mode,
                         max_iterations=max_iterations,
                         prompt_cache_retention=prompt_cache_retention,
@@ -296,8 +339,11 @@ def run_batch(
                     running[executor.submit(_write_exit_code, output_dir, wait_proc)] = (spec, output_dir, container)
                 if running:
                     done, _ = wait(running, timeout=STATUS_REFRESH_SEC, return_when=FIRST_COMPLETED)
-                    width = max(shutil.get_terminal_size((120, 20)).columns - 1, 20)
-                    print("\r" + _status_line(active_runs, max_width=width), end="", flush=True)
+                    width = _terminal_width()
+                    running_ids = {t[0].run_id for t in running.values()}
+                    live_runs = [(s, p) for s, p in active_runs if s.run_id in running_ids]
+                    live_lines = _live_status_lines(live_runs, width)
+                    live_status_line_count = _flush_live_status(live_lines, live_status_line_count, width)
                     for future in done:
                         spec, output_dir, _container = running.pop(future)
                         try:
@@ -306,13 +352,20 @@ def run_batch(
                             code = 1
                         if code != 0:
                             failures += 1
-                        print(f"\n[结束] {spec.run_id} exit_code={code}")
-                        print("[状态]", _status_line(active_runs, max_width=None))
+                        if live_status_line_count > 0:
+                            sys.stdout.write("\n")
+                            live_status_line_count = 0
+                        print(f"[结束] {spec.run_id} exit_code={code}")
+                        tw = _terminal_width()
+                        print("[状态]\n" + _status_block_for_print(active_runs, width=tw))
                 elif pending:
                     time.sleep(0.5)
         if active_runs:
+            if live_status_line_count > 0:
+                sys.stdout.write("\n")
+                live_status_line_count = 0
             print("\n[本轮结束 · 最终状态]")
-            print(_status_line(active_runs, max_width=None))
+            print(_status_block_for_print(active_runs, width=_terminal_width()))
     finally:
         signal.signal(signal.SIGINT, old_int)
         signal.signal(signal.SIGTERM, old_term)
@@ -342,7 +395,9 @@ def build_specs_from_args(args: argparse.Namespace) -> list[ExperimentSpec]:
 def cmd_launch(args: argparse.Namespace) -> int:
     if getattr(args, "launch_action", None) == "test-cache":
         return cmd_test_cache(args)
-    api_base = load_api_base(explicit=args.api_base)
+    if not getattr(args, "image", None) or not str(args.image).strip():
+        print("错误：启动评测容器必须显式指定 --image（例如 evobench-openhands:latest）。")
+        return 2
     specs = build_specs_from_args(args)
     key_entries = load_api_keys(Path(args.api_keys))
     conflicts = check_conflicts([spec.run_id for spec in specs], Path(args.output_dir))
@@ -354,14 +409,17 @@ def cmd_launch(args: argparse.Namespace) -> int:
     print("==========================================")
     print("OpenHands Docker 并行评测计划")
     print(f"镜像: {args.image}")
-    print(f"API Base: {api_base}")
+    print("API Base: 各模型使用密钥表中对应行的 base_url")
     print(f"上下文模式: {args.context_mode}")
     print(f"并行数: {args.parallel}")
     print(f"输出目录: {args.output_dir}")
     print("==========================================")
     for index, spec in enumerate(specs, 1):
         key = select_api_key(key_entries, spec.model)
-        print(f"[{index}/{len(specs)}] model={spec.model} tasks={spec.tasks} run_id={spec.run_id} key={key.name}")
+        print(
+            f"[{index}/{len(specs)}] model={spec.model} tasks={spec.tasks} run_id={spec.run_id} "
+            f"key={key.name} base_url={key.base_url}"
+        )
     if args.dry_run:
         print("dry-run：未启动容器。")
         return 0
@@ -370,7 +428,6 @@ def cmd_launch(args: argparse.Namespace) -> int:
         key_entries=key_entries,
         output_root=Path(args.output_dir),
         image=args.image,
-        api_base=api_base,
         context_mode=args.context_mode,
         max_iterations=args.max_iterations,
         prompt_cache_retention=args.prompt_cache_retention,
@@ -391,13 +448,12 @@ def add_parser(subparsers: argparse._SubParsersAction[argparse.ArgumentParser]) 
     parser.add_argument("launch_action", nargs="?", choices=["test-cache"])
     parser.add_argument("--all-models", action="store_true")
     parser.add_argument("--model", action="append")
-    parser.add_argument("--models", default="")
+    parser.add_argument("--models", default="", help="逗号分隔的额外模型列表（与 --model 可叠加；launch test-cache 亦支持）")
     parser.add_argument("--experiment", action="append")
     parser.add_argument("--experiments-file", default="")
     parser.add_argument("--models-file", default=str(DEFAULT_MODELS_FILE))
     parser.add_argument("--api-keys", default=str(DEFAULT_API_KEYS_FILE))
-    parser.add_argument("--api-base", default="")
-    parser.add_argument("--image", default=DEFAULT_IMAGE)
+    parser.add_argument("--image", default=None, help="Docker 镜像（评测任务必填；launch test-cache 可不填，缺省用内置默认镜像）")
     parser.add_argument("--output-dir", default=str(DEFAULT_RUNS_DIR))
     parser.add_argument("--tasks", default=DEFAULT_TASKS)
     parser.add_argument("--max-iterations", type=int, default=200)
@@ -408,5 +464,5 @@ def add_parser(subparsers: argparse._SubParsersAction[argparse.ArgumentParser]) 
     parser.add_argument("--litellm-log-level", default="")
     parser.add_argument("--max-agent-hours", type=int, default=6)
     parser.add_argument("--dry-run", action="store_true")
-    parser.add_argument("--run-id", default="", help="仅用于 launch test-cache")
+    parser.add_argument("--run-id", default="", help="仅用于 launch test-cache，且仅单模型时生效；多模型请用 --run-prefix")
     parser.set_defaults(func=cmd_launch)

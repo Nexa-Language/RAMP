@@ -9,6 +9,7 @@ class ApiKeyEntry:
     name: str
     model: str
     key: str
+    base_url: str
 
 
 def load_api_keys(path: Path) -> list[ApiKeyEntry]:
@@ -20,11 +21,13 @@ def load_api_keys(path: Path) -> list[ApiKeyEntry]:
         if not line.startswith("|") or "---" in line:
             continue
         parts = [part.strip() for part in line.split("|")]
-        if len(parts) < 5:
+        if len(parts) < 6:
             continue
-        name, model, key = parts[1], parts[2], parts[3]
+        name, model, key, base_url = parts[1], parts[2], parts[3], parts[4]
         if name and model and key.startswith("sk-"):
-            entries.append(ApiKeyEntry(name=name, model=model, key=key))
+            if not base_url:
+                raise ValueError(f"API key 行缺少 base_url（{path}：{name}）")
+            entries.append(ApiKeyEntry(name=name, model=model, key=key, base_url=base_url))
     if not entries:
         raise ValueError(f"API key 文件中没有可用 key: {path}")
     return entries
