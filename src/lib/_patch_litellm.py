@@ -1,7 +1,14 @@
 
 
 def patch_litellm_keep_cache_control(
-    only_when: tuple[str, ...] = ("qwen",),
+    only_when: tuple[str, ...] = (
+        "qwen",
+        "glm",
+        "deepseek",
+        "kimi",
+        "minimax",
+        "mimo",
+    ),
 ) -> None:
     """
     阻止 litellm 的 OpenAI 路径剥掉 cache_control 字段。

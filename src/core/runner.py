@@ -17,6 +17,8 @@ from core._report import build_report, write_report
 from core._score import build_and_score, build_answers, configure_workspace
 from lib._api_keys import load_api_keys, select_api_key
 from lib._paths import DEFAULT_API_KEYS_FILE, ROOT
+from lib._patch_litellm import patch_litellm_keep_cache_control
+from lib._patch_openhands import patch_openhands_cache_whitelist
 from lib._run_budget import format_wall_remaining_display, remaining_iterations_budget, remaining_wall_seconds
 from lib._specs import parse_tasks, safe_name
 
@@ -116,6 +118,9 @@ def _caching_enabled(no_caching_prompt: bool) -> bool:
 
 def run_openhands(args: argparse.Namespace) -> int:
     _load_env()
+    # 容器入口为 python -m core._runner，不经 main.py；两处补丁都必须在实际发请求前执行。
+    patch_litellm_keep_cache_control()
+    patch_openhands_cache_whitelist()
     output_dir = Path(args.output_dir) if args.output_dir else ROOT / "eval" / "results" / safe_name(args.model)
     output_dir.mkdir(parents=True, exist_ok=True)
     events_dir = output_dir / "openhands-events"
@@ -195,6 +200,9 @@ def run_openhands(args: argparse.Namespace) -> int:
                     tags={"runid": run_id, "taskid": str(task_id), "model": args.model},
                 )
             wall_sec = remaining_wall_seconds(output_dir)
+            iter_remaining = remaining_iterations_budget(
+                output_dir, args.context_mode, args.max_iterations
+            )
             prompt = build_task_prompt(
                 task_id=task_id,
                 context_mode=args.context_mode,
@@ -202,16 +210,27 @@ def run_openhands(args: argparse.Namespace) -> int:
                 guides=guides,
                 pipeline_stage=stage,
                 budget_wall_display=format_wall_remaining_display(wall_sec),
-                budget_remaining_iterations=remaining_iterations_budget(
-                    output_dir, args.context_mode, args.max_iterations
-                ),
+                budget_remaining_iterations=iter_remaining,
             )
-            conversation.send_message(prompt)
-            try:
-                run_conversation(conversation, args.max_iterations)
-            except Exception as exc:
-                error = f"{type(exc).__name__}: {exc}"
-                print(f"[Task {task_id}] Agent 异常: {error}")
+            # pipeline 共用一个 Conversation：OpenHands 往往按每次 run() 单独计数，
+            # 若不按已消耗轮数递减，successful_llm_calls 会超过 metadata 的 max_iterations。
+            if iter_remaining <= 0:
+                print(
+                    f"[Task {task_id}] pipeline 全局 LLM 轮数已达 --max-iterations={args.max_iterations}，"
+                    "跳过本轮对话（不再 send_message / run）。"
+                )
+            else:
+                if hasattr(conversation, "max_iteration_per_run"):
+                    try:
+                        conversation.max_iteration_per_run = iter_remaining
+                    except (AttributeError, TypeError):
+                        pass
+                conversation.send_message(prompt)
+                try:
+                    run_conversation(conversation, iter_remaining)
+                except Exception as exc:
+                    error = f"{type(exc).__name__}: {exc}"
+                    print(f"[Task {task_id}] Agent 异常: {error}")
             score = build_and_score(workspace, task_id)
             entry = {
                 "task_id": task_id,
@@ -242,7 +261,10 @@ def run_openhands(args: argparse.Namespace) -> int:
             total_elapsed=time.time() - start,
             error=error,
         )
-        report["metrics"]["total_iterations"] = len(tasks) * args.max_iterations
+        if args.context_mode == "pipeline":
+            report["metrics"]["total_iterations"] = args.max_iterations
+        else:
+            report["metrics"]["total_iterations"] = len(tasks) * args.max_iterations
         write_report(report_path, report)
         print(f"[报告] {report_path}")
     return 0
