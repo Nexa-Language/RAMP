@@ -3,9 +3,9 @@ requires = ["setuptools>=68.0", "wheel"]
 build-backend = "setuptools.build_meta"
 
 [project]
-name = "evobench"
-version = "0.2.0"
-description = "EvoBench — 串行 Agent 评测基准 CLI"
+name = "ramp"
+version = "0.3.0"
+description = "RAMP — Reexamining Agentic Models in Production Systems"
 readme = "ROADMAP.md"
 requires-python = ">=3.10"
 license = {text = "MIT"}
@@ -17,7 +17,7 @@ dependencies = [
 ]
 
 [project.scripts]
-evo = "evo_cli.cli:main"
+ramp = "ramp_cli.cli:main"
 
 [project.optional-dependencies]
 openhands = ["openhands>=0.1.0"]

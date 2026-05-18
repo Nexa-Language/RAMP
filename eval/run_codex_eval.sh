@@ -4,12 +4,12 @@
 # 会临时修改 codex config 指向我们的 API，评测完恢复
 set -euo pipefail
 
-PROJ_DIR="/root/proj/papers/EXPERIMENT/EvoBench"
+PROJ_DIR="/root/proj/Paper/EXPERIMENT/RAMP"
 YATCC_DIR="$PROJ_DIR/data/YatCC"
 LOG_DIR="$PROJ_DIR/eval/logs"
 RESULT_DIR="$PROJ_DIR/eval/results/codex"
 CODEX_CONFIG="$HOME/.codex/config.toml"
-CODEX_CONFIG_BACKUP="$HOME/.codex/config.toml.evo-backup"
+CODEX_CONFIG_BACKUP="$HOME/.codex/config.toml.ramp-backup"
 
 MODEL="${1:-deepseek-v4-pro}"
 TASK_ID="${2:-0}"

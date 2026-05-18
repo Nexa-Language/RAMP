@@ -1,5 +1,5 @@
 {
-  "benchmark": "EvoBench-v2",
+  "benchmark": "RAMP-v2",
   "agent_backend": "openhands",
   "agent_model": "deepseek-v4-pro",
   "timestamp": "2026-05-10T11:19:14Z",

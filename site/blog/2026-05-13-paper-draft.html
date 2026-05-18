@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Paper Draft Complete — EvoBench Blog</title>
+    <title>Paper Draft Complete — RAMP Blog</title>
     <link rel="stylesheet" href="../assets/css/style.css">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
@@ -56,12 +56,12 @@
     <canvas id="particles"></canvas>
     <nav class="nav">
         <div class="nav-container">
-            <a href="/" class="nav-logo"><span class="logo-icon">⚡</span><span class="logo-text">EvoBench</span></a>
+            <a href="/" class="nav-logo"><span class="logo-icon">⚡</span><span class="logo-text">RAMP</span></a>
             <div class="nav-links">
                 <a href="/" class="nav-link">Home</a>
                 <a href="../leaderboard.html" class="nav-link">Leaderboard</a>
                 <a href="../blog.html" class="nav-link">Blog</a>
-                <a href="https://github.com/Nexa-Language/EvoBench" class="nav-link" target="_blank"><i class="fab fa-github"></i> GitHub</a>
+                <a href="https://github.com/Nexa-Language/RAMP" class="nav-link" target="_blank"><i class="fab fa-github"></i> GitHub</a>
             </div>
         </div>
     </nav>
@@ -75,10 +75,10 @@
                 <span class="article-tag">Paper</span>
                 <span class="article-tag">Research</span>
             </div>
-            <h1>EvoBench Paper Draft Complete: A New Paradigm for Serial Agent Evaluation</h1>
+            <h1>RAMP Paper Draft Complete: A New Paradigm for Serial Agent Evaluation</h1>
         </div>
 
-        <p>We're excited to announce that the <strong>first complete draft</strong> of the EvoBench paper is ready. The paper introduces a fundamentally new approach to evaluating AI coding agents — one that measures not just <em>what</em> agents can solve, but <em>how they evolve</em> through a dependency chain.</p>
+        <p>We're excited to announce that the <strong>first complete draft</strong> of the RAMP paper is ready. The paper introduces a fundamentally new approach to evaluating AI coding agents — one that measures not just <em>what</em> agents can solve, but <em>how they evolve</em> through a dependency chain.</p>
 
         <div class="section-outline">
             <h4>📄 Paper Structure (6 Sections)</h4>
@@ -104,7 +104,7 @@
 
         <h3>1. Serial Task Structure with Artifact Dependencies</h3>
 
-        <p>EvoBench is grounded in <strong>compiler construction</strong> — a domain with strict causal dependencies. Agents must progress through six tasks:</p>
+        <p>RAMP is grounded in <strong>compiler construction</strong> — a domain with strict causal dependencies. Agents must progress through six tasks:</p>
 
         <table>
             <tr><th>Task</th><th>Name</th><th>Input Artifact</th></tr>
@@ -120,7 +120,7 @@
 
         <h3>2. Resurrection Mechanism</h3>
 
-        <p>This is the paper's most important methodological contribution. When an agent fails a task, EvoBench's <strong>Resurrection</strong> mechanism injects the <em>golden intermediate artifact</em> (the correct output from the reference implementation), allowing the agent to continue to downstream tasks.</p>
+        <p>This is the paper's most important methodological contribution. When an agent fails a task, RAMP's <strong>Resurrection</strong> mechanism injects the <em>golden intermediate artifact</em> (the correct output from the reference implementation), allowing the agent to continue to downstream tasks.</p>
 
         <p>Resurrection decomposes the compound failure "cannot reach Task k+1" into two independent measurements:</p>
         <ul>
@@ -135,7 +135,7 @@
 
         <h3>3. Process-Centric Evaluation</h3>
 
-        <p>Beyond final scores, EvoBench systematically records <strong>tokens, interaction turns, shell/build/test retries, elapsed time, and failure types</strong>. These process metrics are first-class analytical objects alongside outcome scores.</p>
+        <p>Beyond final scores, RAMP systematically records <strong>tokens, interaction turns, shell/build/test retries, elapsed time, and failure types</strong>. These process metrics are first-class analytical objects alongside outcome scores.</p>
 
         <p>A key finding: process cost does <em>not</em> predict outcome (R² = 0.007). Agents that invest more computational budget do not systematically achieve better results. This <em>decoupling</em> is itself diagnostic — it reveals that process metrics capture qualitatively distinct information from outcome metrics.</p>
 
@@ -171,9 +171,9 @@
 
         <h2>What This Means for the Field</h2>
 
-        <p>EvoBench represents a <strong>paradigm shift</strong> in agent evaluation. The key insight is not that serial benchmarks are "harder" — it's that they measure a <em>fundamentally different evaluation axis</em>. Static benchmarks answer "can the agent solve task k?" Serial benchmarks answer "can the agent progress along the dependency chain, and if not, where and why?"</p>
+        <p>RAMP represents a <strong>paradigm shift</strong> in agent evaluation. The key insight is not that serial benchmarks are "harder" — it's that they measure a <em>fundamentally different evaluation axis</em>. Static benchmarks answer "can the agent solve task k?" Serial benchmarks answer "can the agent progress along the dependency chain, and if not, where and why?"</p>
 
-        <p>This distinction matters because real engineering is serial. When you deploy an AI coding agent in production, it doesn't solve isolated LeetCode problems — it builds systems where each component depends on the last. EvoBench is the first benchmark designed to evaluate agents in this more realistic setting.</p>
+        <p>This distinction matters because real engineering is serial. When you deploy an AI coding agent in production, it doesn't solve isolated LeetCode problems — it builds systems where each component depends on the last. RAMP is the first benchmark designed to evaluate agents in this more realistic setting.</p>
 
         <div class="insight">
             <div class="insight-title">🔮 Looking Ahead</div>
@@ -183,7 +183,7 @@
         <p style="margin-top: 40px; padding-top: 24px; border-top: 1px solid var(--border-subtle); color: var(--text-muted); font-size: 0.85rem;">
             <a href="../blog.html" style="color: var(--accent-primary);">← Back to all posts</a> &nbsp;·&nbsp; 
             <a href="../leaderboard.html" style="color: var(--accent-primary);">View live leaderboard →</a> &nbsp;·&nbsp;
-            <a href="https://github.com/Nexa-Language/EvoBench" style="color: var(--accent-primary);">GitHub →</a>
+            <a href="https://github.com/Nexa-Language/RAMP" style="color: var(--accent-primary);">GitHub →</a>
         </p>
     </article>
 

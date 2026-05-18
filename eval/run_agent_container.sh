@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# EvoBench: 在 Docker 容器中运行 CLI Agent
+# RAMP: 在 Docker 容器中运行 CLI Agent
 # 用法:
 #   ./run_agent_container.sh claude --tasks 0-5
 #   ./run_agent_container.sh codex --tasks 0-5
@@ -7,7 +7,7 @@
 set -euo pipefail
 
 ROOT_DIR="$(cd "$(dirname "$0")" && pwd)"
-IMAGE="evobench-agent:latest"
+IMAGE="ramp-agent:latest"
 BACKEND="${1:?Usage: $0 <backend> [--tasks N-M] [--model NAME]}"
 shift
 
@@ -24,10 +24,10 @@ while [[ $# -gt 0 ]]; do
 done
 
 # 容器名
-CONTAINER="evo-${BACKEND}-$(date +%s)"
+CONTAINER="ramp-${BACKEND}-$(date +%s)"
 
 echo "=========================================="
-echo "  EvoBench Container Agent Runner"
+echo "  RAMP Container Agent Runner"
 echo "  Backend: $BACKEND"
 echo "  Tasks: $TASKS"
 echo "  Model: ${MODEL:-default}"

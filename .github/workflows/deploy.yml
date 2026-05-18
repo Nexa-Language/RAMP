@@ -25,7 +25,7 @@ jobs:
         uses: actions/checkout@v4
 
       - name: Add CNAME file
-        run: echo "evobench.nexa-lang.com" > site/CNAME
+        run: echo "ramp.nexa-lang.com" > site/CNAME
 
       - name: Setup Pages
         uses: actions/configure-pages@v5

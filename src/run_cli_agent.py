@@ -83,7 +83,7 @@ def setup_workspace(ws: Path) -> bool:
     print(f"  [WS] 配置 CMake...")
     rc = subprocess.run(
         ["cmake", "-S", ".", "-B", "build", "-GNinja",
-         "-DSTUDENT_ID=EvoBench", "-DSTUDENT_NAME=Agent",
+         "-DSTUDENT_ID=RAMP", "-DSTUDENT_NAME=Agent",
          "-DTASK1_WITH=flex", "-DTASK2_WITH=bison",
          "-DTASK2_REVIVE=OFF", "-DTASK3_REVIVE=OFF",
          "-DTASK4_REVIVE=OFF", "-DTASK5_REVIVE=OFF"],
@@ -319,7 +319,7 @@ def compute_metrics(task_scores: dict[int, float], resurrections: dict[int, bool
 # ──────────────────────── 主入口 ────────────────────────
 
 def main():
-    parser = argparse.ArgumentParser(description="CLI Agent EvoBench Runner")
+    parser = argparse.ArgumentParser(description="CLI Agent RAMP Runner")
     parser.add_argument("--backend", required=True, choices=["claude", "codex", "kimi"])
     parser.add_argument("--tasks", default="0-5",
                         help="Task 范围，如 0-5 或 1,2,3 或 4-5")
@@ -347,7 +347,7 @@ def main():
     model_name = args.model or f"{args.backend}-unknown"
 
     print(f"\n{'=' * 70}")
-    print(f"  CLI Agent EvoBench — {args.backend} ({model_name})")
+    print(f"  CLI Agent RAMP — {args.backend} ({model_name})")
     print(f"  任务: {tasks}")
     print(f"{'=' * 70}\n")
 
@@ -429,7 +429,7 @@ def main():
 
     # 保存报告
     report = {
-        "benchmark": "EvoBench-v3",
+        "benchmark": "RAMP-v3",
         "agent_backend": args.backend,
         "model": model_name,
         "timestamp": time.strftime("%Y-%m-%dT%H:%M:%SZ"),

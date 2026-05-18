@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""EvoBench 完整评测脚本。
+"""RAMP 完整评测脚本。
 
 每个模型使用独立工作区，避免 cmake 构建冲突。
 支持断点续跑、自动清理、结果收集。
@@ -66,7 +66,7 @@ class EvalResult:
 
 def prepare_workspace(model: str) -> Path:
     """为模型创建工作区副本。"""
-    ws = WS_BASE / f"evobench-{model}"
+    ws = WS_BASE / f"ramp-{model}"
     if ws.exists():
         shutil.rmtree(ws)
     shutil.copytree(YATCC_SRC, ws, symlinks=True)
@@ -79,7 +79,7 @@ def setup_workspace(ws: Path) -> bool:
         # CMake 配置
         subprocess.run(
             ["cmake", "-S", ".", "-B", "build", "-GNinja",
-             "-DSTUDENT_ID=EvoBench", "-DSTUDENT_NAME=Agent",
+             "-DSTUDENT_ID=RAMP", "-DSTUDENT_NAME=Agent",
              "-DTASK1_WITH=flex", "-DTASK2_WITH=bison",
              "-DTASK2_REVIVE=OFF", "-DTASK3_REVIVE=OFF",
              "-DTASK4_REVIVE=OFF", "-DTASK5_REVIVE=OFF"],
@@ -336,7 +336,7 @@ def update_leaderboard(results: list[EvalResult]) -> None:
 
 
 def main():
-    parser = argparse.ArgumentParser(description="EvoBench 完整评测")
+    parser = argparse.ArgumentParser(description="RAMP 完整评测")
     parser.add_argument("--models", default="all", help="模型列表 (逗号分隔或 'all')")
     parser.add_argument("--tasks", default="0-5", help="任务范围 (如 0-5 或 0,1,2,3)")
     parser.add_argument("--max-iterations", type=int, default=100, help="每个 Task 最大迭代轮次")
@@ -358,7 +358,7 @@ def main():
         tasks = [int(t.strip()) for t in args.tasks.split(",")]
     
     print(f"\n{'='*60}")
-    print(f"  EvoBench 完整评测")
+    print(f"  RAMP 完整评测")
     print(f"  模型: {', '.join(models)}")
     print(f"  任务: {tasks}")
     print(f"  并行: {args.max_parallel}")

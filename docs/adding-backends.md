@@ -1,12 +1,12 @@
 # 添加新的 Agent 后端
 
-EvoBench 设计为可扩展的评测框架，支持任意 Agent 框架接入。
+RAMP 设计为可扩展的评测框架，支持任意 Agent 框架接入。
 
 ## 步骤
 
 ### 1. 创建后端文件
 
-在 `evo_cli/backends/` 下创建新文件，如 `my_backend.py`:
+在 `ramp_cli/backends/` 下创建新文件，如 `my_backend.py`:
 
 ```python
 from .base import AgentBackend, TaskContext, TaskResult
@@ -51,21 +51,21 @@ class MyBackend(AgentBackend):
 
 ### 2. 注册后端
 
-在 `evo_cli/backends/__init__.py` 的 `_BACKEND_REGISTRY` 中添加:
+在 `ramp_cli/backends/__init__.py` 的 `_BACKEND_REGISTRY` 中添加:
 
 ```python
 _BACKEND_REGISTRY = {
     ...
-    "my-backend": "evo_cli.backends.my_backend:MyBackend",
+    "my-backend": "ramp_cli.backends.my_backend:MyBackend",
 }
 ```
 
 ### 3. 测试
 
 ```bash
-evo list-backends  # 确认新后端出现
-evo check          # 确认后端可用
-evo run --backend my-backend --tasks 0  # 测试
+ramp list-backends  # 确认新后端出现
+ramp check          # 确认后端可用
+ramp run --backend my-backend --tasks 0  # 测试
 ```
 
 ## 关键要求

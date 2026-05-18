@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# EvoBench 重跑失败模型脚本
+# RAMP 重跑失败模型脚本
 # 使用独立工作区副本，避免 Agent 之间互相干扰
 set -euo pipefail
 

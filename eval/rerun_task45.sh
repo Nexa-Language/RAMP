@@ -3,7 +3,7 @@
 # 只重跑 Task 4 和 Task 5，复用已有的 build 目录
 set -e
 
-PROJ_DIR="/root/proj/papers/EXPERIMENT/EvoBench"
+PROJ_DIR="/root/proj/Paper/EXPERIMENT/RAMP"
 YATCC_DIR="$PROJ_DIR/data/YatCC"
 LOG_DIR="$PROJ_DIR/eval/logs"
 RESULT_DIR="$PROJ_DIR/eval/results/openhands"
@@ -32,7 +32,7 @@ echo ""
 cd "$YATCC_DIR"
 if [ ! -f "build/build.ninja" ]; then
   echo "  [初始化] cmake 配置..."
-  cmake -S . -B build -GNinja -DSTUDENT_ID=EvoBench -DSTUDENT_NAME=Agent -DTASK1_WITH=flex -DTASK2_WITH=bison -DTASK2_REVIVE=ON -DTASK3_REVIVE=ON -DTASK4_REVIVE=ON -DTASK5_REVIVE=ON
+  cmake -S . -B build -GNinja -DSTUDENT_ID=RAMP -DSTUDENT_NAME=Agent -DTASK1_WITH=flex -DTASK2_WITH=bison -DTASK2_REVIVE=ON -DTASK3_REVIVE=ON -DTASK4_REVIVE=ON -DTASK5_REVIVE=ON
 fi
 
 # 确保标准答案存在

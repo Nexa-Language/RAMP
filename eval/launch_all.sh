@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# EvoBench: 启动所有 Agent 评测
+# RAMP: 启动所有 Agent 评测
 # 正确处理每个 CLI 的语法差异
 set -euo pipefail
 
@@ -124,7 +124,7 @@ launch_openhands() {
 # ─── 主流程 ────────────────────────────────────────────────
 
 echo "=========================================="
-echo "  EvoBench 全量评测启动"
+echo "  RAMP 全量评测启动"
 echo "  时间: $(date)"
 echo "=========================================="
 

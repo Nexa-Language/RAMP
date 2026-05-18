@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# EvoBench CLI Agent Launcher
+# RAMP CLI Agent Launcher
 # 使用 tmux 启动真正的交互式 Agent 会话
 set -euo pipefail
 
@@ -51,7 +51,7 @@ prepare_workspace() {
         cp -a "$YATCC_SRC" "$ws"
         # CMake 配置
         cd "$ws" && cmake -S . -B build -GNinja \
-            -DSTUDENT_ID=EvoBench -DSTUDENT_NAME=Agent \
+            -DSTUDENT_ID=RAMP -DSTUDENT_NAME=Agent \
             -DTASK1_WITH=flex -DTASK2_WITH=bison \
             -DTASK2_REVIVE=OFF -DTASK3_REVIVE=OFF \
             -DTASK4_REVIVE=OFF -DTASK5_REVIVE=OFF 2>/dev/null
@@ -69,7 +69,7 @@ prepare_workspace() {
 launch_claude() {
     local name="claude-sonnet4.6"
     local ws=$(prepare_workspace "$name")
-    local session="evo-$name"
+    local session="ramp-$name"
     
     echo "[启动] Claude Code ($name)"
     tmux kill-session -t "$session" 2>/dev/null || true
@@ -93,7 +93,7 @@ launch_claude() {
 launch_codex() {
     local name="codex-gpt5.5"
     local ws=$(prepare_workspace "$name")
-    local session="evo-$name"
+    local session="ramp-$name"
     
     echo "[启动] Codex CLI ($name)"
     tmux kill-session -t "$session" 2>/dev/null || true
@@ -113,7 +113,7 @@ launch_kimi() {
     local model=$1
     local name="kimi-$model"
     local ws=$(prepare_workspace "$name")
-    local session="evo-$name"
+    local session="ramp-$name"
     
     echo "[启动] Kimi CLI ($model)"
     tmux kill-session -t "$session" 2>/dev/null || true
@@ -143,7 +143,7 @@ launch_kimi() {
 
 # 主流程
 echo "=========================================="
-echo "  EvoBench CLI Agent Launcher"
+echo "  RAMP CLI Agent Launcher"
 echo "=========================================="
 
 # 启动 Claude Code (Sonnet 4.6)
@@ -159,10 +159,10 @@ echo ""
 echo "=========================================="
 echo "  所有 Agent 已启动！"
 echo ""
-echo "  查看状态: tmux ls | grep evo-"
-echo "  监控 Claude: tmux attach -t evo-claude-sonnet4.6"
-echo "  监控 Codex: tmux attach -t evo-codex-gpt5.5"
-echo "  监控 Kimi: tmux attach -t evo-kimi-kimi-k2.6"
+echo "  查看状态: tmux ls | grep ramp-"
+echo "  监控 Claude: tmux attach -t ramp-claude-sonnet4.6"
+echo "  监控 Codex: tmux attach -t ramp-codex-gpt5.5"
+echo "  监控 Kimi: tmux attach -t ramp-kimi-kimi-k2.6"
 echo ""
-echo "  截取输出: tmux capture-pane -t evo-claude-sonnet4.6 -p | tail -20"
+echo "  截取输出: tmux capture-pane -t ramp-claude-sonnet4.6 -p | tail -20"
 echo "=========================================="

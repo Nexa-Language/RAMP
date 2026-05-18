@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""使用 OpenHands SDK 运行 EvoBench 评测。
+"""使用 OpenHands SDK 运行 RAMP 评测。
 
 此脚本在 .venv-openhands (Python 3.12+) 虚拟环境中运行，
 使用真正的 Agent 框架（无限自循环、文件读写、命令执行）。
@@ -227,7 +227,7 @@ def trigger_resurrection(failed_task: int) -> None:
 # ─── 主流程 ──────────────────────────────────────────────────────────────
 
 def main():
-    parser = argparse.ArgumentParser(description="OpenHands Agent EvoBench Runner")
+    parser = argparse.ArgumentParser(description="OpenHands Agent RAMP Runner")
     parser.add_argument("--model", default=os.getenv("OPENAI_MODEL_NAME", "mimo-v2.5-pro"))
     parser.add_argument("--tasks", default="0-5", help="任务范围 (如 0-5 或 0,1,2,3)")
     parser.add_argument("--max-iterations", type=int, default=50, help="每个 Task 最大迭代轮次")
@@ -261,7 +261,7 @@ def main():
     api_key = os.getenv("OPENAI_API_KEY", "")
 
     print(f"\n{'='*70}")
-    print(f"  OpenHands Agent EvoBench Runner")
+    print(f"  OpenHands Agent RAMP Runner")
     print(f"  模型: {args.model}")
     print(f"  API: {api_base}")
     print(f"  任务: {tasks}")
@@ -276,7 +276,7 @@ def main():
     print("[初始化] CMake 配置...")
     subprocess.run(
         ["cmake", "-S", ".", "-B", "build", "-GNinja",
-         "-DSTUDENT_ID=EvoBench", "-DSTUDENT_NAME=Agent",
+         "-DSTUDENT_ID=RAMP", "-DSTUDENT_NAME=Agent",
          "-DTASK1_WITH=flex", "-DTASK2_WITH=bison",
          "-DTASK2_REVIVE=OFF", "-DTASK3_REVIVE=OFF",
          "-DTASK4_REVIVE=OFF", "-DTASK5_REVIVE=OFF"],
@@ -375,7 +375,7 @@ def main():
 
     # 生成报告
     report = {
-        "benchmark": "EvoBench-v2",
+        "benchmark": "RAMP-v2",
         "agent_backend": "openhands",
         "agent_model": args.model,
         "timestamp": time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime()),
@@ -393,7 +393,7 @@ def main():
 
     # 打印摘要
     print(f"\n{'='*70}")
-    print(f"  OpenHands Agent EvoBench 完成 — {args.model}")
+    print(f"  OpenHands Agent RAMP 完成 — {args.model}")
     print(f"{'='*70}")
     for r in results:
         icon = "✅" if r["passed"] else "❌"

@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""EvoBench 指标计算与 Leaderboard 生成。
+"""RAMP 指标计算与 Leaderboard 生成。
 
 指标公式:
 1. Mean Reward (加权平均分):
@@ -313,7 +313,7 @@ def generate_leaderboard(entries: list[dict], output_path: Path) -> None:
 
 
 def main():
-    parser = argparse.ArgumentParser(description="EvoBench 指标计算")
+    parser = argparse.ArgumentParser(description="RAMP 指标计算")
     parser.add_argument("--results-dir", default="eval/results",
                         help="评测结果目录")
     parser.add_argument("--output", default="site/assets/data/leaderboard.json",
@@ -333,7 +333,7 @@ def main():
 
     # 打印摘要
     print(f"\n{'='*80}")
-    print(f"  EvoBench Leaderboard ({len(entries)} models)")
+    print(f"  RAMP Leaderboard ({len(entries)} models)")
     print(f"{'='*80}")
     print(f"{'Rank':<5} {'Model':<30} {'Mean Reward':<12} {'Pass Score':<11} {'Pipeline':<9} {'🔄':<4}")
     print(f"{'-'*5} {'-'*30} {'-'*12} {'-'*11} {'-'*9} {'-'*4}")

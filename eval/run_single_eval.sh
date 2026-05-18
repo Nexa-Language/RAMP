@@ -9,7 +9,7 @@ if [ -z "$MODEL" ]; then
   exit 1
 fi
 
-PROJ_DIR="/root/proj/papers/EXPERIMENT/EvoBench"
+PROJ_DIR="/root/proj/Paper/EXPERIMENT/RAMP"
 YATCC_DIR="$PROJ_DIR/data/YatCC"
 LOG_DIR="$PROJ_DIR/eval/logs"
 RESULT_DIR="$PROJ_DIR/eval/results/openhands"

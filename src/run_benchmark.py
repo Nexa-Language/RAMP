@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""EvoBench 端到端跑分脚本。
+"""RAMP 端到端跑分脚本。
 
 使用 mimo-v2.5-pro 模型，逐个 Task 让 Agent 编码，
 然后构建+评测，记录分数并生成报告。
@@ -21,7 +21,7 @@ from dotenv import load_dotenv
 load_dotenv(Path(__file__).parent / ".env")
 
 YATCC_ROOT = Path(__file__).parent / "YatCC"
-OUTPUT_DIR = Path(__file__).parent / "evobench_output"
+OUTPUT_DIR = Path(__file__).parent / "ramp_output"
 OUTPUT_DIR.mkdir(exist_ok=True)
 
 # ─── Agent 调用 ──────────────────────────────────────────────────────────
@@ -280,7 +280,7 @@ def solve_task(task_id: int, max_turns: int = 20) -> dict:
 
 def main():
     print("=" * 70)
-    print("  EvoBench 端到端跑分")
+    print("  RAMP 端到端跑分")
     print(f"  模型: {MODEL}")
     print(f"  API: {os.getenv('OPENAI_API_BASE')}")
     print("=" * 70)
@@ -356,7 +356,7 @@ def main():
 
     # 生成报告
     report = {
-        "benchmark": "EvoBench-v1",
+        "benchmark": "RAMP-v1",
         "agent_model": MODEL,
         "timestamp": time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime()),
         "total_elapsed_seconds": total_elapsed,
@@ -369,13 +369,13 @@ def main():
         },
     }
 
-    report_path = OUTPUT_DIR / "evobench_report.json"
+    report_path = OUTPUT_DIR / "ramp_report.json"
     with open(report_path, "w") as f:
         json.dump(report, f, ensure_ascii=False, indent=2)
 
     # 打印摘要
     print(f"\n{'='*70}")
-    print(f"  EvoBench 跑分完成 — {MODEL}")
+    print(f"  RAMP 跑分完成 — {MODEL}")
     print(f"{'='*70}")
     for r in results:
         icon = "✅" if r["passed"] else "❌"

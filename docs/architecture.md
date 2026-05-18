@@ -1,10 +1,10 @@
-# EvoBench 架构文档
+# RAMP 架构文档
 
 ## 系统架构
 
 ```mermaid
 graph TD
-    CLI[evo CLI] --> BM[BenchmarkOrchestrator]
+    CLI[ramp CLI] --> BM[BenchmarkOrchestrator]
     BM --> BE[Backend Registry]
     BM --> EV[Evaluator]
     BM --> CTX[Context Manager]
@@ -84,7 +84,7 @@ Agent → read_file/write_file/run_command → YatCC 工作区
                                             ↓
                                     parse_score() → ScoreResult
                                             ↓
-                                    MetricsCollector → EvoBenchResult
+                                    MetricsCollector → RAMPResult
                                             ↓
                                     ReportGenerator → JSON/CSV/MD
 ```

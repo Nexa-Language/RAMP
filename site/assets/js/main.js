@@ -1,4 +1,4 @@
-// EvoBench — Particle System (self-contained, no external dependency)
+// RAMP — Particle System (self-contained, no external dependency)
 (function() {
     const canvas = document.getElementById('particles');
     if (!canvas) return;

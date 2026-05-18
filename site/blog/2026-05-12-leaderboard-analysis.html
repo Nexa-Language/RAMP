@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Leaderboard Deep Dive — EvoBench Blog</title>
+    <title>Leaderboard Deep Dive — RAMP Blog</title>
     <link rel="stylesheet" href="../assets/css/style.css">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
@@ -56,12 +56,12 @@
     <canvas id="particles"></canvas>
     <nav class="nav">
         <div class="nav-container">
-            <a href="/" class="nav-logo"><span class="logo-icon">⚡</span><span class="logo-text">EvoBench</span></a>
+            <a href="/" class="nav-logo"><span class="logo-icon">⚡</span><span class="logo-text">RAMP</span></a>
             <div class="nav-links">
                 <a href="/" class="nav-link">Home</a>
                 <a href="../leaderboard.html" class="nav-link">Leaderboard</a>
                 <a href="../blog.html" class="nav-link">Blog</a>
-                <a href="https://github.com/Nexa-Language/EvoBench" class="nav-link" target="_blank"><i class="fab fa-github"></i> GitHub</a>
+                <a href="https://github.com/Nexa-Language/RAMP" class="nav-link" target="_blank"><i class="fab fa-github"></i> GitHub</a>
             </div>
         </div>
     </nav>
@@ -79,7 +79,7 @@
             <h1>Leaderboard Deep Dive: Kimi CLI Dominates, Resurrection Reveals Hidden Capabilities</h1>
         </div>
 
-        <p>With <strong>22 model configurations</strong> now evaluated across four agent backends, the EvoBench leaderboard tells a story that no static benchmark can capture. Today we're doing a deep dive into what the numbers actually mean — and why the resurrection mechanism is the most important innovation in agent evaluation this year.</p>
+        <p>With <strong>22 model configurations</strong> now evaluated across four agent backends, the RAMP leaderboard tells a story that no static benchmark can capture. Today we're doing a deep dive into what the numbers actually mean — and why the resurrection mechanism is the most important innovation in agent evaluation this year.</p>
 
         <h2>The Top 10: A New Hierarchy Emerges</h2>
 
@@ -99,7 +99,7 @@
 
         <div class="insight">
             <div class="insight-title">🔑 Key Observation</div>
-            <p><strong>Only 2 out of 22 configurations achieve zero-shot pipeline success</strong> (no resurrection needed). The other 20 all require at least one resurrection — meaning they fail at some point in the serial chain and need golden artifacts injected to continue. This is the fundamental insight of EvoBench: <em>serial dependency is hard</em>, even for frontier models.</p>
+            <p><strong>Only 2 out of 22 configurations achieve zero-shot pipeline success</strong> (no resurrection needed). The other 20 all require at least one resurrection — meaning they fail at some point in the serial chain and need golden artifacts injected to continue. This is the fundamental insight of RAMP: <em>serial dependency is hard</em>, even for frontier models.</p>
         </div>
 
         <h2>The Resurrection Effect: 17/19 Models Gain >40 Points</h2>

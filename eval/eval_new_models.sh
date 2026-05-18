@@ -1,5 +1,5 @@
 #!/bin/bash
-# EvoBench 补测脚本 — 剩余 API 模型
+# RAMP 补测脚本 — 剩余 API 模型
 set -euo pipefail
 ROOT_DIR="$(cd "$(dirname "$0")/.." && pwd)"
 VENV="$ROOT_DIR/.venv-openhands"

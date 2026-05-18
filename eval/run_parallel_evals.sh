@@ -1,5 +1,5 @@
 #!/bin/bash
-# EvoBench 并行评测脚本
+# RAMP 并行评测脚本
 # 每个模型使用独立的工作区副本，避免冲突
 set -euo pipefail
 
@@ -14,7 +14,7 @@ mkdir -p "$LOG_DIR"
 export OPENHANDS_SUPPRESS_BANNER=1
 
 echo "=========================================="
-echo "  EvoBench 并行评测启动"
+echo "  RAMP 并行评测启动"
 echo "  任务: Task $TASKS"
 echo "  日志: $LOG_DIR/"
 echo "=========================================="
@@ -78,5 +78,5 @@ echo ""
 echo "=========================================="
 echo "  所有评测已启动！"
 echo "  查看进度: tail -f $LOG_DIR/*.log"
-echo "  查看结果: cat $ROOT_DIR/evobench_output/*.json"
+echo "  查看结果: cat $ROOT_DIR/ramp_output/*.json"
 echo "=========================================="
