@@ -7,6 +7,7 @@ from datetime import datetime
 from pathlib import Path
 from typing import Any
 
+from lib._agent_events import agent_successful_llm_call_count
 from lib._openhands_events import read_json, response_ids_from_single_jsonl
 
 
@@ -67,10 +68,20 @@ def format_wall_remaining_display(seconds: int | None) -> str:
 
 
 def iterations_used_for_budget(output_dir: Path, context_mode: str) -> int:
-    """当前对话已消耗的 LLM 响应数（用于估算剩余轮数）。"""
+    """当前对话已消耗的 LLM 响应数（用于估算剩余轮数）。
+
+    OpenHands pipeline 使用 ``openhands-events/pipeline.jsonl`` 中的响应 id；
+    Kimi / 其它 CLI pipeline 无该文件时，改为累加 ``agent-events`` 内已记录的
+    ``llm_response``（Kimi 下按 stream-json 每条 assistant 一行计一次）。
+    """
     if (context_mode or "").lower() != "pipeline":
         return 0
-    return len(response_ids_from_single_jsonl(output_dir / "openhands-events" / "pipeline.jsonl"))
+    pipeline_jsonl = output_dir / "openhands-events" / "pipeline.jsonl"
+    if pipeline_jsonl.is_file():
+        n = len(response_ids_from_single_jsonl(pipeline_jsonl))
+        if n > 0:
+            return n
+    return agent_successful_llm_call_count(output_dir)
 
 
 def remaining_iterations_budget(output_dir: Path, context_mode: str, max_iterations: int) -> int:

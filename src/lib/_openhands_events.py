@@ -401,12 +401,21 @@ def successful_llm_call_count(run_dir: Path) -> int:
     return int(value or 0)
 
 
-def cache_hit_info(run_dir: Path) -> dict[str, Any]:
-    metrics = collect_llm_metrics(run_dir, "")
-    read_tokens = int(metrics.get("run_llm_cache_read_tokens") or 0)
-    write_tokens = int(metrics.get("run_llm_cache_write_tokens") or 0)
+def cache_hit_info_from_metrics(metrics: dict[str, Any]) -> dict[str, Any]:
+    def _to_int(value: Any) -> int:
+        try:
+            return int(value)
+        except (TypeError, ValueError):
+            return 0
+
+    read_tokens = _to_int(metrics.get("run_llm_cache_read_tokens"))
+    write_tokens = _to_int(metrics.get("run_llm_cache_write_tokens"))
     return {
         "cache_hit": read_tokens > 0,
         "cache_hit_tokens": read_tokens,
         "cache_write_tokens": write_tokens,
     }
+
+
+def cache_hit_info(run_dir: Path) -> dict[str, Any]:
+    return cache_hit_info_from_metrics(collect_llm_metrics(run_dir, ""))

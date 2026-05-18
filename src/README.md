@@ -206,7 +206,7 @@ python src/main.py summarize \
   [--no-tokens]
 ```
 
-- `--glob`：作用于 `runs-dir` 下的**子目录名**（例如 `run-pipeline-`*），不是 run 内部文件 glob。
+- `--glob`：作用于 `runs-dir` 下的**子目录名**，不是 run 内部文件 glob。若模式里不含 `*`、`?`、`[`，则按**子串**匹配（如 `engineer` 会匹配 `engineer-openhand-500-...`）；否则按 pathlib 的 glob 规则（如 `run-pipeline-*`）。
 - `--output-prefix`：写入 `<前缀>.json` 与 `<前缀>.csv`；省略时使用上文默认规则。
 - `--no-tokens`：不读取 `openhands-state/**/base_state.json` 中的 token/费用列（仍会尽量从事件解析轮次等）。
 

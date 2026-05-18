@@ -68,6 +68,7 @@ def run_cli_backend(args: argparse.Namespace) -> int:
             output_dir=output_dir,
             run_id=run_id,
             max_iterations=args.max_iterations,
+            context_mode=args.context_mode,
         )
         first_pipeline_task = True
         for task_id in tasks:
@@ -79,6 +80,9 @@ def run_cli_backend(args: argparse.Namespace) -> int:
             else:
                 stage = None
             wall_sec = remaining_wall_seconds(output_dir)
+            iter_remaining = remaining_iterations_budget(
+                output_dir, args.context_mode, args.max_iterations
+            )
             prompt = build_task_prompt(
                 task_id=task_id,
                 context_mode=args.context_mode,
@@ -86,12 +90,22 @@ def run_cli_backend(args: argparse.Namespace) -> int:
                 guides=guides,
                 pipeline_stage=stage,
                 budget_wall_display=format_wall_remaining_display(wall_sec),
-                budget_remaining_iterations=remaining_iterations_budget(
-                    output_dir, args.context_mode, args.max_iterations
-                ),
+                budget_remaining_iterations=iter_remaining,
             )
             try:
-                run_cli_backend_task(ctx, task_id, prompt)
+                if args.context_mode == "pipeline" and iter_remaining <= 0:
+                    print(
+                        f"[Task {task_id}] pipeline 全局 LLM 轮数已达 --max-iterations={args.max_iterations}，"
+                        "跳过 agent 子进程。"
+                    )
+                else:
+                    run_cli_backend_task(
+                        ctx,
+                        task_id,
+                        prompt,
+                        llm_step_budget=iter_remaining,
+                        pipeline_stage=stage,
+                    )
             except Exception as exc:
                 error = f"{type(exc).__name__}: {exc}"
                 print(f"[Task {task_id}] Agent 异常: {error}")

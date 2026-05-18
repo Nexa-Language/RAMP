@@ -8,6 +8,7 @@ from dataclasses import dataclass
 from pathlib import Path
 
 from lib._agent_events import append_agent_event
+from lib._kimi_stream_json import kimi_stream_json_assistant_lines
 
 
 SUPPORTED_BACKENDS = ("openhands", "kimi", "claude", "codex")
@@ -23,6 +24,7 @@ class BackendContext:
     output_dir: Path
     run_id: str
     max_iterations: int
+    context_mode: str = "per-task"
 
 
 def ensure_backend(name: str) -> str:
@@ -43,17 +45,33 @@ def _base_env(ctx: BackendContext) -> dict[str, str]:
     return env
 
 
-def _run_command(ctx: BackendContext, task_id: int, command: list[str], env: dict[str, str]) -> None:
+def _run_command(
+    ctx: BackendContext,
+    task_id: int,
+    command: list[str],
+    env: dict[str, str],
+    *,
+    llm_step_budget: int | None = None,
+    pipeline_stage: str | None = None,
+) -> None:
     event_path = ctx.output_dir / "agent-events" / f"task{task_id}.jsonl"
-    append_agent_event(
-        event_path,
-        {
-            "event_type": "agent_start",
-            "backend": ctx.backend,
-            "task_id": task_id,
-            "command": command[:2],
-        },
-    )
+    start_payload: dict = {
+        "event_type": "agent_start",
+        "backend": ctx.backend,
+        "task_id": task_id,
+        "command": command[:2],
+        "context_mode": ctx.context_mode,
+        "pipeline_stage": pipeline_stage,
+    }
+    if llm_step_budget is not None:
+        start_payload["llm_step_budget"] = llm_step_budget
+    append_agent_event(event_path, start_payload)
+    if ctx.backend == "kimi":
+        sub_timeout: int | None = None
+    elif ctx.max_iterations > 0:
+        sub_timeout = ctx.max_iterations * 300
+    else:
+        sub_timeout = None
     proc = subprocess.run(
         command,
         cwd=ctx.workspace,
@@ -62,9 +80,38 @@ def _run_command(ctx: BackendContext, task_id: int, command: list[str], env: dic
         text=True,
         encoding="utf-8",
         errors="replace",
-        timeout=ctx.max_iterations * 300 if ctx.max_iterations > 0 else None,
+        timeout=sub_timeout,
     )
-    if proc.stdout:
+    out = proc.stdout or ""
+    if ctx.backend == "kimi" and out.strip():
+        assistant_lines = kimi_stream_json_assistant_lines(out)
+        if assistant_lines:
+            for i, snippet in enumerate(assistant_lines):
+                append_agent_event(
+                    event_path,
+                    {
+                        "event_type": "llm_response",
+                        "backend": ctx.backend,
+                        "task_id": task_id,
+                        "llm_response_id": str(uuid.uuid4()),
+                        "kimi_stream_json": True,
+                        "kimi_assistant_index": i,
+                        "message": snippet[:12000],
+                    },
+                )
+        else:
+            append_agent_event(
+                event_path,
+                {
+                    "event_type": "llm_response",
+                    "backend": ctx.backend,
+                    "task_id": task_id,
+                    "llm_response_id": str(uuid.uuid4()),
+                    "kimi_stream_json": False,
+                    "message": out[-8000:],
+                },
+            )
+    elif out:
         append_agent_event(
             event_path,
             {
@@ -72,7 +119,7 @@ def _run_command(ctx: BackendContext, task_id: int, command: list[str], env: dic
                 "backend": ctx.backend,
                 "task_id": task_id,
                 "llm_response_id": str(uuid.uuid4()),
-                "message": proc.stdout[-8000:],
+                "message": out[-8000:],
             },
         )
     if proc.stderr:
@@ -109,7 +156,14 @@ def _run_command(ctx: BackendContext, task_id: int, command: list[str], env: dic
         raise RuntimeError(f"{ctx.backend} backend exited with {proc.returncode}")
 
 
-def run_cli_backend_task(ctx: BackendContext, task_id: int, prompt: str) -> None:
+def run_cli_backend_task(
+    ctx: BackendContext,
+    task_id: int,
+    prompt: str,
+    *,
+    llm_step_budget: int | None = None,
+    pipeline_stage: str | None = None,
+) -> None:
     ensure_backend(ctx.backend)
     if ctx.backend == "openhands":
         raise ValueError("OpenHands backend is handled by the OpenHands SDK runner")
@@ -183,7 +237,23 @@ def run_cli_backend_task(ctx: BackendContext, task_id: int, prompt: str) -> None
                 "KIMI_MODEL_NAME": ctx.model,
             }
         )
-        command = ["kimi", "--print", "-p", prompt, "--output-format=stream-json"]
+        step_cap = max(1, llm_step_budget) if llm_step_budget is not None else max(ctx.max_iterations, 1)
+        command = [
+            "kimi",
+            "--print",
+            "-p",
+            prompt,
+            "--output-format=stream-json",
+            "--max-steps-per-turn",
+            str(step_cap),
+        ]
     else:
         raise ValueError(f"不支持的 CLI backend: {ctx.backend}")
-    _run_command(ctx, task_id, command, env)
+    _run_command(
+        ctx,
+        task_id,
+        command,
+        env,
+        llm_step_budget=llm_step_budget,
+        pipeline_stage=pipeline_stage,
+    )

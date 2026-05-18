@@ -7,11 +7,16 @@ from pathlib import Path
 from typing import Any
 
 from lib import _docker
-from lib._agent_events import agent_error_events, agent_successful_llm_call_count
+from lib._agent_events import (
+    agent_error_events,
+    agent_events_per_task_llm_rounds,
+    agent_successful_llm_call_count,
+    collect_llm_metrics_from_agent_events,
+)
 from lib._metrics import compute_mean_reward, compute_pass_score, prior_non_full_flags, prior_non_full_score_count
 from lib._openhands_events import (
     base_state_execution_status,
-    cache_hit_info,
+    cache_hit_info_from_metrics,
     collect_agent_llm_rounds,
     collect_error_events,
     collect_error_events_from_jsonl,
@@ -179,9 +184,21 @@ def collect_one(run_dir: Path, *, include_tokens: bool = True) -> dict[str, Any]
         if count:
             row["agent_llm_rounds_source"] = "agent-events"
             row["run_agent_llm_rounds"] = count
+        for key, value in agent_events_per_task_llm_rounds(run_dir).items():
+            if isinstance(value, int):
+                row[key] = value
     if include_tokens:
-        row.update(collect_llm_metrics(run_dir, context_mode))
-        row.update(cache_hit_info(run_dir))
+        metrics = collect_llm_metrics(run_dir, context_mode)
+        if (
+            not metrics.get("llm_metrics_source")
+            and backend != "openhands"
+            and (run_dir / "agent-events").is_dir()
+        ):
+            extra = collect_llm_metrics_from_agent_events(run_dir, context_mode)
+            if extra.get("llm_metrics_source"):
+                metrics = {**metrics, **extra}
+        row.update(metrics)
+        row.update(cache_hit_info_from_metrics(metrics))
     errors = agent_error_events(run_dir) if backend != "openhands" and (run_dir / "agent-events").is_dir() else collect_error_events(run_dir)
     last_error = errors[-1] if errors else {}
     successful = agent_successful_llm_call_count(run_dir) if backend != "openhands" and (run_dir / "agent-events").is_dir() else successful_llm_call_count(run_dir)
@@ -245,6 +262,21 @@ def collect_launch_status_row(run_dir: Path) -> dict[str, Any]:
     return row
 
 
+def _runs_subdir_glob(pattern: str) -> str:
+    """将 ``--glob`` 转为 ``runs_dir.glob`` 可用的模式。
+
+    ``Path.glob("engineer")`` 只匹配名为 ``engineer`` 的目录，不会匹配
+    ``engineer-openhand-500-...``。不含 ``*?`` 或 ``[`` 的片段视为「目录名子串」，
+    自动包成 ``*片段*``；已含 glob 元字符的字符串原样使用。
+    """
+    p = pattern.strip()
+    if not p:
+        return "*"
+    if any(ch in p for ch in "*?["):
+        return p
+    return f"*{p}*"
+
+
 def aggregate_runs(
     runs_dir: Path = DEFAULT_RUNS_DIR,
     *,
@@ -252,7 +284,8 @@ def aggregate_runs(
     output_prefix: Path | None = None,
     include_tokens: bool = True,
 ) -> tuple[list[dict[str, Any]], Path, Path]:
-    rows = [collect_one(path, include_tokens=include_tokens) for path in sorted(runs_dir.glob(glob_pattern)) if path.is_dir()]
+    resolved_glob = _runs_subdir_glob(glob_pattern)
+    rows = [collect_one(path, include_tokens=include_tokens) for path in sorted(runs_dir.glob(resolved_glob)) if path.is_dir()]
     rows.sort(key=lambda row: (str(row.get("model", "")), str(row.get("run_id", ""))))
     if output_prefix is None:
         contexts = {str(row.get("context_mode", "")) for row in rows}
@@ -284,7 +317,11 @@ def cmd_summarize_router(args: argparse.Namespace) -> int:
 def add_parser(subparsers: argparse._SubParsersAction[argparse.ArgumentParser]) -> None:
     parser = subparsers.add_parser("summarize", help="汇总或诊断 container-runs 输出（默认生成汇总 JSON/CSV）")
     parser.add_argument("--runs-dir", default=str(DEFAULT_RUNS_DIR), help="container-runs 根目录")
-    parser.add_argument("--glob", default="*", help="匹配 run 子目录名的 glob，如 run-pipeline-*")
+    parser.add_argument(
+        "--glob",
+        default="*",
+        help="匹配 run 子目录名：含 *?[] 时为 pathlib glob；否则视为子串（如 engineer 匹配 engineer-openhand-...）",
+    )
     parser.add_argument("--output-prefix", default="", help="汇总文件路径前缀，省略则按 context 选默认前缀")
     parser.add_argument("--no-tokens", action="store_true", help="不读取 base_state 中的 token/费用")
     sub = parser.add_subparsers(dest="summarize_cmd", required=False)
