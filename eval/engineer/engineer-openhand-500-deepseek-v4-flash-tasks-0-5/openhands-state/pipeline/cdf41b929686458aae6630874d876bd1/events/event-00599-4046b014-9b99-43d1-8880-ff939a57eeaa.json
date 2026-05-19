@@ -1,0 +1,1 @@
+{"id":"4046b014-9b99-43d1-8880-ff939a57eeaa","timestamp":"2026-05-17T18:12:44.252937","source":"agent","tool_name":"terminal","tool_call_id":"call_5f179b368d9f4d8f9e4e86f0","error":"Error validating tool 'terminal': Expecting property name enclosed in double quotes: line 1 column 2 (char 1). Arguments: unparseable JSON","kind":"AgentErrorEvent"}

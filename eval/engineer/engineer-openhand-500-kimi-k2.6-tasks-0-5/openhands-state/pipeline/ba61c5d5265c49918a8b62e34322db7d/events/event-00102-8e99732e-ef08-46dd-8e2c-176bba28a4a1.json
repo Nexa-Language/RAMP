@@ -1,0 +1,1 @@
+{"id":"8e99732e-ef08-46dd-8e2c-176bba28a4a1","timestamp":"2026-05-17T17:24:07.003929","source":"agent","tool_name":"think","tool_call_id":"functions.think:49","error":"Error validating tool 'think': Expecting ',' delimiter: line 1 column 67 (char 66). Arguments: unparseable JSON","kind":"AgentErrorEvent"}

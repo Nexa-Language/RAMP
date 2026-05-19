@@ -1,0 +1,1495 @@
+[A[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[Kt
+[?2004l本节点情况 level 1: 
+键 'name' 错误
+
+>----------------------------对比开始----------------------------
+
+标准答案节点: 
+id: '0x5576fe822eb0'
+kind: ParmVarDecl
+name: lineno
+value: null
+
+
+用户答案节点: 
+id: null
+kind: ParmVarDecl
+name: ''
+value: null
+
+
+<----------------------------对比结束----------------------------
+
+
+本节点情况 level 3: 
+键 'loc' 在用户答案节点内不存在
+键 'range' 在用户答案节点内不存在
+
+>----------------------------对比开始----------------------------
+
+标准答案节点: 
+id: '0x5576fe822eb0'
+kind: ParmVarDecl
+loc:
+  col: 26
+  includedFrom:
+    file: /workspace/YatCC/test/cases/functional-3/035_if_test2.sysu.c
+  offset: 379
+  tokLen: 6
+name: lineno
+range:
+  begin:
+    col: 22
+    includedFrom:
+      file: /workspace/YatCC/test/cases/functional-3/035_if_test2.sysu.c
+    offset: 375
+    tokLen: 3
+  end:
+    col: 26
+    includedFrom:
+      file: /workspace/YatCC/test/cases/functional-3/035_if_test2.sysu.c
+    offset: 379
+    tokLen: 6
+value: null
+
+
+用户答案节点: 
+id: null
+kind: ParmVarDecl
+loc: null
+name: ''
+range: null
+value: null
+
+
+<----------------------------对比结束----------------------------
+
+
+本节点情况 level 1: 
+inner 错误，第0项
+
+>----------------------------对比开始----------------------------
+
+标准答案节点: 
+id: '0x5576fe822f80'
+inner:
+- id: '0x5576fe822eb0'
+  kind: ParmVarDecl
+  loc:
+    col: 26
+    includedFrom:
+      file: /workspace/YatCC/test/cases/functional-3/035_if_test2.sysu.c
+    offset: 379
+    tokLen: 6
+  name: lineno
+  range:
+    begin:
+      col: 22
+      includedFrom:
+        file: /workspace/YatCC/test/cases/functional-3/035_if_test2.sysu.c
+      offset: 375
+      tokLen: 3
+    end:
+      col: 26
+      includedFrom:
+        file: /workspace/YatCC/test/cases/functional-3/035_if_test2.sysu.c
+      offset: 379
+      tokLen: 6
+  type:
+    qualType: int
+kind: FunctionDecl
+name: _sysy_starttime
+value: null
+
+
+用户答案节点: 
+id: null
+inner:
+- kind: ParmVarDecl
+  name: ''
+  type:
+    qualType: int
+kind: FunctionDecl
+name: _sysy_starttime
+value: null
+
+
+<----------------------------对比结束----------------------------
+
+
+本节点情况 level 3: 
+键 'loc' 在用户答案节点内不存在
+键 'range' 在用户答案节点内不存在
+键 'mangledName' 在用户答案节点内不存在
+
+>----------------------------对比开始----------------------------
+
+标准答案节点: 
+id: '0x5576fe822f80'
+kind: FunctionDecl
+loc:
+  col: 6
+  file: /workspace/YatCC/build/test/task0/functional-3/035_if_test2.sysu.c
+  includedFrom:
+    file: /workspace/YatCC/test/cases/functional-3/035_if_test2.sysu.c
+  line: 10
+  offset: 359
+  presumedFile: /workspace/YatCC/test/rtlib/include/sysy/sylib.h
+  tokLen: 15
+mangledName: _sysy_starttime
+name: _sysy_starttime
+range:
+  begin:
+    col: 1
+    includedFrom:
+      file: /workspace/YatCC/test/cases/functional-3/035_if_test2.sysu.c
+    offset: 354
+    tokLen: 4
+  end:
+    col: 32
+    includedFrom:
+      file: /workspace/YatCC/test/cases/functional-3/035_if_test2.sysu.c
+    offset: 385
+    tokLen: 1
+value: null
+
+
+用户答案节点: 
+id: null
+kind: FunctionDecl
+loc: null
+mangledName: null
+name: _sysy_starttime
+range: null
+value: null
+
+
+<----------------------------对比结束----------------------------
+
+
+本节点情况 level 1: 
+键 'name' 错误
+
+>----------------------------对比开始----------------------------
+
+标准答案节点: 
+id: '0x5576fe823090'
+kind: ParmVarDecl
+name: lineno
+value: null
+
+
+用户答案节点: 
+id: null
+kind: ParmVarDecl
+name: ''
+value: null
+
+
+<----------------------------对比结束----------------------------
+
+
+本节点情况 level 3: 
+键 'loc' 在用户答案节点内不存在
+键 'range' 在用户答案节点内不存在
+
+>----------------------------对比开始----------------------------
+
+标准答案节点: 
+id: '0x5576fe823090'
+kind: ParmVarDecl
+loc:
+  col: 25
+  includedFrom:
+    file: /workspace/YatCC/test/cases/functional-3/035_if_test2.sysu.c
+  offset: 412
+  tokLen: 6
+name: lineno
+range:
+  begin:
+    col: 21
+    includedFrom:
+      file: /workspace/YatCC/test/cases/functional-3/035_if_test2.sysu.c
+    offset: 408
+    tokLen: 3
+  end:
+    col: 25
+    includedFrom:
+      file: /workspace/YatCC/test/cases/functional-3/035_if_test2.sysu.c
+    offset: 412
+    tokLen: 6
+value: null
+
+
+用户答案节点: 
+id: null
+kind: ParmVarDecl
+loc: null
+name: ''
+range: null
+value: null
+
+
+<----------------------------对比结束----------------------------
+
+
+本节点情况 level 1: 
+inner 错误，第0项
+
+>----------------------------对比开始----------------------------
+
+标准答案节点: 
+id: '0x5576fe823120'
+inner:
+- id: '0x5576fe823090'
+  kind: ParmVarDecl
+  loc:
+    col: 25
+    includedFrom:
+      file: /workspace/YatCC/test/cases/functional-3/035_if_test2.sysu.c
+    offset: 412
+    tokLen: 6
+  name: lineno
+  range:
+    begin:
+      col: 21
+      includedFrom:
+        file: /workspace/YatCC/test/cases/functional-3/035_if_test2.sysu.c
+      offset: 408
+      tokLen: 3
+    end:
+      col: 25
+      includedFrom:
+        file: /workspace/YatCC/test/cases/functional-3/035_if_test2.sysu.c
+      offset: 412
+      tokLen: 6
+  type:
+    qualType: int
+kind: FunctionDecl
+name: _sysy_stoptime
+value: null
+
+
+用户答案节点: 
+id: null
+inner:
+- kind: ParmVarDecl
+  name: ''
+  type:
+    qualType: int
+kind: FunctionDecl
+name: _sysy_stoptime
+value: null
+
+
+<----------------------------对比结束----------------------------
+
+
+本节点情况 level 3: 
+键 'loc' 在用户答案节点内不存在
+键 'range' 在用户答案节点内不存在
+键 'mangledName' 在用户答案节点内不存在
+
+>----------------------------对比开始----------------------------
+
+标准答案节点: 
+id: '0x5576fe823120'
+kind: FunctionDecl
+loc:
+  col: 6
+  includedFrom:
+    file: /workspace/YatCC/test/cases/functional-3/035_if_test2.sysu.c
+  line: 11
+  offset: 393
+  tokLen: 14
+mangledName: _sysy_stoptime
+name: _sysy_stoptime
+range:
+  begin:
+    col: 1
+    includedFrom:
+      file: /workspace/YatCC/test/cases/functional-3/035_if_test2.sysu.c
+    offset: 388
+    tokLen: 4
+  end:
+    col: 31
+    includedFrom:
+      file: /workspace/YatCC/test/cases/functional-3/035_if_test2.sysu.c
+    offset: 418
+    tokLen: 1
+value: null
+
+
+用户答案节点: 
+id: null
+kind: FunctionDecl
+loc: null
+mangledName: null
+name: _sysy_stoptime
+range: null
+value: null
+
+
+<----------------------------对比结束----------------------------
+
+
+本节点情况 level 3: 
+键 'loc' 在用户答案节点内不存在
+键 'range' 在用户答案节点内不存在
+键 'mangledName' 在用户答案节点内不存在
+
+>----------------------------对比开始----------------------------
+
+标准答案节点: 
+id: '0x5576fe823228'
+kind: FunctionDecl
+loc:
+  col: 5
+  includedFrom:
+    file: /workspace/YatCC/test/cases/functional-3/035_if_test2.sysu.c
+  line: 14
+  offset: 427
+  tokLen: 11
+mangledName: _sysy_getch
+name: _sysy_getch
+range:
+  begin:
+    col: 1
+    includedFrom:
+      file: /workspace/YatCC/test/cases/functional-3/035_if_test2.sysu.c
+    offset: 423
+    tokLen: 3
+  end:
+    col: 17
+    includedFrom:
+      file: /workspace/YatCC/test/cases/functional-3/035_if_test2.sysu.c
+    offset: 439
+    tokLen: 1
+value: null
+
+
+用户答案节点: 
+id: null
+kind: FunctionDecl
+loc: null
+mangledName: null
+name: _sysy_getch
+range: null
+value: null
+
+
+<----------------------------对比结束----------------------------
+
+
+本节点情况 level 1: 
+键 'name' 错误
+
+>----------------------------对比开始----------------------------
+
+标准答案节点: 
+id: '0x5576fe8232e8'
+kind: ParmVarDecl
+name: a
+value: null
+
+
+用户答案节点: 
+id: null
+kind: ParmVarDecl
+name: ''
+value: null
+
+
+<----------------------------对比结束----------------------------
+
+
+本节点情况 level 3: 
+键 'loc' 在用户答案节点内不存在
+键 'range' 在用户答案节点内不存在
+
+>----------------------------对比开始----------------------------
+
+标准答案节点: 
+id: '0x5576fe8232e8'
+kind: ParmVarDecl
+loc:
+  col: 22
+  includedFrom:
+    file: /workspace/YatCC/test/cases/functional-3/035_if_test2.sysu.c
+  offset: 463
+  tokLen: 1
+name: a
+range:
+  begin:
+    col: 18
+    includedFrom:
+      file: /workspace/YatCC/test/cases/functional-3/035_if_test2.sysu.c
+    offset: 459
+    tokLen: 3
+  end:
+    col: 22
+    includedFrom:
+      file: /workspace/YatCC/test/cases/functional-3/035_if_test2.sysu.c
+    offset: 463
+    tokLen: 1
+value: null
+
+
+用户答案节点: 
+id: null
+kind: ParmVarDecl
+loc: null
+name: ''
+range: null
+value: null
+
+
+<----------------------------对比结束----------------------------
+
+
+本节点情况 level 1: 
+inner 错误，第0项
+
+>----------------------------对比开始----------------------------
+
+标准答案节点: 
+id: '0x5576fe823378'
+inner:
+- id: '0x5576fe8232e8'
+  kind: ParmVarDecl
+  loc:
+    col: 22
+    includedFrom:
+      file: /workspace/YatCC/test/cases/functional-3/035_if_test2.sysu.c
+    offset: 463
+    tokLen: 1
+  name: a
+  range:
+    begin:
+      col: 18
+      includedFrom:
+        file: /workspace/YatCC/test/cases/functional-3/035_if_test2.sysu.c
+      offset: 459
+      tokLen: 3
+    end:
+      col: 22
+      includedFrom:
+        file: /workspace/YatCC/test/cases/functional-3/035_if_test2.sysu.c
+      offset: 463
+      tokLen: 1
+  type:
+    qualType: int
+kind: FunctionDecl
+name: _sysy_putch
+value: null
+
+
+用户答案节点: 
+id: null
+inner:
+- kind: ParmVarDecl
+  name: ''
+  type:
+    qualType: int
+kind: FunctionDecl
+name: _sysy_putch
+value: null
+
+
+<----------------------------对比结束----------------------------
+
+
+本节点情况 level 3: 
+键 'loc' 在用户答案节点内不存在
+键 'range' 在用户答案节点内不存在
+键 'mangledName' 在用户答案节点内不存在
+
+>----------------------------对比开始----------------------------
+
+标准答案节点: 
+id: '0x5576fe823378'
+kind: FunctionDecl
+loc:
+  col: 6
+  includedFrom:
+    file: /workspace/YatCC/test/cases/functional-3/035_if_test2.sysu.c
+  line: 15
+  offset: 447
+  tokLen: 11
+mangledName: _sysy_putch
+name: _sysy_putch
+range:
+  begin:
+    col: 1
+    includedFrom:
+      file: /workspace/YatCC/test/cases/functional-3/035_if_test2.sysu.c
+    offset: 442
+    tokLen: 4
+  end:
+    col: 23
+    includedFrom:
+      file: /workspace/YatCC/test/cases/functional-3/035_if_test2.sysu.c
+    offset: 464
+    tokLen: 1
+value: null
+
+
+用户答案节点: 
+id: null
+kind: FunctionDecl
+loc: null
+mangledName: null
+name: _sysy_putch
+range: null
+value: null
+
+
+<----------------------------对比结束----------------------------
+
+
+本节点情况 level 3: 
+键 'loc' 在用户答案节点内不存在
+键 'range' 在用户答案节点内不存在
+键 'mangledName' 在用户答案节点内不存在
+
+>----------------------------对比开始----------------------------
+
+标准答案节点: 
+id: '0x5576fe823450'
+kind: FunctionDecl
+loc:
+  col: 5
+  includedFrom:
+    file: /workspace/YatCC/test/cases/functional-3/035_if_test2.sysu.c
+  line: 17
+  offset: 472
+  tokLen: 12
+mangledName: _sysy_getint
+name: _sysy_getint
+range:
+  begin:
+    col: 1
+    includedFrom:
+      file: /workspace/YatCC/test/cases/functional-3/035_if_test2.sysu.c
+    offset: 468
+    tokLen: 3
+  end:
+    col: 18
+    includedFrom:
+      file: /workspace/YatCC/test/cases/functional-3/035_if_test2.sysu.c
+    offset: 485
+    tokLen: 1
+value: null
+
+
+用户答案节点: 
+id: null
+kind: FunctionDecl
+loc: null
+mangledName: null
+name: _sysy_getint
+range: null
+value: null
+
+
+<----------------------------对比结束----------------------------
+
+
+本节点情况 level 1: 
+键 'name' 错误
+
+>----------------------------对比开始----------------------------
+
+标准答案节点: 
+id: '0x5576fe823510'
+kind: ParmVarDecl
+name: a
+value: null
+
+
+用户答案节点: 
+id: null
+kind: ParmVarDecl
+name: ''
+value: null
+
+
+<----------------------------对比结束----------------------------
+
+
+本节点情况 level 3: 
+键 'loc' 在用户答案节点内不存在
+键 'range' 在用户答案节点内不存在
+
+>----------------------------对比开始----------------------------
+
+标准答案节点: 
+id: '0x5576fe823510'
+kind: ParmVarDecl
+loc:
+  col: 23
+  includedFrom:
+    file: /workspace/YatCC/test/cases/functional-3/035_if_test2.sysu.c
+  offset: 510
+  tokLen: 1
+name: a
+range:
+  begin:
+    col: 19
+    includedFrom:
+      file: /workspace/YatCC/test/cases/functional-3/035_if_test2.sysu.c
+    offset: 506
+    tokLen: 3
+  end:
+    col: 23
+    includedFrom:
+      file: /workspace/YatCC/test/cases/functional-3/035_if_test2.sysu.c
+    offset: 510
+    tokLen: 1
+value: null
+
+
+用户答案节点: 
+id: null
+kind: ParmVarDecl
+loc: null
+name: ''
+range: null
+value: null
+
+
+<----------------------------对比结束----------------------------
+
+
+本节点情况 level 1: 
+inner 错误，第0项
+
+>----------------------------对比开始----------------------------
+
+标准答案节点: 
+id: '0x5576fe8235a0'
+inner:
+- id: '0x5576fe823510'
+  kind: ParmVarDecl
+  loc:
+    col: 23
+    includedFrom:
+      file: /workspace/YatCC/test/cases/functional-3/035_if_test2.sysu.c
+    offset: 510
+    tokLen: 1
+  name: a
+  range:
+    begin:
+      col: 19
+      includedFrom:
+        file: /workspace/YatCC/test/cases/functional-3/035_if_test2.sysu.c
+      offset: 506
+      tokLen: 3
+    end:
+      col: 23
+      includedFrom:
+        file: /workspace/YatCC/test/cases/functional-3/035_if_test2.sysu.c
+      offset: 510
+      tokLen: 1
+  type:
+    qualType: int
+kind: FunctionDecl
+name: _sysy_putint
+value: null
+
+
+用户答案节点: 
+id: null
+inner:
+- kind: ParmVarDecl
+  name: ''
+  type:
+    qualType: int
+kind: FunctionDecl
+name: _sysy_putint
+value: null
+
+
+<----------------------------对比结束----------------------------
+
+
+本节点情况 level 3: 
+键 'loc' 在用户答案节点内不存在
+键 'range' 在用户答案节点内不存在
+键 'isUsed' 在用户答案节点内不存在
+键 'mangledName' 在用户答案节点内不存在
+
+>----------------------------对比开始----------------------------
+
+标准答案节点: 
+id: '0x5576fe8235a0'
+isUsed: true
+kind: FunctionDecl
+loc:
+  col: 6
+  includedFrom:
+    file: /workspace/YatCC/test/cases/functional-3/035_if_test2.sysu.c
+  line: 18
+  offset: 493
+  tokLen: 12
+mangledName: _sysy_putint
+name: _sysy_putint
+range:
+  begin:
+    col: 1
+    includedFrom:
+      file: /workspace/YatCC/test/cases/functional-3/035_if_test2.sysu.c
+    offset: 488
+    tokLen: 4
+  end:
+    col: 24
+    includedFrom:
+      file: /workspace/YatCC/test/cases/functional-3/035_if_test2.sysu.c
+    offset: 511
+    tokLen: 1
+value: null
+
+
+用户答案节点: 
+id: null
+isUsed: null
+kind: FunctionDecl
+loc: null
+mangledName: null
+name: _sysy_putint
+range: null
+value: null
+
+
+<----------------------------对比结束----------------------------
+
+
+本节点情况 level 1: 
+键 'name' 错误
+
+>----------------------------对比开始----------------------------
+
+标准答案节点: 
+id: '0x5576fe823710'
+kind: ParmVarDecl
+name: a
+value: null
+
+
+用户答案节点: 
+id: null
+kind: ParmVarDecl
+name: ''
+value: null
+
+
+<----------------------------对比结束----------------------------
+
+
+本节点情况 level 3: 
+键 'loc' 在用户答案节点内不存在
+键 'range' 在用户答案节点内不存在
+
+>----------------------------对比开始----------------------------
+
+标准答案节点: 
+id: '0x5576fe823710'
+kind: ParmVarDecl
+loc:
+  col: 24
+  includedFrom:
+    file: /workspace/YatCC/test/cases/functional-3/035_if_test2.sysu.c
+  offset: 538
+  tokLen: 1
+name: a
+range:
+  begin:
+    col: 20
+    includedFrom:
+      file: /workspace/YatCC/test/cases/functional-3/035_if_test2.sysu.c
+    offset: 534
+    tokLen: 3
+  end:
+    col: 26
+    includedFrom:
+      file: /workspace/YatCC/test/cases/functional-3/035_if_test2.sysu.c
+    offset: 540
+    tokLen: 1
+value: null
+
+
+用户答案节点: 
+id: null
+kind: ParmVarDecl
+loc: null
+name: ''
+range: null
+value: null
+
+
+<----------------------------对比结束----------------------------
+
+
+本节点情况 level 1: 
+inner 错误，第0项
+
+>----------------------------对比开始----------------------------
+
+标准答案节点: 
+id: '0x5576fe823828'
+inner:
+- id: '0x5576fe823710'
+  kind: ParmVarDecl
+  loc:
+    col: 24
+    includedFrom:
+      file: /workspace/YatCC/test/cases/functional-3/035_if_test2.sysu.c
+    offset: 538
+    tokLen: 1
+  name: a
+  range:
+    begin:
+      col: 20
+      includedFrom:
+        file: /workspace/YatCC/test/cases/functional-3/035_if_test2.sysu.<response clipped><NOTE>Due to the max output limit, only part of the full response has been shown to you.</NOTE>0x5576fe830568'
+  inner:
+  - id: '0x5576fe830760'
+    inner:
+    - id: '0x5576fe830708'
+      inner:
+      - castKind: FunctionToPointerDecay
+        id: '0x5576fe8306f0'
+        inner:
+        - id: '0x5576fe830610'
+          kind: DeclRefExpr
+          range:
+            begin:
+              col: 3
+              offset: 909
+              tokLen: 12
+            end:
+              col: 3
+              offset: 909
+              tokLen: 12
+          referencedDecl:
+            id: '0x5576fe8235a0'
+            kind: FunctionDecl
+            name: _sysy_putint
+            type:
+              qualType: void (int)
+          type:
+            qualType: void (int)
+          valueCategory: prvalue
+        kind: ImplicitCastExpr
+        range:
+          begin:
+            col: 3
+            offset: 909
+            tokLen: 12
+          end:
+            col: 3
+            offset: 909
+            tokLen: 12
+        type:
+          qualType: void (*)(int)
+        valueCategory: prvalue
+      - id: '0x5576fe830698'
+        inner:
+        - castKind: FunctionToPointerDecay
+          id: '0x5576fe830680'
+          inner:
+          - id: '0x5576fe830630'
+            kind: DeclRefExpr
+            range:
+              begin:
+                col: 16
+                offset: 922
+                tokLen: 8
+              end:
+                col: 16
+                offset: 922
+                tokLen: 8
+            referencedDecl:
+              id: '0x5576fe823b80'
+              kind: FunctionDecl
+              name: ifElseIf
+              type:
+                qualType: int ()
+            type:
+              qualType: int ()
+            valueCategory: prvalue
+          kind: ImplicitCastExpr
+          range:
+            begin:
+              col: 16
+              offset: 922
+              tokLen: 8
+            end:
+              col: 16
+              offset: 922
+              tokLen: 8
+          type:
+            qualType: int (*)()
+          valueCategory: prvalue
+        kind: CallExpr
+        range:
+          begin:
+            col: 16
+            offset: 922
+            tokLen: 8
+          end:
+            col: 25
+            offset: 931
+            tokLen: 1
+        type:
+          qualType: int
+        valueCategory: prvalue
+      kind: CallExpr
+      range:
+        begin:
+          col: 3
+          line: 45
+          offset: 909
+          presumedLine: 24
+          tokLen: 12
+        end:
+          col: 26
+          offset: 932
+          tokLen: 1
+      type:
+        qualType: void
+      valueCategory: prvalue
+    - id: '0x5576fe830750'
+      inner:
+      - id: '0x5576fe830730'
+        kind: IntegerLiteral
+        range:
+          begin:
+            col: 10
+            offset: 944
+            tokLen: 1
+          end:
+            col: 10
+            offset: 944
+            tokLen: 1
+        type:
+          qualType: int
+        value: '0'
+        valueCategory: prvalue
+      kind: ReturnStmt
+      range:
+        begin:
+          col: 3
+          line: 46
+          offset: 937
+          presumedLine: 25
+          tokLen: 6
+        end:
+          col: 10
+          offset: 944
+          tokLen: 1
+    kind: CompoundStmt
+    range:
+      begin:
+        col: 11
+        line: 44
+        offset: 905
+        presumedLine: 23
+        tokLen: 1
+      end:
+        col: 1
+        line: 47
+        offset: 947
+        presumedLine: 26
+        tokLen: 1
+  kind: FunctionDecl
+  loc:
+    col: 5
+    line: 44
+    offset: 899
+    presumedLine: 23
+    tokLen: 4
+  mangledName: main
+  name: main
+  range:
+    begin:
+      col: 1
+      offset: 895
+      tokLen: 3
+    end:
+      col: 1
+      line: 47
+      offset: 947
+      presumedLine: 26
+      tokLen: 1
+  type:
+    qualType: int ()
+kind: TranslationUnitDecl
+name: null
+value: null
+
+
+用户答案节点: 
+id: null
+inner:
+- inner:
+  - kind: ParmVarDecl
+    name: ''
+    type:
+      qualType: int
+  kind: FunctionDecl
+  name: _sysy_starttime
+  type:
+    qualType: void (int)
+- inner:
+  - kind: ParmVarDecl
+    name: ''
+    type:
+      qualType: int
+  kind: FunctionDecl
+  name: _sysy_stoptime
+  type:
+    qualType: void (int)
+- inner: []
+  kind: FunctionDecl
+  name: _sysy_getch
+  type:
+    qualType: int ()
+- inner:
+  - kind: ParmVarDecl
+    name: ''
+    type:
+      qualType: int
+  kind: FunctionDecl
+  name: _sysy_putch
+  type:
+    qualType: void (int)
+- inner: []
+  kind: FunctionDecl
+  name: _sysy_getint
+  type:
+    qualType: int ()
+- inner:
+  - kind: ParmVarDecl
+    name: ''
+    type:
+      qualType: int
+  kind: FunctionDecl
+  name: _sysy_putint
+  type:
+    qualType: void (int)
+- inner:
+  - kind: ParmVarDecl
+    name: ''
+    type:
+      qualType: int *
+  kind: FunctionDecl
+  name: _sysy_getarray
+  type:
+    qualType: int (int *)
+- inner:
+  - kind: ParmVarDecl
+    name: ''
+    type:
+      qualType: int
+  - kind: ParmVarDecl
+    name: ''
+    type:
+      qualType: int *
+  kind: FunctionDecl
+  name: _sysy_putarray
+  type:
+    qualType: void (int, int *)
+- inner:
+  - inner:
+    - inner:
+      - inner: []
+        kind: VarDecl
+        name: a
+        type:
+          qualType: int
+      kind: DeclStmt
+    - inner:
+      - kind: DeclRefExpr
+        type:
+          qualType: int
+        valueCategory: lvalue
+      - kind: IntegerLiteral
+        type:
+          qualType: int
+        value: '5'
+        valueCategory: prvalue
+      kind: BinaryOperator
+      opcode: '='
+      type:
+        qualType: int
+      valueCategory: prvalue
+    - inner:
+      - inner: []
+        kind: VarDecl
+        name: b
+        type:
+          qualType: int
+      kind: DeclStmt
+    - inner:
+      - kind: DeclRefExpr
+        type:
+          qualType: int
+        valueCategory: lvalue
+      - kind: IntegerLiteral
+        type:
+          qualType: int
+        value: '10'
+        valueCategory: prvalue
+      kind: BinaryOperator
+      opcode: '='
+      type:
+        qualType: int
+      valueCategory: prvalue
+    - inner:
+      - inner:
+        - inner:
+          - inner:
+            - kind: DeclRefExpr
+              type:
+                qualType: int
+              valueCategory: lvalue
+            kind: ImplicitCastExpr
+            type:
+              qualType: int
+            valueCategory: prvalue
+          - kind: IntegerLiteral
+            type:
+              qualType: int
+            value: '6'
+            valueCategory: prvalue
+          kind: BinaryOperator
+          opcode: ==
+          type:
+            qualType: int
+          valueCategory: prvalue
+        - inner:
+          - inner:
+            - kind: DeclRefExpr
+              type:
+                qualType: int
+              valueCategory: lvalue
+            kind: ImplicitCastExpr
+            type:
+              qualType: int
+            valueCategory: prvalue
+          - kind: IntegerLiteral
+            type:
+              qualType: int
+            value: '11'
+            valueCategory: prvalue
+          kind: BinaryOperator
+          opcode: ==
+          type:
+            qualType: int
+          valueCategory: prvalue
+        kind: BinaryOperator
+        opcode: '||'
+        type:
+          qualType: int
+        valueCategory: prvalue
+      - inner:
+        - inner:
+          - inner:
+            - kind: DeclRefExpr
+              type:
+                qualType: int
+              valueCategory: lvalue
+            kind: ImplicitCastExpr
+            type:
+              qualType: int
+            valueCategory: prvalue
+          kind: ReturnStmt
+        kind: CompoundStmt
+      - inner:
+        - inner:
+          - inner:
+            - inner:
+              - inner:
+                - kind: DeclRefExpr
+                  type:
+                    qualType: int
+                  valueCategory: lvalue
+                kind: ImplicitCastExpr
+                type:
+                  qualType: int
+                valueCategory: prvalue
+              - kind: IntegerLiteral
+                type:
+                  qualType: int
+                value: '10'
+                valueCategory: prvalue
+              kind: BinaryOperator
+              opcode: ==
+              type:
+                qualType: int
+              valueCategory: prvalue
+            - inner:
+              - inner:
+                - kind: DeclRefExpr
+                  type:
+                    qualType: int
+                  valueCategory: lvalue
+                kind: ImplicitCastExpr
+                type:
+                  qualType: int
+                valueCategory: prvalue
+              - kind: IntegerLiteral
+                type:
+                  qualType: int
+                value: '1'
+                valueCategory: prvalue
+              kind: BinaryOperator
+              opcode: ==
+              type:
+                qualType: int
+              valueCategory: prvalue
+            kind: BinaryOperator
+            opcode: '&&'
+            type:
+              qualType: int
+            valueCategory: prvalue
+          - inner:
+            - kind: DeclRefExpr
+              type:
+                qualType: int
+              valueCategory: lvalue
+            - kind: IntegerLiteral
+              type:
+                qualType: int
+              value: '25'
+              valueCategory: prvalue
+            kind: BinaryOperator
+            opcode: '='
+            type:
+              qualType: int
+            valueCategory: prvalue
+          - inner:
+            - inner:
+              - inner:
+                - inner:
+                  - kind: DeclRefExpr
+                    type:
+                      qualType: int
+                    valueCategory: lvalue
+                  kind: ImplicitCastExpr
+                  type:
+                    qualType: int
+                  valueCategory: prvalue
+                - kind: IntegerLiteral
+                  type:
+                    qualType: int
+                  value: '10'
+                  valueCategory: prvalue
+                kind: BinaryOperator
+                opcode: ==
+                type:
+                  qualType: int
+                valueCategory: prvalue
+              - inner:
+                - inner:
+                  - kind: DeclRefExpr
+                    type:
+                      qualType: int
+                    valueCategory: lvalue
+                  kind: ImplicitCastExpr
+                  type:
+                    qualType: int
+                  valueCategory: prvalue
+                - inner:
+                  - kind: IntegerLiteral
+                    type:
+                      qualType: int
+                    value: '5'
+                    valueCategory: prvalue
+                  kind: UnaryOperator
+                  opcode: '-'
+                  type:
+                    qualType: int
+                  valueCategory: prvalue
+                kind: BinaryOperator
+                opcode: ==
+                type:
+                  qualType: int
+                valueCategory: prvalue
+              kind: BinaryOperator
+              opcode: '&&'
+              type:
+                qualType: int
+              valueCategory: prvalue
+            - inner:
+              - kind: DeclRefExpr
+                type:
+                  qualType: int
+                valueCategory: lvalue
+              - inner:
+                - inner:
+                  - kind: DeclRefExpr
+                    type:
+                      qualType: int
+                    valueCategory: lvalue
+                  kind: ImplicitCastExpr
+                  type:
+                    qualType: int
+                  valueCategory: prvalue
+                - kind: IntegerLiteral
+                  type:
+                    qualType: int
+                  value: '15'
+                  valueCategory: prvalue
+                kind: BinaryOperator
+                opcode: +
+                type:
+                  qualType: int
+                valueCategory: prvalue
+              kind: BinaryOperator
+              opcode: '='
+              type:
+                qualType: int
+              valueCategory: prvalue
+            - inner:
+              - kind: DeclRefExpr
+                type:
+                  qualType: int
+                valueCategory: lvalue
+              - inner:
+                - inner:
+                  - inner:
+                    - kind: DeclRefExpr
+                      type:
+                        qualType: int
+                      valueCategory: lvalue
+                    kind: ImplicitCastExpr
+                    type:
+                      qualType: int
+                    valueCategory: prvalue
+                  kind: UnaryOperator
+                  opcode: +
+                  type:
+                    qualType: int
+                  valueCategory: prvalue
+                kind: UnaryOperator
+                opcode: '-'
+                type:
+                  qualType: int
+                valueCategory: prvalue
+              kind: BinaryOperator
+              opcode: '='
+              type:
+                qualType: int
+              valueCategory: prvalue
+            kind: IfStmt
+          kind: IfStmt
+        kind: CompoundStmt
+      kind: IfStmt
+    - inner:
+      - inner:
+        - kind: DeclRefExpr
+          type:
+            qualType: int
+          valueCategory: lvalue
+        kind: ImplicitCastExpr
+        type:
+          qualType: int
+        valueCategory: prvalue
+      kind: ReturnStmt
+    kind: CompoundStmt
+  kind: FunctionDecl
+  name: ifElseIf
+  type:
+    qualType: int ()
+- inner:
+  - inner:
+    - inner:
+      - inner:
+        - kind: DeclRefExpr
+          type:
+            qualType: void (int)
+          valueCategory: lvalue
+        kind: ImplicitCastExpr
+        type:
+          qualType: void (*)(int)
+        valueCategory: INVALID
+      - inner:
+        - inner:
+          - kind: DeclRefExpr
+            type:
+              qualType: int ()
+            valueCategory: lvalue
+          kind: ImplicitCastExpr
+          type:
+            qualType: int (*)()
+          valueCategory: INVALID
+        kind: CallExpr
+        type:
+          qualType: int
+        valueCategory: prvalue
+      kind: CallExpr
+      type:
+        qualType: void
+      valueCategory: prvalue
+    - inner:
+      - kind: IntegerLiteral
+        type:
+          qualType: int
+        value: '0'
+        valueCategory: prvalue
+      kind: ReturnStmt
+    kind: CompoundStmt
+  kind: FunctionDecl
+  name: main
+  type:
+    qualType: int ()
+kind: TranslationUnitDecl
+name: null
+value: null
+
+
+<----------------------------对比结束----------------------------
+
+
+本节点情况 level 3: 
+键 'loc' 在用户答案节点内不存在
+键 'range' 在用户答案节点内不存在
+
+>----------------------------对比开始----------------------------
+
+标准答案节点: 
+id: '0x5576fe7d07c8'
+kind: TranslationUnitDecl
+loc: {}
+name: null
+range:
+  begin: {}
+  end: {}
+value: null
+
+
+用户答案节点: 
+id: null
+kind: TranslationUnitDecl
+loc: null
+name: null
+range: null
+value: null
+
+
+<----------------------------对比结束----------------------------
+
+
+
+生成树节点总数:92
+生成树中level1节点总数:92
+level1: kind, name, value正确:78/92
+level2: type, InitListExpr生成树正确:92/92
+level3: 除id外其他属性全部正确:0/92
+得分：90.87/100.00
+[?2004h
+[The command completed with exit code 0.]
+[Current working directory: /workspace/YatCC]
+[Command finished with exit code 0]

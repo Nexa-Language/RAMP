@@ -24,7 +24,9 @@ env/
 !.env.example
 
 # EvoBench output (eval results stay in repo for leaderboard)
-eval/
+eval/*
+!eval/engineer/
+!eval/engineer/**
 
 # Build artifacts in data/YatCC
 data/YatCC/

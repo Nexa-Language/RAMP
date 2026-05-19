@@ -1,0 +1,22 @@
+[
+  {
+    "title": "Inspect task4 optimization framework",
+    "notes": "Classic pipeline runs StaticCallCounterPrinter, Mem2Reg, ConstantFolding. Need baseline score before adding passes.",
+    "status": "done"
+  },
+  {
+    "title": "Run baseline task4 score",
+    "notes": "Measure correctness and performance before changes; identify bottleneck cases.",
+    "status": "in_progress"
+  },
+  {
+    "title": "Implement additional safe optimizations",
+    "notes": "Add simple custom passes such as DCE, CFG cleanup, algebraic simplification, local CSE if practical.",
+    "status": "todo"
+  },
+  {
+    "title": "Verify task4 score and iterate",
+    "notes": "Run task4-score and improve while preserving correctness.",
+    "status": "todo"
+  }
+]

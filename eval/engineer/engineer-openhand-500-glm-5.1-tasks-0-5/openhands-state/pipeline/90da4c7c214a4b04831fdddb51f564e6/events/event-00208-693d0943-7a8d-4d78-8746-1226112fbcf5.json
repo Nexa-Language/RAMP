@@ -1,0 +1,1 @@
+{"id":"693d0943-7a8d-4d78-8746-1226112fbcf5","timestamp":"2026-05-17T17:33:57.372684","source":"agent","tool_name":"","tool_call_id":"tool-7095310b1b91407b9aab025b39209e26","error":"Tool '' not found. Available: ['terminal', 'file_editor', 'task_tracker', 'finish', 'think']","kind":"AgentErrorEvent"}

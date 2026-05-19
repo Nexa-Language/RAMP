@@ -1,0 +1,1 @@
+{"id":"5342c985-ec65-4e0c-ae4c-0266eac5a4be","timestamp":"2026-05-17T18:13:13.330183","source":"environment","code":"LLMBadRequestError","detail":"litellm.BadRequestError: OpenAIException - litellm.BadRequestError: OpenAIException - Range of input length should be [1, 260096]. Received Model Group=kimi-k2.6\nAvailable Model Group Fallbacks=None","kind":"ConversationErrorEvent"}

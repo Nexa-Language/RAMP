@@ -1,0 +1,78 @@
+{
+  "benchmark": "EvoBench-v2",
+  "agent_backend": "openhands",
+  "agent_model": "glm-4.6",
+  "context_mode": "pipeline",
+  "run_id": "engineer-openhand-500-openhands-glm-4.6-tasks-0-5",
+  "timestamp": "2026-05-18T13:43:44Z",
+  "total_elapsed_seconds": 2045.5835857391357,
+  "tasks": [
+    {
+      "task_id": 0,
+      "score": 100.0,
+      "max_score": 100.0,
+      "passed": true,
+      "test_count": 1,
+      "passed_count": 1,
+      "elapsed_seconds": 35.48792028427124,
+      "backend": "openhands"
+    },
+    {
+      "task_id": 1,
+      "score": 67.36,
+      "max_score": 100.0,
+      "passed": true,
+      "test_count": 73,
+      "passed_count": 2,
+      "elapsed_seconds": 472.1582474708557,
+      "backend": "openhands"
+    },
+    {
+      "task_id": 2,
+      "score": 38.48,
+      "max_score": 100.0,
+      "passed": false,
+      "test_count": 73,
+      "passed_count": 28,
+      "elapsed_seconds": 427.9122154712677,
+      "backend": "openhands"
+    },
+    {
+      "task_id": 3,
+      "score": 1.37,
+      "max_score": 100.0,
+      "passed": false,
+      "test_count": 73,
+      "passed_count": 1,
+      "elapsed_seconds": 624.4295554161072,
+      "backend": "openhands"
+    },
+    {
+      "task_id": 4,
+      "score": 39.64,
+      "max_score": 100.0,
+      "passed": false,
+      "test_count": 12,
+      "passed_count": 0,
+      "elapsed_seconds": 359.8059287071228,
+      "backend": "openhands"
+    },
+    {
+      "task_id": 5,
+      "score": 0.0,
+      "max_score": 100.0,
+      "passed": false,
+      "test_count": 0,
+      "passed_count": 0,
+      "elapsed_seconds": 3.154719114303589,
+      "backend": "openhands",
+      "error": "/workspace/YatCC/task/5/EmitMIR.cpp:35:10: fatal error: RISCVGenRegisterInfo.inc: No such file or directory\n   35 | #include \"RISCVGenRegisterInfo.inc\"\n      |          ^~~~~~~~~~~~~~~~~~~~~~~~~~\ncompilation terminated.\ngmake[3]: *** [task/5/CMakeFiles/task5-classic.dir/build.make:90: task/5/CMakeFiles/task5-classic.dir/EmitMIR.cpp.o] Error 1\ngmake[2]: *** [CMakeFiles/Makefile2:1476: task/5/CMakeFiles/task5-classic.dir/all] Error 2\ngmake[1]: *** [CMakeFiles/Makefile2:1483: task/5/CMakeFiles/task5-classic.dir/rule] Error 2\ngmake: *** [Makefile:668: task5-classic] Error 2\n"
+    }
+  ],
+  "metrics": {
+    "zero_shot_pass": false,
+    "prior_non_full_score_count": 4,
+    "total_iterations": 500
+  },
+  "_error": "ConversationRunError: Conversation run failed for id=98f1f059-2d7f-49df-9da3-c8176b4cbb9f: litellm.BadRequestError: OpenAIException - <400> InternalError.Algo.InvalidParameter: Range of input length should be [1, 169984]\n\nConversation logs are stored at: /workspace/output/openhands-state/pipeline/98f1f0592d7f49df9da3c8176b4cbb9f\n\nTo help debug this issue, please file a bug report at:\n  https://github.com/OpenHands/software-agent-sdk/issues/new\nand attach the conversation logs from the directory above."
+}

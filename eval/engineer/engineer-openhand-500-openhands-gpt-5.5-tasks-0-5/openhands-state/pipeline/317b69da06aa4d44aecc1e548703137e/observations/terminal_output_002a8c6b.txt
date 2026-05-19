@@ -1,0 +1,880 @@
+[?2004l                       getNumPreds(BB),
+                       Allocas[AllocaNo]->getName() + "." + Twine(Version++));
+  PN->insertBefore(&*(BB->begin()));
+  PhiToAllocaMap[PN] = AllocaNo;
+  return true;
+}
+
+/// Recursively traverse the CFG of the function, renaming loads and
+/// stores to the allocas which we are promoting.
+///
+/// IncomingVals indicates what value each Alloca contains on exit from the
+/// predecessor block Pred.
+void
+PromoteMem2Reg::RenamePass(BasicBlock* BB,
+                           BasicBlock* Pred,
+                           RenamePassData::ValVector& IncomingVals,
+                           std::vector<RenamePassData>& Worklist)
+{
+NextIteration:
+  // If we are inserting any phi nodes into this BB, they will already be in the
+  // block.
+  if (PHINode* APN = dyn_cast<PHINode>(BB->begin())) {
+    // If we have PHI nodes to update, compute the number of edges from Pred to
+    // BB.
+    if (PhiToAllocaMap.count(APN)) {
+      // We want to be able to distinguish between PHI nodes being inserted by
+      // this invocation of mem2reg from those phi nodes that already existed in
+      // the IR before mem2reg was run.  We determine that APN is being inserted
+      // because it is missing incoming edges.  All other PHI nodes being
+      // inserted by this pass of mem2reg will have the same number of incoming
+      // operands so far.  Remember this count.
+      unsigned NewPHINumOperands = APN->getNumOperands();
+
+      unsigned NumEdges = llvm::count(successors(Pred), BB);
+      assert(NumEdges && "Must be at least one edge from Pred to BB!");
+
+      // Add entries for all the phis.
+      BasicBlock::iterator PNI = BB->begin();
+      do {
+        unsigned AllocaNo = PhiToAllocaMap[APN];
+
+        // Add N incoming values to the PHI node.
+        for (unsigned i = 0; i != NumEdges; ++i)
+          APN->addIncoming(IncomingVals[AllocaNo], Pred);
+
+        // The currently active variable for this block is now the PHI.
+        IncomingVals[AllocaNo] = APN;
+
+        // Get the next phi node.
+        ++PNI;
+        APN = dyn_cast<PHINode>(PNI);
+        if (!APN)
+          break;
+
+        // Verify that it is missing entries.  If not, it is not being inserted
+        // by this mem2reg invocation so we want to ignore it.
+      } while (APN->getNumOperands() == NewPHINumOperands);
+    }
+  }
+
+  // Don't revisit blocks.
+  if (!Visited.insert(BB).second)
+    return;
+
+  for (BasicBlock::iterator II = BB->begin(); !II->isTerminator();) {
+    Instruction* I = &*II++; // get the instruction, increment iterator
+
+    if (LoadInst* LI = dyn_cast<LoadInst>(I)) {
+      AllocaInst* Src = dyn_cast<AllocaInst>(LI->getPointerOperand());
+      if (!Src)
+        continue;
+
+      DenseMap<AllocaInst*, unsigned>::iterator AI = AllocaLookup.find(Src);
+      if (AI == AllocaLookup.end())
+        continue;
+
+      Value* V = IncomingVals[AI->second];
+
+      // Anything using the load now uses the current value.
+      LI->replaceAllUsesWith(V);
+      LI->eraseFromParent();
+    } else if (StoreInst* SI = dyn_cast<StoreInst>(I)) {
+      // Delete this instruction and mark the name as the current holder of the
+      // value
+      AllocaInst* Dest = dyn_cast<AllocaInst>(SI->getPointerOperand());
+      if (!Dest)
+        continue;
+
+      DenseMap<AllocaInst*, unsigned>::iterator ai = AllocaLookup.find(Dest);
+      if (ai == AllocaLookup.end())
+        continue;
+
+      // what value were we writing?
+      unsigned AllocaNo = ai->second;
+      IncomingVals[AllocaNo] = SI->getOperand(0);
+
+      SI->eraseFromParent();
+    }
+  }
+
+  // 'Recurse' to our successors.
+  succ_iterator I = succ_begin(BB), E = succ_end(BB);
+  if (I == E)
+    return;
+
+  // Keep track of the successors so we don't visit the same successor twice
+  SmallPtrSet<BasicBlock*, 8> VisitedSuccs;
+
+  // Handle the first successor without using the worklist.
+  VisitedSuccs.insert(*I);
+  Pred = BB;
+  BB = *I;
+  ++I;
+
+  for (; I != E; ++I)
+    if (VisitedSuccs.insert(*I).second)
+      Worklist.emplace_back(*I, Pred, IncomingVals);
+
+  goto NextIteration;
+}
+
+static void
+PromoteMemToReg(ArrayRef<AllocaInst*> Allocas, DominatorTree& DT)
+{
+  // If there is nothing to do, bail out...
+  if (Allocas.empty())
+    return;
+
+  PromoteMem2Reg(Allocas, DT).run();
+}
+
+static bool
+promoteMemoryToRegister(Function& F, DominatorTree& DT)
+{
+  std::vector<AllocaInst*> Allocas;
+  BasicBlock& BB = F.getEntryBlock(); // Get the entry node for the function
+  bool Changed = false;
+
+  while (true) {
+    Allocas.clear();
+
+    // Find allocas that are safe to promote, by looking at all instructions in
+    // the entry node
+    for (BasicBlock::iterator I = BB.begin(), E = --BB.end(); I != E; ++I)
+      if (AllocaInst* AI = dyn_cast<AllocaInst>(I)) // Is it an alloca?
+        if (isAllocaPromotable(AI))
+          Allocas.push_back(AI);
+
+    if (Allocas.empty())
+      break;
+
+    PromoteMemToReg(Allocas, DT);
+    Changed = true;
+  }
+  return Changed;
+}
+
+PreservedAnalyses
+Mem2Reg::run(llvm::Module& mod, llvm::ModuleAnalysisManager& mam)
+{
+
+  FunctionAnalysisManager fam;
+  PassBuilder pb;
+  pb.registerFunctionAnalyses(fam);
+  bool flag = true;
+  for (Function& func : mod) {
+    if (func.isDeclaration())
+      continue;
+    auto& DT = fam.getResult<DominatorTreeAnalysis>(func);
+    if (promoteMemoryToRegister(func, DT)) {
+      flag = false;
+    }
+  }
+  if (flag) {
+    return PreservedAnalyses::all();
+  }
+  PreservedAnalyses PA;
+  PA.preserveSet<CFGAnalyses>();
+  return PA;
+}
+
+--- perf sources names ---
+===algebraic-identity.sysu.c===
+#include <sysy/sylib.h>
+
+int loopCount = 0;
+
+int func()
+{
+  int result = 0;
+  int i = 1;
+  while(i<loopCount)
+  {
+    int sum = 0;
+    sum = sum + i * 1 + 1 * i + i / 1 + i % 1 + i * 0 + 0 * i + 0 / i;
+    sum = sum + i * 1 + 1 * i + i / 1 + i % 1 + i * 0 + 0 * i + 0 / i;
+    sum = sum + i * 1 + 1 * i + i / 1 + i % 1 + i * 0 + 0 * i + 0 / i;
+    sum = sum + i * 1 + 1 * i + i / 1 + i % 1 + i * 0 + 0 * i + 0 / i;
+    sum = sum + i * 1 + 1 * i + i / 1 + i % 1 + i * 0 + 0 * i + 0 / i;
+    sum = sum + i * 1 + 1 * i + i / 1 + i % 1 + i * 0 + 0 * i + 0 / i;
+    sum = sum + i * 1 + 1 * i + i / 1 + i % 1 + i * 0 + 0 * i + 0 / i;
+    sum = sum + i * 1 + 1 * i + i / 1 + i % 1 + i * 0 + 0 * i + 0 / i;
+    sum = sum + i * 1 + 1 * i + i / 1 + i % 1 + i * 0 + 0 * i + 0 / i;
+    sum = sum + i * 1 + 1 * i + i / 1 + i % 1 + i * 0 + 0 * i + 0 / i;
+    result = result + sum;
+    result = result / 2;
+    i = i + 1;
+  }
+  return result;
+}
+
+int main()
+{
+  loopCount = getint();
+  starttime();
+  int result = func();
+  stoptime();
+  putint(result);
+  putch(10);
+  return 0;
+}
+===bitset.sysu.c===
+#include <sysy/sylib.h>
+int set(int a[], int pos, int d){
+    const int bitcount = 30;
+    int x[31] = {};
+
+    x[0] = 1;
+    x[1] = x[0] * 2;
+    x[2] = x[1] * 2;
+    x[3] = x[2] * 2;
+    x[4] = x[3] * 2;
+    x[5] = x[4] * 2;
+    x[6] = x[5] * 2;
+    x[7] = x[6] * 2;
+    x[8] = x[7] * 2;
+    x[9] = x[8] * 2;
+    x[10] = x[9] * 2;
+    
+    int i = 10;
+    while (i < bitcount){
+        i = i + 1;
+        x[i] = x[i - 1] * 2;
+    }
+
+    int v = 0;
+
+    if (pos / bitcount >= 10000) return 0;
+    
+    if (a[pos / bitcount] / (x[pos % bitcount]) % 2 != d){
+        if (a[pos / bitcount] / (x[pos % bitcount]) % 2 == 0)
+            if (d == 1)
+                v = x[pos % bitcount];
+        
+        if (a[pos / bitcount] / x[pos % bitcount] % 2 == 1)
+            if (d == 0)
+                v = v - x[pos % bitcount];
+    }
+
+    a[pos / bitcount] = a[pos / bitcount] + v;
+    return 0;
+}
+
+int seed[3] = {19971231, 19981013, 1000000000 + 7};
+int staticvalue = 0;
+
+int rand(){
+    staticvalue = staticvalue * seed[0] + seed[1];
+    staticvalue = staticvalue % seed[2];
+    if (staticvalue < 0) staticvalue = seed[2] + staticvalue;
+    return staticvalue;
+}
+
+int a[10000] = {};
+int main(){
+    
+    int n = getint();
+    staticvalue = getint();
+    starttime();
+    int x, y;
+    while (n > 0){
+        n = n - 1;
+        x = rand() % 300000;
+        y = rand() % 2;
+        set(a, x, y);
+    }
+    stoptime();
+    putarray(10000, a);
+    return 0;
+}===const-propagation.sysu.c===
+#include <sysy/sylib.h>
+
+int loopCount = 0;
+int CONST_NUM = 2;
+
+int func()
+{
+  int result = 0;
+  int i = 0;
+  while(i<loopCount)
+  {
+    int sum = 0;
+    sum = sum + CONST_NUM;
+    sum = sum + CONST_NUM;
+    sum = sum + CONST_NUM;
+    sum = sum + CONST_NUM;
+    sum = sum + CONST_NUM;
+    sum = sum + CONST_NUM;
+    sum = sum + CONST_NUM;
+    sum = sum + CONST_NUM;
+    sum = sum + CONST_NUM;
+    sum = sum + CONST_NUM;
+    sum = sum + CONST_NUM;
+    sum = sum + CONST_NUM;
+    sum = sum + CONST_NUM;
+    sum = sum + CONST_NUM;
+    sum = sum + CONST_NUM;
+    sum = sum + CONST_NUM;
+    sum = sum + CONST_NUM;
+    sum = sum + CONST_NUM;
+    sum = sum + CONST_NUM;
+    sum = sum + CONST_NUM;
+    sum = sum + CONST_NUM;
+    sum = sum + CONST_NUM;
+    sum = sum + CONST_NUM;
+    sum = sum + CONST_NUM;
+    sum = sum + CONST_NUM;
+    sum = sum + CONST_NUM;
+    sum = sum + CONST_NUM;
+    sum = sum + CONST_NUM;
+    sum = sum + CONST_NUM;
+    sum = sum + CONST_NUM;
+    sum = sum + CONST_NUM;
+    sum = sum + CONST_NUM;
+    sum = sum + CONST_NUM;
+    sum = sum + CONST_NUM;
+    sum = sum + CONST_NUM;
+    sum = sum + CONST_NUM;
+    sum = sum + CONST_NUM;
+    sum = sum + CONST_NUM;
+    sum = sum + CONST_NUM;
+    sum = sum + CONST_NUM;
+    sum = sum + CONST_NUM;
+    sum = sum + CONST_NUM;
+    sum = sum + CONST_NUM;
+    sum = sum + CONST_NUM;
+    sum = sum + CONST_NUM;
+    sum = sum + CONST_NUM;
+    sum = sum + CONST_NUM;
+    sum = sum + CONST_NUM;
+    sum = sum + CONST_NUM;
+    sum = sum + CONST_NUM;
+    sum = sum + CONST_NUM;
+    sum = sum + CONST_NUM;
+    sum = sum + CONST_NUM;
+    sum = sum + CONST_NUM;
+    sum = sum + CONST_NUM;
+    sum = sum + CONST_NUM;
+    sum = sum + CONST_NUM;
+    sum = sum + CONST_NUM;
+    sum = sum + CONST_NUM;
+    sum = sum + CONST_NUM;
+    sum = sum + CONST_NUM;
+    sum = sum + CONST_NUM;
+    sum = sum + CONST_NUM;
+    sum = sum + CONST_NUM;
+    sum = sum + CONST_NUM;
+    sum = sum + CONST_NUM;
+    sum = sum + CONST_NUM;
+    sum = sum + CONST_NUM;
+    sum = sum + CONST_NUM;
+    sum = sum + CONST_NUM;
+    sum = sum + CONST_NUM;
+    sum = sum + CONST_NUM;
+    sum = sum + CONST_NUM;
+    sum = sum + CONST_NUM;
+    sum = sum + CONST_NUM;
+    sum = sum + CONST_NUM;
+    sum = sum + CONST_NUM;
+    sum = sum + CONST_NUM;
+    sum = sum + CONST_NUM;
+    sum = sum + CONST_NUM;
+    sum = sum + CONST_NUM;
+    sum = sum + CONST_NUM;
+    sum = sum + CONST_NUM;
+    sum = sum + CONST_NUM;
+    sum = sum + CONST_NUM;
+    sum = sum + CONST_NUM;
+    sum = sum + CONST_NUM;
+    sum = sum + CONST_NUM;
+    sum = sum + CONST_NUM;
+    sum = sum + CONST_NUM;
+    sum = sum + CONST_NUM;
+    sum = sum + CONST_NUM;
+    sum = sum + CONST_NUM;
+    sum = sum + CONST_NUM;
+    sum = sum + CONST_NUM;
+    sum = sum + CONST_NUM;
+    sum = sum + CONST_NUM;
+    sum = sum + CONST_NUM;
+    sum = sum + CONST_NUM;
+    sum = sum + CONST_NUM;
+    sum = sum + CONST_NUM;
+    sum = sum + CONST_NUM;
+    sum = sum + CONST_NUM;
+    sum = sum + CONST_NUM;
+    sum = sum + CONST_NUM;
+    sum = sum + CONST_NUM;
+    sum = sum + CONST_NUM;
+    sum = sum + CONST_NUM;
+    sum = sum + CONST_NUM;
+    sum = sum + CONST_NUM;
+    sum = sum + CONST_NUM;
+    sum = sum + CONST_NUM;
+    sum = sum + CONST_NUM;
+    sum = sum + CONST_NUM;
+    sum = sum + CONST_NUM;
+    sum = sum + CONST_NUM;
+    sum = sum + CONST_NUM;
+    sum = sum + CONST_NUM;
+    sum = sum + CONST_NUM;
+    sum = sum + CONST_NUM;
+    sum = sum + CONST_NUM;
+    sum = sum + CONST_NUM;
+    sum = sum + CONST_NUM;
+    sum = sum + CONST_NUM;
+    sum = sum + CONST_NUM;
+    sum = sum + CONST_NUM;
+    sum = sum + CONST_NUM;
+    sum = sum + CONST_NUM;
+    sum = sum + CONST_NUM;
+    sum = sum + CONST_NUM;
+    sum = sum + CONST_NUM;
+    sum = sum + CONST_NUM;
+    sum = sum + CONST_NUM;
+    sum = sum + CONST_NUM;
+    sum = sum + CONST_NUM;
+    sum = sum + CONST_NUM;
+    sum = sum + CONST_NUM;
+    sum = sum + CONST_NUM;
+    sum = sum + CONST_NUM;
+    sum = sum + CONST_NUM;
+    sum = sum + CONST_NUM;
+    sum = sum + CONST_NUM;
+    sum = sum + CONST_NUM;
+    sum = sum + CONST_NUM;
+    sum = sum + CONST_NUM;
+    sum = sum + CONST_NUM;
+    sum = sum + CONST_NUM;
+    sum = sum + CONST_NUM;
+    sum = sum + CONST_NUM;
+    sum = sum + CONST_NUM;
+    sum = sum + CONST_NUM;
+    sum = sum + CONST_NUM;
+    sum = sum + CONST_NUM;
+    sum = sum + CONST_NUM;
+    sum = sum + CONST_NUM;
+    sum = sum + CONST_NUM;
+    sum = sum + CONST_NUM;
+    sum = sum + CONST_NUM;
+    sum = sum + CONST_NUM;
+    sum = sum + CONST_NUM;
+    sum = sum + CONST_NUM;
+    sum = sum + CONST_NUM;
+    sum = sum + CONST_NUM;
+    sum = sum + CONST_NUM;
+    sum = sum + CONST_NUM;
+    sum = sum + CONST_NUM;
+    sum = sum + CONST_NUM;
+    sum = sum + CONST_NUM;
+    sum = sum + CONST_NUM;
+    sum = sum + CONST_NUM;
+    sum = sum + CONST_NUM;
+    sum = sum + CONST_NUM;
+    sum = sum + CONST_NUM;
+    sum = sum + CONST_NUM;
+    sum = sum + CONST_NUM;
+    sum = sum + CONST_NUM;
+    sum = sum + CONST_NUM;
+    sum = sum + CONST_NUM;
+    sum = sum + CONST_NUM;
+    sum = sum + CONST_NUM;
+    sum = sum + CONST_NUM;
+    sum = sum + CONST_NUM;
+    sum = sum + CONST_NUM;
+    sum = sum + CONST_NUM;
+    sum = sum + CONST_NUM;
+    sum = sum + CONST_NUM;
+    sum = sum + CONST_NUM;
+    sum = sum + CONST_NUM;
+    sum = sum + CONST_NUM;
+    sum = sum + CONST_NUM;
+    sum = sum + CONST_NUM;
+    sum = sum + CONST_NUM;
+    sum = sum + CONST_NUM;
+    sum = sum + CONST_NUM;
+    sum = sum + CONST_NUM;
+    sum = sum + CONST_NUM;
+    sum = sum + CONST_NUM;
+    sum = sum + CONST_NUM;
+    sum = sum + CONST_NUM;
+    sum = sum + CONST_NUM;
+    sum = sum + CONST_NUM;
+    sum = sum + CONST_NUM;
+    sum = sum + CONST_NUM;
+    sum = sum + CONST_NUM;
+    sum = sum + CONST_NUM;
+    sum = sum + CONST_NUM;
+    sum = sum + CONST_NUM;
+    sum = sum + CONST_NUM;
+===crypto.sysu.c===
+#include <sysy/sylib.h>
+
+
+int state = 19260817;
+
+int get_random() {
+  state = state + (state * 8192);
+  state = state + (state / 131072);
+  state = state + (state * 32);
+  return state;
+}
+
+int rotl1(int x) {
+  return x * 2 + x % 2;
+}
+
+int rotl5(int x) {
+  return x * 32 + x % 32;
+}
+
+int rotl30(int x) {
+  return x * 1073741824 + x % 1073741824;
+}
+
+int _and(int a, int b) {
+  // int c = 0;
+  // int x = 0;
+  // while (x <= 32) {
+  //   c = c + c;
+  //   if (a < 0) {
+  //     if (b < 0) {
+  //       c = c + 1;
+  //     }
+  //   }
+  //   a = a + a;
+  //   b = b + b;
+  //   x = x + 1;
+  // }
+  // return c;
+  return a + b;
+}
+
+int _not(int x) {
+  return -1 - x;
+}
+
+int _xor(int a, int b) {
+  return a - _and(a, b) + b - _and(a, b);
+}
+
+int _or(int a, int b) {
+  return _xor(_xor(a, b), _and(a, b));
+}
+
+// performs a SHA-1 hash to output.
+//
+// input is a list of ints, but only the lower 8 bits are used. Input must be
+// larger than the smallest 64 multiple.
+void pseudo_sha1(int input[], int input_len, int output[]) {
+  int h0 = 1732584193;
+  <response clipped><NOTE>Due to the max output limit, only part of the full response has been shown to you.</NOTE>t i28, int i29, int i30, int i31, int i32, int i33, int i34, int i35, int i36, int i37, int i38, int i39, int i40, int i41, int i42, int i43, int i44, int i45, int i46, int i47, int i48, int i49, int i50, int i51, int i52, int i53, int i54, int i55, int i56, int i57, int i58, int i59, int i60, int i61, int i62, int i63, int i64, int i65, int i66, int i67, int i68, int i69, int i70, int i71, int i72, int i73, int i74, int i75, int i76, int i77, int i78, int i79, int i80, int i81, int i82, int i83, int i84, int i85, int i86, int i87, int i88, int i89, int i90, int i91, int i92, int i93, int i94, int i95, int i96, int i97, int i98, int i99, int i100, int i101, int i102, int i103, int i104, int i105, int i106, int i107, int i108, int i109, int i110, int i111, int i112, int i113, int i114, int i115, int i116, int i117, int i118, int i119, int i120, int i121, int i122, int i123, int i124, int i125, int i126, int i127, int i128, int i129, int i130, int i131, int i132, int i133, int i134, int i135, int i136, int i137, int i138, int i139, int i140, int i141, int i142, int i143, int i144, int i145, int i146, int i147, int i148, int i149, int i150, int i151, int i152, int i153, int i154, int i155, int i156, int i157, int i158, int i159, int i160, int i161, int i162, int i163, int i164, int i165, int i166, int i167, int i168, int i169, int i170, int i171, int i172, int i173, int i174, int i175, int i176, int i177, int i178, int i179, int i180, int i181, int i182, int i183, int i184, int i185, int i186, int i187, int i188, int i189, int i190, int i191, int i192, int i193, int i194, int i195, int i196, int i197, int i198, int i199, int i200, int i201, int i202, int i203, int i204, int i205, int i206, int i207, int i208, int i209, int i210, int i211, int i212, int i213, int i214, int i215, int i216, int i217, int i218, int i219, int i220, int i221, int i222, int i223, int i224, int i225, int i226, int i227, int i228, int i229, int i230, int i231, int i232, int i233, int i234, int i235, int i236, int i237, int i238, int i239, int i240, int i241, int i242, int i243, int i244, int i245, int i246, int i247, int i248, int i249, int i250, int i251, int i252, int i253, int i254, int i255, int i256, int i257, int i258, int i259, int i260, int i261, int i262, int i263, int i264, int i265, int i266, int i267, int i268, int i269, int i270, int i271, int i272, int i273, int i274, int i275, int i276, int i277, int i278, int i279, int i280, int i281, int i282, int i283, int i284, int i285, int i286, int i287, int i288, int i289, int i290, int i291, int i292, int i293, int i294, int i295, int i296, int i297, int i298, int i299, int i300, int i301, int i302, int i303, int i304, int i305, int i306, int i307, int i308, int i309, int i310, int i311, int i312, int i313, int i314, int i315, int i316, int i317, int i318, int i319, int i320, int i321, int i322, int i323, int i324, int i325, int i326, int i327, int i328, int i329, int i330, int i331, int i332, int i333, int i334, int i335, int i336, int i337, int i338, int i339, int i340, int i341, int i342, int i343, int i344, int i345, int i346, int i347, int i348, int i349, int i350, int i351, int i352, int i353, int i354, int i355, int i356, int i357, int i358, int i359, int i360, int i361, int i362, int i363, int i364, int i365, int i366, int i367, int i368, int i369, int i370, int i371, int i372, int i373, int i374, int i375, int i376, int i377, int i378, int i379, int i380, int i381, int i382, int i383, int i384, int i385, int i386, int i387, int i388, int i389, int i390, int i391, int i392, int i393, int i394, int i395, int i396, int i397, int i398, int i399, int i400, int i401, int i402, int i403, int i404, int i405, int i406, int i407, int i408, int i409, int i410, int i411, int i412, int i413, int i414, int i415, int i416, int i417, int i418, int i419, int i420, int i421, int i422, int i423, int i424, int i425, int i426, int i427, int i428, int i429, int i430, int i431, int i432, int i433, int i434, int i435, int i436, int i437, int i438, int i439, int i440, int i441, int i442, int i443, int i444, int i445, int i446, int i447, int i448, int i449, int i450, int i451, int i452, int i453, int i454, int i455, int i456, int i457, int i458, int i459, int i460, int i461, int i462, int i463, int i464, int i465, int i466, int i467, int i468, int i469, int i470, int i471, int i472, int i473, int i474, int i475, int i476, int i477, int i478, int i479, int i480, int i481, int i482, int i483, int i484, int i485, int i486, int i487, int i488, int i489, int i490, int i491, int i492, int i493, int i494, int i495, int i496, int i497, int i498, int i499, int i500, int i501, int i502, int i503, int i504, int i505, int i506, int i507, int i508, int i509, int i510, int i511, int i512, int i513, int i514, int i515, int i516, int i517, int i518, int i519, int i520, int i521, int i522, int i523, int i524, int i525, int i526, int i527, int i528, int i529, int i530, int i531, int i532, int i533, int i534, int i535, int i536, int i537, int i538, int i539, int i540, int i541, int i542, int i543, int i544, int i545, int i546, int i547, int i548, int i549, int i550, int i551, int i552, int i553, int i554, int i555, int i556, int i557, int i558, int i559, int i560, int i561, int i562, int i563, int i564, int i565, int i566, int i567, int i568, int i569, int i570, int i571, int i572, int i573, int i574, int i575, int i576, int i577, int i578, int i579, int i580, int i581, int i582, int i583, int i584, int i585, int i586, int i587, int i588, int i589, int i590, int i591, int i592, int i593, int i594, int i595, int i596, int i597, int i598, int i599, int i600, int i601, int i602, int i603, int i604, int i605, int i606, int i607, int i608, int i609, int i610, int i611, int i612, int i613, int i614, int i615, int i616, int i617, int i618, int i619, int i620, int i621, int i622, int i623, int i624, int i625, int i626, int i627, int i628, int i629, int i630, int i631, int i632, int i633, int i634, int i635, int i636, int i637, int i638, int i639, int i640, int i641, int i642, int i643, int i644, int i645, int i646, int i647, int i648, int i649, int i650, int i651, int i652, int i653, int i654, int i655, int i656, int i657, int i658, int i659, int i660, int i661, int i662, int i663, int i664, int i665, int i666, int i667, int i668, int i669, int i670, int i671, int i672, int i673, int i674, int i675, int i676, int i677, int i678, int i679, int i680, int i681, int i682, int i683, int i684, int i685, int i686, int i687, int i688, int i689, int i690, int i691, int i692, int i693, int i694, int i695, int i696, int i697, int i698, int i699, int i700, int i701, int i702, int i703, int i704, int i705, int i706, int i707, int i708, int i709, int i710, int i711, int i712, int i713, int i714, int i715, int i716, int i717, int i718, int i719, int i720, int i721, int i722, int i723, int i724, int i725, int i726, int i727, int i728, int i729, int i730, int i731, int i732, int i733, int i734, int i735, int i736, int i737, int i738, int i739, int i740, int i741, int i742, int i743, int i744, int i745, int i746, int i747, int i748, int i749, int i750, int i751, int i752, int i753, int i754, int i755, int i756, int i757, int i758, int i759, int i760, int i761, int i762, int i763, int i764, int i765, int i766, int i767, int i768, int i769, int i770, int i771, int i772, int i773, int i774, int i775, int i776, int i777, int i778, int i779, int i780, int i781, int i782, int i783, int i784, int i785, int i786, int i787, int i788, int i789, int i790, int i791, int i792, int i793, int i794, int i795, int i796, int i797, int i798, int i799, int i800, int i801, int i802, int i803, int i804, int i805, int i806, int i807, int i808, int i809, int i810, int i811, int i812, int i813, int i814, int i815, int i816, int i817, int i818, int i819, int i820, int i821, int i822, int i823, int i824, int i825, int i826, int i827, int i828, int i829, int i830, int i831, int i832, int i833, int i834, int i835, int i836, int i837, int i838, int i839, int i840, int i841, int i842, int i843, int i844, int i845, int i846, int i847, int i848, int i849, int i850, int i851, int i852, int i853, int i854, int i855, int i856, int i857, int i858, int i859, int i860, int i861, int i862, int i863, int i864, int i865, int i866, int i867, int i868, int i869, int i870, int i871, int i872, int i873, int i874, int i875, int i876, int i877, int i878, int i879, int i880, int i881, int i882, int i883, int i884, int i885, int i886, int i887, int i888, int i889, int i890, int i891, int i892, int i893, int i894, int i895, int i896, int i897, int i898, int i899, int i900, int i901, int i902, int i903, int i904, int i905, int i906, int i907, int i908, int i909, int i910, int i911, int i912, int i913, int i914, int i915, int i916, int i917, int i918, int i919, int i920, int i921, int i922, int i923, int i924, int i925, int i926, int i927, int i928, int i929, int i930, int i931, int i932, int i933, int i934, int i935, int i936, int i937, int i938, int i939, int i940, int i941, int i942, int i943, int i944, int i945, int i946, int i947, int i948, int i949, int i950, int i951, int i952, int i953, int i954, int i955, int i956, int i957, int i958, int i959, int i960, int i961, int i962, int i963, int i964, int i965, int i966, int i967, int i968, int i969, int i970, int i971, int i972, int i973, int i974, int i975, int i976, int i977, int i978, int i979, int i980, int i981, int i982, int i983, int i984, int i985, int i986, int i987, int i988, int i989, int i990, int i991, int i992, int i993, int i994, int i995, int i996, int i997, int i998, int i999, int i1000)
+{
+  i1 = i1 / 2;
+  i2 = i2 / 2;
+  i3 = i3 / 2;
+  i4 = i4 / 2;
+  i5 = i5 / 2;
+  i6 = i6 / 2;
+  i7 = i7 / 2;
+  i8 = i8 / 2;
+  i9 = i9 / 2;
+  i10 = i10 / 2;
+  i11 = i11 / 2;
+  i12 = i12 / 2;
+  i13 = i13 / 2;
+  i14 = i14 / 2;
+  i15 = i15 / 2;
+  i16 = i16 / 2;
+  i17 = i17 / 2;
+  i18 = i18 / 2;
+  i19 = i19 / 2;
+  i20 = i20 / 2;
+  i21 = i21 / 2;
+  i22 = i22 / 2;
+  i23 = i23 / 2;
+  i24 = i24 / 2;
+  i25 = i25 / 2;
+  i26 = i26 / 2;
+  i27 = i27 / 2;
+  i28 = i28 / 2;
+  i29 = i29 / 2;
+  i30 = i30 / 2;
+  i31 = i31 / 2;
+  i32 = i32 / 2;
+  i33 = i33 / 2;
+  i34 = i34 / 2;
+  i35 = i35 / 2;
+  i36 = i36 / 2;
+  i37 = i37 / 2;
+  i38 = i38 / 2;
+  i39 = i39 / 2;
+  i40 = i40 / 2;
+  i41 = i41 / 2;
+  i42 = i42 / 2;
+  i43 = i43 / 2;
+  i44 = i44 / 2;
+  i45 = i45 / 2;
+  i46 = i46 / 2;
+  i47 = i47 / 2;
+  i48 = i48 / 2;
+  i49 = i49 / 2;
+  i50 = i50 / 2;
+  i51 = i51 / 2;
+  i52 = i52 / 2;
+  i53 = i53 / 2;
+  i54 = i54 / 2;
+  i55 = i55 / 2;
+  i56 = i56 / 2;
+  i57 = i57 / 2;
+  i58 = i58 / 2;
+  i59 = i59 / 2;
+  i60 = i60 / 2;
+  i61 = i61 / 2;
+  i62 = i62 / 2;
+  i63 = i63 / 2;
+  i64 = i64 / 2;
+  i65 = i65 / 2;
+  i66 = i66 / 2;
+  i67 = i67 / 2;
+  i68 = i68 / 2;
+  i69 = i69 / 2;
+  i70 = i70 / 2;
+  i71 = i71 / 2;
+  i72 = i72 / 2;
+  i73 = i73 / 2;
+  i74 = i74 / 2;
+  i75 = i75 / 2;
+  i76 = i76 / 2;
+  i77 = i77 / 2;
+  i78 = i78 / 2;
+  i79 = i79 / 2;
+  i80 = i80 / 2;
+  i81 = i81 / 2;
+  i82 = i82 / 2;
+  i83 = i83 / 2;
+  i84 = i84 / 2;
+  i85 = i85 / 2;
+  i86 = i86 / 2;
+  i87 = i87 / 2;
+  i88 = i88 / 2;
+  i89 = i89 / 2;
+  i90 = i90 / 2;
+  i91 = i91 / 2;
+  i92 = i92 / 2;
+  i93 = i93 / 2;
+  i94 = i94 / 2;
+  i95 = i95 / 2;
+  i96 = i96 / 2;
+  i97 = i97 / 2;
+  i98 = i98 / 2;
+  i99 = i99 / 2;
+  i100 = i100 / 2;
+  i101 = i101 / 2;
+  i102 = i102 / 2;
+  i103 = i103 / 2;
+  i104 = i104 / 2;
+  i105 = i105 / 2;
+  i106 = i106 / 2;
+  i107 = i107 / 2;
+  i108 = i108 / 2;
+  i109 = i109 / 2;
+  i110 = i110 / 2;
+  i111 = i111 / 2;
+  i112 = i112 / 2;
+  i113 = i113 / 2;
+  i114 = i114 / 2;
+  i115 = i115 / 2;
+  i116 = i116 / 2;
+  i117 = i117 / 2;
+  i118 = i118 / 2;
+  i119 = i119 / 2;
+  i120 = i120 / 2;
+  i121 = i121 / 2;
+  i122 = i122 / 2;
+  i123 = i123 / 2;
+  i124 = i124 / 2;
+  i125 = i125 / 2;
+  i126 = i126 / 2;
+  i127 = i127 / 2;
+  i128 = i128 / 2;
+  i129 = i129 / 2;
+  i130 = i130 / 2;
+  i131 = i131 / 2;
+  i132 = i132 / 2;
+  i133 = i133 / 2;
+  i134 = i134 / 2;
+  i135 = i135 / 2;
+  i136 = i136 / 2;
+  i137 = i137 / 2;
+  i138 = i138 / 2;
+  i139 = i139 / 2;
+  i140 = i140 / 2;
+  i141 = i141 / 2;
+  i142 = i142 / 2;
+  i143 = i143 / 2;
+  i144 = i144 / 2;
+  i145 = i145 / 2;
+  i146 = i146 / 2;
+  i147 = i147 / 2;
+  i148 = i148 / 2;
+  i149 = i149 / 2;
+  i150 = i150 / 2;
+  i151 = i151 / 2;
+  i152 = i152 / 2;
+  i153 = i153 / 2;
+  i154 = i154 / 2;
+  i155 = i155 / 2;
+  i156 = i156 / 2;
+  i157 = i157 / 2;
+  i158 = i158 / 2;
+  i159 = i159 / 2;
+  i160 = i160 / 2;
+  i161 = i161 / 2;
+  i162 = i162 / 2;
+  i163 = i163 / 2;
+  i164 = i164 / 2;
+  i165 = i165 / 2;
+  i166 = i166 / 2;
+  i167 = i167 / 2;
+  i168 = i168 / 2;
+  i169 = i169 / 2;
+  i170 = i170 / 2;
+  i171 = i171 / 2;
+  i172 = i172 / 2;
+  i173 = i173 / 2;
+  i174 = i174 / 2;
+  i175 = i175 / 2;
+  i176 = i176 / 2;
+  i177 = i177 / 2;
+  i178 = i178 / 2;
+  i179 = i179 / 2;
+  i180 = i180 / 2;
+  i181 = i181 / 2;
+  i182 = i182 / 2;
+  i183 = i183 / 2;
+  i184 = i184 / 2;
+  i185 = i185 / 2;
+  i186 = i186 / 2;
+  i187 = i187 / 2;
+  i188 = i188 / 2;
+  i189 = i189 / 2;
+  i190 = i190 / 2;
+  i191 = i191 / 2;
+  i192 = i192 / 2;
+  i193 = i193 / 2;
+  i194 = i194 / 2;
+  i195 = i195 / 2;
+  i196 = i196 / 2;
+  i197 = i197 / 2;
+  i198 = i198 / 2;
+  i199 = i199 / 2;
+  i200 = i200 / 2;
+  i201 = i201 / 2;
+  i202 = i202 / 2;
+  i203 = i203 / 2;
+  i204 = i204 / 2;
+  i205 = i205 / 2;
+  i206 = i206 / 2;
+  i207 = i207 / 2;
+  i208 = i208 / 2;
+  i209 = i209 / 2;
+  i210 = i210 / 2;
+  i211 = i211 / 2;
+  i212 = i212 / 2;
+===mm.sysu.c===
+#include <sysy/sylib.h>
+#define N 1024
+
+void mm(int n, int A[][N], int B[][N], int C[][N]){
+    int i, j, k;
+
+    i = 0; j = 0;
+    while (i < n){
+        j = 0;
+        while (j < n){
+            C[i][j] = 0;
+            j = j + 1;
+        }
+        i = i + 1;
+    }
+
+    i = 0; j = 0; k = 0;
+
+    while (k < n){
+        i = 0;
+        while (i < n){
+            if (A[i][k] == 0){
+                i = i + 1;
+                continue;
+            }
+            j = 0;
+            while (j < n){
+                C[i][j] = C[i][j] + A[i][k] * B[k][j];
+                j = j + 1;
+            }
+            i = i + 1;
+        }
+        k = k + 1;
+    }
+}
+
+int A[N][N];
+int B[N][N];
+int C[N][N];
+
+int main(){
+    int n = getint();
+    int i, j;
+
+    i = 0;
+    j = 0;
+    while (i < n){
+        j = 0;
+        while (j < n){
+            A[i][j] = getint();
+            j = j + 1;
+        }
+        i = i + 1;
+    }
+    i = 0;
+    j = 0;
+    while (i < n){
+        j = 0;
+        while (j < n){
+            B[i][j] = getint();
+            j = j + 1;
+        }
+        i = i + 1;
+    }
+
+    starttime();
+
+    i = 0;
+    while (i < 3){    
+        mm(n, A, B, C);
+        mm(n, A, C, B);
+        i = i + 1;
+    }
+
+    int ans = 0;
+    i = 0;
+    while (i < n){
+        j = 0;
+        while (j < n){
+            ans = ans + B[i][j];
+            j = j + 1;
+        }
+        i = i + 1;
+    }
+    stoptime();
+    putint(ans);
+    putch(10);
+
+    return 0;
+}
+[?2004h
+[The command completed with exit code 0.]
+[Current working directory: /workspace/YatCC]
+[Command finished with exit code 0]

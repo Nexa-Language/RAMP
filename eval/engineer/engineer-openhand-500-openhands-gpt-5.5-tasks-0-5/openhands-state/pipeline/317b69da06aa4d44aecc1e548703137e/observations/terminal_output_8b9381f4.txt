@@ -1,0 +1,530 @@
+cat > /workspace/YatCC/task/3/EmitIR.hpp <<'EOF'
+[?2004l[?2004h#pragma once
+[?2004l[?2004h[?2004l[?2004h#include "asg.hpp"
+[?2004l[?2004h#include <llvm/IR/IRBuilder.h>
+[?2004l[?2004h#include <llvm/IR/LLVMContext.h>
+[?2004l[?2004h#include <llvm/IR/Module.h>
+[?2004l[?2004h#include <unordered_map>
+[?2004l[?2004h#include <vector>
+[?2004l[?2004h[?2004l[?2004hclass EmitIR
+[?2004l[?2004h{
+[?2004l[?2004hpublic:
+[?2004l[?2004h  Obj::Mgr& mMgr;
+[?2004l[?2004h  llvm::Module mMod;
+[?2004l[?2004h[?2004l[?2004h  EmitIR(Obj::Mgr& mgr, llvm::LLVMContext& ctx, llvm::StringRef mid = "-");
+[?2004l[?2004h[?2004l[?2004h  llvm::Module& operator()(asg::TranslationUnit* tu);
+[?2004l[?2004h[?2004l[?2004hprivate:
+[?2004l[?2004h  llvm::LLVMContext& mCtx;
+[?2004l[?2004h[?2004l[?2004h  llvm::Type* mIntTy;
+[?2004l[?2004h  llvm::FunctionType* mCtorTy;
+[?2004l[?2004h[?2004l[?2004h  llvm::Function* mCurFunc{ nullptr };
+[?2004l[?2004h  std::unique_ptr<llvm::IRBuilder<>> mCurIrb;
+[?2004l[?2004h  std::vector<llvm::BasicBlock*> mBreakTargets;
+[?2004l[?2004h  std::vector<llvm::BasicBlock*> mContinueTargets;
+[?2004l[?2004h[?2004l[?2004h  //============================================================================ [A[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[K=
+[?2004l[?2004h  // 类型
+[?2004l[?2004h  //============================================================================ [A[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[K=
+[?2004l[?2004h[?2004l[?2004h  llvm::Type* operator()(const asg::Type* type);
+[?2004l[?2004h  llvm::Type* scalarType(asg::Type::Spec spec);
+[?2004l[?2004h  llvm::Type* arrayElementType(const asg::Type* type);
+[?2004l[?2004h[?2004l[?2004h  //============================================================================ [A[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[K=
+[?2004l[?2004h  // 表达式
+[?2004l[?2004h  //============================================================================ [A[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[K=
+[?2004l[?2004h[?2004l[?2004h  llvm::Value* operator()(asg::Expr* obj);
+[?2004l[?2004h  llvm::Value* operator()(asg::DeclRefExpr* obj);
+[?2004l[?2004h  llvm::Value* operator()(asg::ParenExpr* obj);
+[?2004l[?2004h  llvm::Value* operator()(asg::UnaryExpr* obj);
+[?2004l[?2004h  llvm::Value* operator()(asg::BinaryExpr* obj);
+[?2004l[?2004h  llvm::Value* operator()(asg::CallExpr* obj);
+[?2004l[?2004h  llvm::Value* operator()(asg::ImplicitCastExpr* obj);
+[?2004l[?2004h  llvm::Value* operator()(asg::ImplicitInitExpr* obj);
+[?2004l[?2004h  llvm::Constant* operator()(asg::IntegerLiteral* obj);
+[?2004l[?2004h[?2004l[?2004h  llvm::Value* emitLValue(asg::Expr* obj);
+[?2004l[?2004h  llvm::Value* emitCondition(asg::Expr* obj);
+[?2004l[?2004h  llvm::Value* castTo(llvm::Value* value, llvm::Type* toType, bool isSigned = true);
+[?2004l[?2004h[?2004l[?2004h  llvm::Constant* zeroOf(const asg::Type* type);
+[?2004l[?2004h  llvm::Constant* constValue(asg::Expr* expr);
+[?2004l[?2004h  llvm::Constant* constInit(const asg::Type* type, asg::Expr* init);
+[?2004l[?2004h[?2004l[?2004h  //============================================================================ [A[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[K=
+[?2004l[?2004h  // 语句
+[?2004l[?2004h  //============================================================================ [A[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[K=
+[?2004l[?2004h[?2004l[?2004h  void operator()(asg::Stmt* obj);
+[?2004l[?2004h  void operator()(asg::CompoundStmt* obj);
+[?2004l[?2004h  void operator()(asg::DeclStmt* obj);
+[?2004l[?2004h  void operator()(asg::ExprStmt* obj);
+[?2004l[?2004h  void operator()(asg::IfStmt* obj);
+[?2004l[?2004h  void operator()(asg::WhileStmt* obj);
+[?2004l[?2004h  void operator()(asg::BreakStmt* obj);
+[?2004l[?2004h  void operator()(asg::ContinueStmt* obj);
+[?2004l[?2004h  void operator()(asg::ReturnStmt* obj);
+[?2004l[?2004h[?2004l[?2004h  bool currentBlockTerminated() const;
+[?2004l[?2004h[?2004l[?2004h  //============================================================================ [A[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[K=
+[?2004l[?2004h  // 声明
+[?2004l[?2004h  //============================================================================ [A[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[K=
+[?2004l[?2004h[?2004l[?2004h  void operator()(asg::Decl* obj);
+[?2004l[?2004h  void operator()(asg::FunctionDecl* obj);
+[?2004l[?2004h  void operator()(asg::VarDecl* obj);
+[?2004l[?2004h[?2004l[?2004h  llvm::AllocaInst* createEntryAlloca(llvm::Type* type, llvm::StringRef name);
+[?2004l[?2004h  void emitLocalInit(llvm::Value* addr, const asg::Type* type, asg::Expr* init); [A[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[K;
+[?2004l[?2004h  void declareGlobal(asg::VarDecl* obj);
+[?2004l[?2004h  void declareFunction(asg::FunctionDecl* obj);
+[?2004l[?2004h  void emitFunctionBody(asg::FunctionDecl* obj);
+[?2004l[?2004h};
+[?2004l[?2004hEOF
+[?2004lcat > /workspace/YatCC/task/3/EmitIR.cpp <<'EOF'
+#include "EmitIR.hpp"
+[?2004h
+
+cat > /workspace/YatCC/task/3/EmitIR.cpp <<'EOF'
+[?2004l[?2004h#include "EmitIR.hpp"
+[?2004l[?2004h#include <llvm/IR/Constants.h>
+[?2004l[?2004h#include <llvm/IR/Verifier.h>
+[?2004l[?2004h#include <llvm/Transforms/Utils/ModuleUtils.h>
+[?2004l[?2004h[?2004l[?2004h#define self (*this)
+[?2004l[?2004h[?2004l[?2004husing namespace asg;
+[?2004l[?2004h[?2004l[?2004hEmitIR::EmitIR(Obj::Mgr& mgr, llvm::LLVMContext& ctx, llvm::StringRef mid)
+[?2004l[?2004h  : mMgr(mgr)
+[?2004l[?2004h  , mMod(mid, ctx)
+[?2004l[?2004h  , mCtx(ctx)
+[?2004l[?2004h  , mIntTy(llvm::Type::getInt32Ty(ctx))
+[?2004l[?2004h  , mCurIrb(std::make_unique<llvm::IRBuilder<>>(ctx))
+[?2004l[?2004h  , mCtorTy(llvm::FunctionType::get(llvm::Type::getVoidTy(ctx), false))
+[?2004l[?2004h{
+[?2004l[?2004h}
+[?2004l[?2004h[?2004l[?2004hllvm::Module&
+[?2004l[?2004hEmitIR::operator()(asg::TranslationUnit* tu)
+[?2004l[?2004h{
+[?2004l[?2004h  for (auto&& i : tu->decls) {
+[?2004l[?2004h    if (auto f = i->dcst<FunctionDecl>())
+[?2004l[?2004h      declareFunction(f);
+[?2004l[?2004h    else if (auto v = i->dcst<VarDecl>())
+[?2004l[?2004h      declareGlobal(v);
+[?2004l[?2004h    else
+[?2004l[?2004h      ABORT();
+[?2004l[?2004h  }
+[?2004l[?2004h[?2004l[?2004h  for (auto&& i : tu->decls) {
+[?2004l[?2004h    if (auto f = i->dcst<FunctionDecl>())
+[?2004l[?2004h      emitFunctionBody(f);
+[?2004l[?2004h  }
+[?2004l[?2004h  return mMod;
+[?2004l[?2004h}
+[?2004l[?2004h[?2004l[?2004h//============================================================================== [A[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[K=
+[?2004l[?2004h// 类型
+[?2004l[?2004h//============================================================================== [A[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[K=
+[?2004l[?2004h[?2004l[?2004hllvm::Type*
+[?2004l[?2004hEmitIR::scalarType(Type::Spec spec)
+[?2004l[?2004h{
+[?2004l[?2004h  switch (spec) {
+[?2004l[?2004h    case Type::Spec::kVoid:
+[?2004l[?2004h      return llvm::Type::getVoidTy(mCtx);
+[?2004l[?2004h    case Type::Spec::kChar:
+[?2004l[?2004h      return llvm::Type::getInt8Ty(mCtx);
+[?2004l[?2004h    case Type::Spec::kInt:
+[?2004l[?2004h      return llvm::Type::getInt32Ty(mCtx);
+[?2004l[?2004h    case Type::Spec::kLong:
+[?2004l[?2004h    case Type::Spec::kLongLong:
+[?2004l[?2004h      return llvm::Type::getInt64Ty(mCtx);
+[?2004l[?2004h    default:
+[?2004l[?2004h      ABORT();
+[?2004l[?2004h  }
+[?2004l[?2004h}
+[?2004l[?2004h[?2004l[?2004hllvm::Type*
+[?2004l[?2004hEmitIR::operator()(const Type* type)
+[?2004l[?2004h{
+[?2004l[?2004h  ASSERT(type);
+[?2004l[?2004h  if (type->texp == nullptr)
+[?2004l[?2004h    return scalarType(type->spec);
+[?2004l[?2004h[?2004l[?2004h  Type subt;
+[?2004l[?2004h  subt.spec = type->spec;
+[?2004l[?2004h  subt.qual = type->qual;
+[?2004l[?2004h  subt.texp = type->texp->sub;
+[?2004l[?2004h[?2004l[?2004h  if (auto p = type->texp->dcst<PointerType>())
+[?2004l[?2004h    return llvm::PointerType::get(mCtx, 0);
+[?2004l[?2004h[?2004l[?2004h  if (auto p = type->texp->dcst<ArrayType>()) {
+[?2004l[?2004h    ASSERT(p->len != ArrayType::kUnLen);
+[?2004l[?2004h    return llvm::ArrayType::get(self(&subt), p->len);
+[?2004l[?2004h  }
+[?2004l[?2004h[?2004l[?2004h  if (auto p = type->texp->dcst<FunctionType>()) {
+[?2004l[?2004h    std::vector<llvm::Type*> pty;
+[?2004l[?2004h    for (auto param : p->params)
+[?2004l[?2004h      pty.push_back(self(param));
+[?2004l[?2004h    return llvm::FunctionType::get(self(&subt), std::move(pty), false);
+[?2004l[?2004h  }
+[?2004l[?2004h[?2004l[?2004h  ABORT();
+[?2004l[?2004h}
+[?2004l[?2004h[?2004l[?2004hllvm::Type*
+[?2004l[?2004hEmitIR::arrayElementType(const Type* type)
+[?2004l[?2004h{
+[?2004l[?2004h  ASSERT(type && type->texp);
+[?2004l[?2004h  if (auto arr = type->texp->dcst<ArrayType>()) {
+[?2004l[?2004h    Type elem;
+[?2004l[?2004h    elem.spec = type->spec;
+[?2004l[?2004h    elem.qual = type->qual;
+[?2004l[?2004h    elem.texp = arr->sub;
+[?2004l[?2004h    return self(&elem);
+[?2004l[?2004h  }
+[?2004l[?2004h  return scalarType(type->spec);
+[?2004l[?2004h}
+[?2004l[?2004h[?2004l[?2004h//============================================================================== [A[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[K=
+[?2004l[?2004h// 常量与辅助
+[?2004l[?2004h//============================================================================== [A[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[K=
+[?2004l[?2004h[?2004l[?2004hllvm::Constant*
+[?2004l[?2004hEmitIR::zeroOf(const Type* type)
+[?2004l[?2004h{
+[?2004l[?2004h  return llvm::Constant::getNullValue(self(type));
+[?2004l[?2004h}
+[?2004l[?2004h[?2004l[?2004hllvm::Constant*
+[?2004l[?2004hEmitIR::constValue(Expr* expr)
+[?2004l[?2004h{
+[?2004l[?2004h  if (!expr)
+[?2004l[?2004h    return nullptr;
+[?2004l[?2004h[?2004l[?2004h  if (auto p = expr->dcst<IntegerLiteral>())
+[?2004l[?2004h    return self(p);
+[?2004l[?2004h[?2004l[?2004h  if (auto p = expr->dcst<ImplicitInitExpr>())
+[?2004l[?2004h    return zeroOf(p->type);
+[?2004l[?2004h[?2004l[?2004h  if (auto p = expr->dcst<ParenExpr>())
+[?2004l[?2004h    return constValue(p->sub);
+[?2004l[?2004h[?2004l[?2004h  if (auto p = expr->dcst<ImplicitCastExpr>()) {
+[?2004l[?2004h    auto v = constValue(p->sub);
+[?2004l[?2004h    if (!v)
+[?2004l[?2004h      return nullptr;
+[?2004l[?2004h    auto dstTy = self(p->type);
+[?2004l[?2004h    if (v->getType() == dstTy)
+[?2004l[?2004h      return v;
+[?2004l[?2004h    if (auto ci = llvm::dyn_cast<llvm::ConstantInt>(v))
+[?2004l[?2004h      return llvm::ConstantInt::get(dstTy, ci->getSExtValue(), true);
+[?2004l[?2004h    return v;
+[?2004l[?2004h  }
+[?2004l[?2004h[?2004l[?2004h  if (auto p = expr->dcst<UnaryExpr>()) {
+[?2004l[?2004h    auto v = llvm::dyn_cast_or_null<llvm::ConstantInt>(constValue(p->sub));
+[?2004l[?2004h    if (!v)
+[?2004l[?2004h      return nullptr;
+[?2004l[?2004h    auto ty = self(p->type);
+[?2004l[?2004h    switch (p->op) {
+[?2004l[?2004h      case UnaryExpr::kPos:
+[?2004l[?2004h        return llvm::ConstantInt::get(ty, v->getSExtValue(), true);
+[?2004l[?2004h      case UnaryExpr::kNeg:
+[?2004l[?2004h        return llvm::ConstantInt::get(ty, -v->getSExtValue(), true);
+[?2004l[?2004h      case UnaryExpr::kNot:
+[?2004l[?2004h        return llvm::ConstantInt::get(ty, v->isZero() ? 1 : 0);
+[?2004l[?2004h      default:
+[?2004l[?2004h        ABORT();
+[?2004l[?2004h    }
+[?2004l[?2004h  }
+[?2004l[?2004h[?2004l[?2004h  if (auto p = expr->dcst<BinaryExpr>()) {
+[?2004l[?2004h    if (p->op == BinaryExpr::kComma)
+[?2004l[?2004h      return constValue(p->rht);
+[?2004l[?2004h    auto l = llvm::dyn_cast_or_null<llvm::ConstantInt>(constValue(p->lft));
+[?2004l[?2004h    auto r = llvm::dyn_cast_or_null<llvm::ConstantInt>(constValue(p->rht));
+[?2004l[?2004h    if (!l || !r)
+[?2004l[?2004h      return nullptr;
+[?2004l[?2004h    auto a = l->getSExtValue();
+[?2004l[?2004h    auto b = r->getSExtValue();
+[?2004l[?2004h    std::int64_t res = 0;
+[?2004l[?2004h    switch (p->op) {
+[?2004l[?2004h      case BinaryExpr::kMul: res = a * b; brea<response clipped><NOTE>Due to the max output limit, only part of the full response has been shown to you.</NOTE>:
+[?2004l[?2004h      return irb.CreateZExt(irb.CreateICmpSGT(lhs, rhs), self(obj->type));
+[?2004l[?2004h    case BinaryExpr::kLt:
+[?2004l[?2004h      return irb.CreateZExt(irb.CreateICmpSLT(lhs, rhs), self(obj->type));
+[?2004l[?2004h    case BinaryExpr::kGe:
+[?2004l[?2004h      return irb.CreateZExt(irb.CreateICmpSGE(lhs, rhs), self(obj->type));
+[?2004l[?2004h    case BinaryExpr::kLe:
+[?2004l[?2004h      return irb.CreateZExt(irb.CreateICmpSLE(lhs, rhs), self(obj->type));
+[?2004l[?2004h    case BinaryExpr::kEq:
+[?2004l[?2004h      return irb.CreateZExt(irb.CreateICmpEQ(lhs, rhs), self(obj->type));
+[?2004l[?2004h    case BinaryExpr::kNe:
+[?2004l[?2004h      return irb.CreateZExt(irb.CreateICmpNE(lhs, rhs), self(obj->type));
+[?2004l[?2004h    default:
+[?2004l[?2004h      ABORT();
+[?2004l[?2004h  }
+[?2004l[?2004h}
+[?2004l[?2004h[?2004l[?2004hllvm::Value*
+[?2004l[?2004hEmitIR::operator()(CallExpr* obj)
+[?2004l[?2004h{
+[?2004l[?2004h  auto calleeValue = self(obj->head);
+[?2004l[?2004h  auto callee = llvm::dyn_cast<llvm::Function>(calleeValue);
+[?2004l[?2004h  if (!callee) {
+[?2004l[?2004h    if (auto c = llvm::dyn_cast<llvm::ConstantExpr>(calleeValue))
+[?2004l[?2004h      callee = llvm::dyn_cast<llvm::Function>(c->getOperand(0));
+[?2004l[?2004h  }
+[?2004l[?2004h  ASSERT(callee);
+[?2004l[?2004h[?2004l[?2004h  std::vector<llvm::Value*> args;
+[?2004l[?2004h  auto fty = callee->getFunctionType();
+[?2004l[?2004h  for (std::size_t i = 0; i < obj->args.size(); ++i) {
+[?2004l[?2004h    auto v = self(obj->args[i]);
+[?2004l[?2004h    if (i < fty->getNumParams())
+[?2004l[?2004h      v = castTo(v, fty->getParamType(i));
+[?2004l[?2004h    args.push_back(v);
+[?2004l[?2004h  }
+[?2004l[?2004h  return mCurIrb->CreateCall(fty, callee, args);
+[?2004l[?2004h}
+[?2004l[?2004h[?2004l[?2004hllvm::Value*
+[?2004l[?2004hEmitIR::emitLValue(Expr* obj)
+[?2004l[?2004h{
+[?2004l[?2004h  if (auto p = obj->dcst<DeclRefExpr>()) {
+[?2004l[?2004h    ASSERT(p->decl && p->decl->any);
+[?2004l[?2004h    return static_cast<llvm::Value*>(p->decl->any);
+[?2004l[?2004h  }
+[?2004l[?2004h[?2004l[?2004h  if (auto p = obj->dcst<ParenExpr>())
+[?2004l[?2004h    return emitLValue(p->sub);
+[?2004l[?2004h[?2004l[?2004h  if (auto p = obj->dcst<ImplicitCastExpr>()) {
+[?2004l[?2004h    if (p->kind == ImplicitCastExpr::kNoOp)
+[?2004l[?2004h      return emitLValue(p->sub);
+[?2004l[?2004h    if (p->kind == ImplicitCastExpr::kArrayToPointerDecay)
+[?2004l[?2004h      return self(p);
+[?2004l[?2004h  }
+[?2004l[?2004h[?2004l[?2004h  if (auto p = obj->dcst<BinaryExpr>()) {
+[?2004l[?2004h    if (p->op == BinaryExpr::kIndex) {
+[?2004l[?2004h      auto base = self(p->lft);
+[?2004l[?2004h      auto idx = self(p->rht);
+[?2004l[?2004h      idx = castTo(idx, mIntTy);
+[?2004l[?2004h      return mCurIrb->CreateInBoundsGEP(self(p->type), base, idx);
+[?2004l[?2004h    }
+[?2004l[?2004h  }
+[?2004l[?2004h[?2004l[?2004h  ABORT();
+[?2004l[?2004h}
+[?2004l[?2004h[?2004l[?2004h//============================================================================== [A[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[K=
+[?2004l[?2004h// 语句
+[?2004l[?2004h//============================================================================== [A[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[K=
+[?2004l[?2004h[?2004l[?2004hvoid
+[?2004l[?2004hEmitIR::operator()(Stmt* obj)
+[?2004l[?2004h{
+[?2004l[?2004h  if (currentBlockTerminated())
+[?2004l[?2004h    return;
+[?2004l[?2004h[?2004l[?2004h  if (auto p = obj->dcst<CompoundStmt>())
+[?2004l[?2004h    return self(p);
+[?2004l[?2004h  if (auto p = obj->dcst<DeclStmt>())
+[?2004l[?2004h    return self(p);
+[?2004l[?2004h  if (auto p = obj->dcst<ExprStmt>())
+[?2004l[?2004h    return self(p);
+[?2004l[?2004h  if (auto p = obj->dcst<IfStmt>())
+[?2004l[?2004h    return self(p);
+[?2004l[?2004h  if (auto p = obj->dcst<WhileStmt>())
+[?2004l[?2004h    return self(p);
+[?2004l[?2004h  if (auto p = obj->dcst<BreakStmt>())
+[?2004l[?2004h    return self(p);
+[?2004l[?2004h  if (auto p = obj->dcst<ContinueStmt>())
+[?2004l[?2004h    return self(p);
+[?2004l[?2004h  if (auto p = obj->dcst<ReturnStmt>())
+[?2004l[?2004h    return self(p);
+[?2004l[?2004h  if (obj->dcst<NullStmt>())
+[?2004l[?2004h    return;
+[?2004l[?2004h[?2004l[?2004h  ABORT();
+[?2004l[?2004h}
+[?2004l[?2004h[?2004l[?2004hvoid
+[?2004l[?2004hEmitIR::operator()(CompoundStmt* obj)
+[?2004l[?2004h{
+[?2004l[?2004h  for (auto&& stmt : obj->subs) {
+[?2004l[?2004h    self(stmt);
+[?2004l[?2004h    if (currentBlockTerminated())
+[?2004l[?2004h      break;
+[?2004l[?2004h  }
+[?2004l[?2004h}
+[?2004l[?2004h[?2004l[?2004hvoid
+[?2004l[?2004hEmitIR::operator()(DeclStmt* obj)
+[?2004l[?2004h{
+[?2004l[?2004h  for (auto decl : obj->decls)
+[?2004l[?2004h    self(decl);
+[?2004l[?2004h}
+[?2004l[?2004h[?2004l[?2004hvoid
+[?2004l[?2004hEmitIR::operator()(ExprStmt* obj)
+[?2004l[?2004h{
+[?2004l[?2004h  if (obj->expr)
+[?2004l[?2004h    self(obj->expr);
+[?2004l[?2004h}
+[?2004l[?2004h[?2004l[?2004hvoid
+[?2004l[?2004hEmitIR::operator()(IfStmt* obj)
+[?2004l[?2004h{
+[?2004l[?2004h  auto& irb = *mCurIrb;
+[?2004l[?2004h  auto thenBb = llvm::BasicBlock::Create(mCtx, "if.then", mCurFunc);
+[?2004l[?2004h  auto elseBb = obj->else_ ? llvm::BasicBlock::Create(mCtx, "if.else", mCurFunc) : nullptr;
+[?2004l[?2004h  auto endBb = llvm::BasicBlock::Create(mCtx, "if.end", mCurFunc);
+[?2004l[?2004h[?2004l[?2004h  irb.CreateCondBr(emitCondition(obj->cond), thenBb, obj->else_ ? elseBb : endBb);
+[?2004l[?2004h[?2004l[?2004h  mCurIrb->SetInsertPoint(thenBb);
+[?2004l[?2004h  self(obj->then);
+[?2004l[?2004h  if (!currentBlockTerminated())
+[?2004l[?2004h    irb.CreateBr(endBb);
+[?2004l[?2004h[?2004l[?2004h  if (obj->else_) {
+[?2004l[?2004h    mCurIrb->SetInsertPoint(elseBb);
+[?2004l[?2004h    self(obj->else_);
+[?2004l[?2004h    if (!currentBlockTerminated())
+[?2004l[?2004h      irb.CreateBr(endBb);
+[?2004l[?2004h  }
+[?2004l[?2004h[?2004l[?2004h  mCurIrb->SetInsertPoint(endBb);
+[?2004l[?2004h}
+[?2004l[?2004h[?2004l[?2004hvoid
+[?2004l[?2004hEmitIR::operator()(WhileStmt* obj)
+[?2004l[?2004h{
+[?2004l[?2004h  auto& irb = *mCurIrb;
+[?2004l[?2004h  auto condBb = llvm::BasicBlock::Create(mCtx, "while.cond", mCurFunc);
+[?2004l[?2004h  auto bodyBb = llvm::BasicBlock::Create(mCtx, "while.body", mCurFunc);
+[?2004l[?2004h  auto endBb = llvm::BasicBlock::Create(mCtx, "while.end", mCurFunc);
+[?2004l[?2004h[?2004l[?2004h  irb.CreateBr(condBb);
+[?2004l[?2004h  mCurIrb->SetInsertPoint(condBb);
+[?2004l[?2004h  irb.CreateCondBr(emitCondition(obj->cond), bodyBb, endBb);
+[?2004l[?2004h[?2004l[?2004h  mBreakTargets.push_back(endBb);
+[?2004l[?2004h  mContinueTargets.push_back(condBb);
+[?2004l[?2004h  mCurIrb->SetInsertPoint(bodyBb);
+[?2004l[?2004h  self(obj->body);
+[?2004l[?2004h  if (!currentBlockTerminated())
+[?2004l[?2004h    irb.CreateBr(condBb);
+[?2004l[?2004h  mContinueTargets.pop_back();
+[?2004l[?2004h  mBreakTargets.pop_back();
+[?2004l[?2004h[?2004l[?2004h  mCurIrb->SetInsertPoint(endBb);
+[?2004l[?2004h}
+[?2004l[?2004h[?2004l[?2004hvoid
+[?2004l[?2004hEmitIR::operator()(BreakStmt* obj)
+[?2004l[?2004h{
+[?2004l[?2004h  ASSERT(!mBreakTargets.empty());
+[?2004l[?2004h  mCurIrb->CreateBr(mBreakTargets.back());
+[?2004l[?2004h}
+[?2004l[?2004h[?2004l[?2004hvoid
+[?2004l[?2004hEmitIR::operator()(ContinueStmt* obj)
+[?2004l[?2004h{
+[?2004l[?2004h  ASSERT(!mContinueTargets.empty());
+[?2004l[?2004h  mCurIrb->CreateBr(mContinueTargets.back());
+[?2004l[?2004h}
+[?2004l[?2004h[?2004l[?2004hvoid
+[?2004l[?2004hEmitIR::operator()(ReturnStmt* obj)
+[?2004l[?2004h{
+[?2004l[?2004h  auto& irb = *mCurIrb;
+[?2004l[?2004h  if (!obj->expr) {
+[?2004l[?2004h    irb.CreateRetVoid();
+[?2004l[?2004h  } else {
+[?2004l[?2004h    auto retVal = self(obj->expr);
+[?2004l[?2004h    retVal = castTo(retVal, mCurFunc->getReturnType());
+[?2004l[?2004h    irb.CreateRet(retVal);
+[?2004l[?2004h  }
+[?2004l[?2004h}
+[?2004l[?2004h[?2004l[?2004h//============================================================================== [A[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[K=
+[?2004l[?2004h// 声明
+[?2004l[?2004h//============================================================================== [A[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[K=
+[?2004l[?2004h[?2004l[?2004hvoid
+[?2004l[?2004hEmitIR::operator()(Decl* obj)
+[?2004l[?2004h{
+[?2004l[?2004h  if (auto p = obj->dcst<FunctionDecl>())
+[?2004l[?2004h    return self(p);
+[?2004l[?2004h  if (auto p = obj->dcst<VarDecl>())
+[?2004l[?2004h    return self(p);
+[?2004l[?2004h  ABORT();
+[?2004l[?2004h}
+[?2004l[?2004h[?2004l[?2004hllvm::AllocaInst*
+[?2004l[?2004hEmitIR::createEntryAlloca(llvm::Type* type, llvm::StringRef name)
+[?2004l[?2004h{
+[?2004l[?2004h  llvm::IRBuilder<> tmp(&mCurFunc->getEntryBlock(), mCurFunc->getEntryBlock().begin());
+[?2004l[?2004h  return tmp.CreateAlloca(type, nullptr, name);
+[?2004l[?2004h}
+[?2004l[?2004h[?2004l[?2004hvoid
+[?2004l[?2004hEmitIR::declareGlobal(VarDecl* obj)
+[?2004l[?2004h{
+[?2004l[?2004h  if (obj->any)
+[?2004l[?2004h    return;
+[?2004l[?2004h  auto ty = self(obj->type);
+[?2004l[?2004h  auto init = constInit(obj->type, obj->init);
+[?2004l[?2004h  auto gv = new llvm::GlobalVariable(
+[?2004l[?2004h    mMod,
+[?2004l[?2004h    ty,
+[?2004l[?2004h    obj->type->qual.const_,
+[?2004l[?2004h    llvm::GlobalValue::ExternalLinkage,
+[?2004l[?2004h    init,
+[?2004l[?2004h    obj->name);
+[?2004l[?2004h  obj->any = gv;
+[?2004l[?2004h}
+[?2004l[?2004h[?2004l[?2004hvoid
+[?2004l[?2004hEmitIR::declareFunction(FunctionDecl* obj)
+[?2004l[?2004h{
+[?2004l[?2004h  if (obj->any)
+[?2004l[?2004h    return;
+[?2004l[?2004h  auto fty = llvm::dyn_cast<llvm::FunctionType>(self(obj->type));
+[?2004l[?2004h  ASSERT(fty);
+[?2004l[?2004h  auto func = llvm::Function::Create(
+[?2004l[?2004h    fty, llvm::GlobalVariable::ExternalLinkage, obj->name, mMod);
+[?2004l[?2004h  obj->any = func;
+[?2004l[?2004h}
+[?2004l[?2004h[?2004l[?2004hvoid
+[?2004l[?2004hEmitIR::operator()(FunctionDecl* obj)
+[?2004l[?2004h{
+[?2004l[?2004h  declareFunction(obj);
+[?2004l[?2004h}
+[?2004l[?2004h[?2004l[?2004hvoid
+[?2004l[?2004hEmitIR::emitFunctionBody(FunctionDecl* obj)
+[?2004l[?2004h{
+[?2004l[?2004h  if (obj->body == nullptr)
+[?2004l[?2004h    return;
+[?2004l[?2004h[?2004l[?2004h  auto func = static_cast<llvm::Function*>(obj->any);
+[?2004l[?2004h  if (!func->empty())
+[?2004l[?2004h    return;
+[?2004l[?2004h[?2004l[?2004h  mCurFunc = func;
+[?2004l[?2004h  auto entryBb = llvm::BasicBlock::Create(mCtx, "entry", func);
+[?2004l[?2004h  mCurIrb->SetInsertPoint(entryBb);
+[?2004l[?2004h[?2004l[?2004h  auto argIt = func->arg_begin();
+[?2004l[?2004h  for (std::size_t i = 0; i < obj->params.size(); ++i, ++argIt) {
+[?2004l[?2004h    auto param = obj->params[i];
+[?2004l[?2004h    auto alloca = createEntryAlloca(argIt->getType(), param->name);
+[?2004l[?2004h    mCurIrb->CreateStore(&*argIt, alloca);
+[?2004l[?2004h    param->any = alloca;
+[?2004l[?2004h  }
+[?2004l[?2004h[?2004l[?2004h  self(obj->body);
+[?2004l[?2004h[?2004l[?2004h  if (!currentBlockTerminated()) {
+[?2004l[?2004h    if (func->getReturnType()->isVoidTy())
+[?2004l[?2004h      mCurIrb->CreateRetVoid();
+[?2004l[?2004h    else
+[?2004l[?2004h      mCurIrb->CreateRet(llvm::Constant::getNullValue(func->getReturnType()));
+[?2004l[?2004h  }
+[?2004l[?2004h[?2004l[?2004h  mCurFunc = nullptr;
+[?2004l[?2004h}
+[?2004l[?2004h[?2004l[?2004hvoid
+[?2004l[?2004hEmitIR::operator()(VarDecl* obj)
+[?2004l[?2004h{
+[?2004l[?2004h  if (!mCurFunc) {
+[?2004l[?2004h    declareGlobal(obj);
+[?2004l[?2004h    return;
+[?2004l[?2004h  }
+[?2004l[?2004h[?2004l[?2004h  auto ty = self(obj->type);
+[?2004l[?2004h  auto addr = createEntryAlloca(ty, obj->name);
+[?2004l[?2004h  obj->any = addr;
+[?2004l[?2004h  emitLocalInit(addr, obj->type, obj->init);
+[?2004l[?2004h}
+[?2004l[?2004h[?2004l[?2004hvoid
+[?2004l[?2004hEmitIR::emitLocalInit(llvm::Value* addr, const Type* type, Expr* init)
+[?2004l[?2004h{
+[?2004l[?2004h  auto& irb = *mCurIrb;
+[?2004l[?2004h  if (!init) {
+[?2004l[?2004h    irb.CreateStore(zeroOf(type), addr);
+[?2004l[?2004h    return;
+[?2004l[?2004h  }
+[?2004l[?2004h[?2004l[?2004h  if (auto arrTy = type->texp ? type->texp->dcst<ArrayType>() : nullptr) {
+[?2004l[?2004h    Type elemTy;
+[?2004l[?2004h    elemTy.spec = type->spec;
+[?2004l[?2004h    elemTy.qual = type->qual;
+[?2004l[?2004h    elemTy.texp = arrTy->sub;
+[?2004l[?2004h    auto zero = llvm::ConstantInt::get(mIntTy, 0);
+[?2004l[?2004h    auto list = init->dcst<InitListExpr>();
+[?2004l[?2004h    for (std::uint32_t i = 0; i < arrTy->len; ++i) {
+[?2004l[?2004h      auto idx = llvm::ConstantInt::get(mIntTy, i);
+[?2004l[?2004h      auto elemAddr = irb.CreateInBoundsGEP(self(type), addr, { zero, idx });
+[?2004l[?2004h      Expr* elemInit = (list && i < list->list.size()) ? list->list[i] : nullptr;
+[?2004l[?2004h      emitLocalInit(elemAddr, &elemTy, elemInit);
+[?2004l[?2004h    }
+[?2004l[?2004h    return;
+[?2004l[?2004h  }
+[?2004l[?2004h[?2004l[?2004h  if (auto list = init->dcst<InitListExpr>()) {
+[?2004l[?2004h    if (list->list.empty())
+[?2004l[?2004h      irb.CreateStore(zeroOf(type), addr);
+[?2004l[?2004h    else
+[?2004l[?2004h      emitLocalInit(addr, type, list->list.front());
+[?2004l[?2004h    return;
+[?2004l[?2004h  }
+[?2004l[?2004h[?2004l[?2004h  if (auto impl = init->dcst<ImplicitInitExpr>()) {
+[?2004l[?2004h    irb.CreateStore(zeroOf(type), addr);
+[?2004l[?2004h    return;
+[?2004l[?2004h  }
+[?2004l[?2004h[?2004l[?2004h  auto val = self(init);
+[?2004l[?2004h  val = castTo(val, self(type));
+[?2004l[?2004h  irb.CreateStore(val, addr);
+[?2004l[?2004h}
+[?2004l[?2004hEOF
+[?2004l[?2004h
+[The command completed with exit code 0.]
+[Current working directory: /workspace/YatCC]
+[Command finished with exit code 0]

@@ -1,0 +1,604 @@
+python3 << 'PYEOF'
+[?2004l[?2004hcontent = r'''#include "Ast2Asg.hpp"
+[?2004l[?2004h#include <unordered_map>
+[?2004l[?2004h[?2004l[?2004h#define self (*this)
+[?2004l[?2004h[?2004l[?2004hnamespace asg {
+[?2004l[?2004h[?2004l[?2004h// 符号表，保存当前作用域的所有声明
+[?2004l[?2004hstruct Ast2Asg::Symtbl : public std::unordered_map<std::string, Decl*>
+[?2004l[?2004h{
+[?2004l[?2004h  Ast2Asg& m;
+[?2004l[?2004h  Symtbl* mPrev;
+[?2004l[?2004h[?2004l[?2004h  Symtbl(Ast2Asg& m)
+[?2004l[?2004h    : m(m)
+[?2004l[?2004h    , mPrev(m.mSymtbl)
+[?2004l[?2004h  {
+[?2004l[?2004h    m.mSymtbl = this;
+[?2004l[?2004h  }
+[?2004l[?2004h[?2004l[?2004h  ~Symtbl() { m.mSymtbl = mPrev; }
+[?2004l[?2004h[?2004l[?2004h  Decl* resolve(const std::string& name);
+[?2004l[?2004h};
+[?2004l[?2004h[?2004l[?2004hDecl*
+[?2004l[?2004hAst2Asg::Symtbl::resolve(const std::string& name)
+[?2004l[?2004h{
+[?2004l[?2004h  auto iter = find(name);
+[?2004l[?2004h  if (iter != end())
+[?2004l[?2004h    return iter->second;
+[?2004l[?2004h  ASSERT(mPrev != nullptr);
+[?2004l[?2004h  return mPrev->resolve(name);
+[?2004l[?2004h}
+[?2004l[?2004h[?2004l[?2004hTranslationUnit*
+[?2004l[?2004hAst2Asg::operator()(ast::TranslationUnitContext* ctx)
+[?2004l[?2004h{
+[?2004l[?2004h  auto ret = make<asg::TranslationUnit>();
+[?2004l[?2004h  if (ctx == nullptr)
+[?2004l[?2004h    return ret;
+[?2004l[?2004h[?2004l[?2004h  Symtbl localDecls(self);
+[?2004l[?2004h[?2004l[?2004h  for (auto&& i : ctx->externalDeclaration()) {
+[?2004l[?2004h    if (auto p = i->declaration()) {
+[?2004l[?2004h      auto decls = self(p);
+[?2004l[?2004h      ret->decls.insert(ret->decls.end(),
+[?2004l[?2004h                        std::make_move_iterator(decls.begin()),
+[?2004l[?2004h                        std::make_move_iterator(decls.end()));
+[?2004l[?2004h    }
+[?2004l[?2004h[?2004l[?2004h    else if (auto p = i->functionDefinition()) {
+[?2004l[?2004h      auto funcDecl = self(p);
+[?2004l[?2004h      ret->decls.push_back(funcDecl);
+[?2004l[?2004h      localDecls[funcDecl->name] = funcDecl;
+[?2004l[?2004h    }
+[?2004l[?2004h[?2004l[?2004h    else
+[?2004l[?2004h      ABORT();
+[?2004l[?2004h  }
+[?2004l[?2004h[?2004l[?2004h  return ret;
+[?2004l[?2004h}
+[?2004l[?2004h[?2004l[?2004h//============================================================================== [A[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[K=
+[?2004l[?2004h// 类型
+[?2004l[?2004h//============================================================================== [A[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[K=
+[?2004l[?2004h[?2004l[?2004hAst2Asg::SpecQual
+[?2004l[?2004hAst2Asg::operator()(ast::DeclarationSpecifiersContext* ctx)
+[?2004l[?2004h{
+[?2004l[?2004h  SpecQual ret = { Type::Spec::kINVALID, Type::Qual() };
+[?2004l[?2004h[?2004l[?2004h  for (auto&& i : ctx->declarationSpecifier()) {
+[?2004l[?2004h    if (auto p = i->typeSpecifier()) {
+[?2004l[?2004h      if (ret.first == Type::Spec::kINVALID) {
+[?2004l[?2004h        if (p->Int())
+[?2004l[?2004h          ret.first = Type::Spec::kInt;
+[?2004l[?2004h        else if (p->Char())
+[?2004l[?2004h          ret.first = Type::Spec::kChar;
+[?2004l[?2004h        else if (p->Void())
+[?2004l[?2004h          ret.first = Type::Spec::kVoid;
+[?2004l[?2004h        else if (p->Long())
+[?2004l[?2004h          ret.first = Type::Spec::kLong;
+[?2004l[?2004h        else
+[?2004l[?2004h          ABORT();
+[?2004l[?2004h      } else
+[?2004l[?2004h        ABORT();
+[?2004l[?2004h    } else if (auto q = i->typeQualifier()) {
+[?2004l[?2004h      if (q->Const())
+[?2004l[?2004h        ret.second.const_ = true;
+[?2004l[?2004h      else
+[?2004l[?2004h        ABORT();
+[?2004l[?2004h    } else
+[?2004l[?2004h      ABORT();
+[?2004l[?2004h  }
+[?2004l[?2004h[?2004l[?2004h  return ret;
+[?2004l[?2004h}
+[?2004l[?2004h[?2004l[?2004hstd::pair<TypeExpr*, std::string>
+[?2004l[?2004hAst2Asg::operator()(ast::DeclaratorContext* ctx, TypeExpr* sub)
+[?2004l[?2004h{
+[?2004l[?2004h  return self(ctx->directDeclarator(), sub);
+[?2004l[?2004h}
+[?2004l[?2004h[?2004l[?2004hstatic int
+[?2004l[?2004heval_arrlen(Expr* expr)
+[?2004l[?2004h{
+[?2004l[?2004h  if (auto p = expr->dcst<IntegerLiteral>())
+[?2004l[?2004h    return p->val;
+[?2004l[?2004h[?2004l[?2004h  if (auto p = expr->dcst<DeclRefExpr>()) {
+[?2004l[?2004h    if (p->decl == nullptr)
+[?2004l[?2004h      ABORT();
+[?2004l[?2004h[?2004l[?2004h    auto var = p->decl->dcst<VarDecl>();
+[?2004l[?2004h    if (!var || !var->type->qual.const_)
+[?2004l[?2004h      ABORT();
+[?2004l[?2004h[?2004l[?2004h    switch (var->type->spec) {
+[?2004l[?2004h      case Type::Spec::kChar:
+[?2004l[?2004h      case Type::Spec::kInt:
+[?2004l[?2004h      case Type::Spec::kLong:
+[?2004l[?2004h      case Type::Spec::kLongLong:
+[?2004l[?2004h        return eval_arrlen(var->init);
+[?2004l[?2004h      default:
+[?2004l[?2004h        ABORT();
+[?2004l[?2004h    }
+[?2004l[?2004h  }
+[?2004l[?2004h[?2004l[?2004h  if (auto p = expr->dcst<UnaryExpr>()) {
+[?2004l[?2004h    auto sub = eval_arrlen(p->sub);
+[?2004l[?2004h    switch (p->op) {
+[?2004l[?2004h      case UnaryExpr::kPos: return sub;
+[?2004l[?2004h      case UnaryExpr::kNeg: return -sub;
+[?2004l[?2004h      default: ABORT();
+[?2004l[?2004h    }
+[?2004l[?2004h  }
+[?2004l[?2004h[?2004l[?2004h  if (auto p = expr->dcst<BinaryExpr>()) {
+[?2004l[?2004h    auto lft = eval_arrlen(p->lft);
+[?2004l[?2004h    auto rht = eval_arrlen(p->rht);
+[?2004l[?2004h    switch (p->op) {
+[?2004l[?2004h      case BinaryExpr::kAdd: return lft + rht;
+[?2004l[?2004h      case BinaryExpr::kSub: return lft - rht;
+[?2004l[?2004h      default: ABORT();
+[?2004l[?2004h    }
+[?2004l[?2004h  }
+[?2004l[?2004h[?2004l[?2004h  if (auto p = expr->dcst<InitListExpr>()) {
+[?2004l[?2004h    if (p->list.empty())
+[?2004l[?2004h      return 0;
+[?2004l[?2004h    return eval_arrlen(p->list[0]);
+[?2004l[?2004h  }
+[?2004l[?2004h[?2004l[?2004h  ABORT();
+[?2004l[?2004h}
+[?2004l[?2004h[?2004l[?2004hstd::pair<TypeExpr*, std::string>
+[?2004l[?2004hAst2Asgs::operator()(ast::DirectDeclaratorContext* ctx, TypeExpr sub)
+[?2004l[?2004h{
+[?2004l[?2004h  if (auto p = ctx->Identifier())
+[?2004l[?2004h    return { sub, p->getText() };
+[?2004l[?2004h[?2004l[?2004h  if (ctx->LeftBracket()) {
+[?2004l[?2004h    auto arrayType = make<ArrayType>();
+[?2004l[?2004h    arrayType->sub = sub;
+[?2004l[?2004h[?2004l[?2004h    if (auto p = ctx->assignmentExpression())
+[?2004l[?2004h      arrayType->len = eval_arrlen(self(p));
+[?2004l[?2004h    else
+[?2004l[?2004h      arrayType->len = ArrayType::kUnLen;
+[?2004l[?2004h[?2004l[?2004h    return self(ctx->directDeclarator(), arrayType);
+[?2004l[?2004h  }
+[?2004l[?2004h[?2004l[?2004h  if (ctx->LeftParen()) {
+[?2004l[?2004h    if (auto p = ctx->declarator()) {
+[?2004l[?2004h      return self(p, sub);
+[?2004l[?2004h    }
+[?2004l[?2004h    auto funcType = make<FunctionType>();
+[?2004l[?2004h    funcType->sub = sub;
+[?2004l[?2004h    if (auto p = ctx->parameterTypeList()) {
+[?2004l[?2004h      for (auto&& param : p->parameterList()->parameterDeclaration()) {
+[?2004l[?2004h        auto psq = self(param->declarationSpecifiers());
+[?2004l[?2004h        if (auto pdecl = param->declarator()) {
+[?2004l[?2004h          auto [ptexp, pname] = self(pdecl, nullptr);
+[?2004l[?2004h          auto paramDecl = make<Type>();
+[?2004l[?2004h          paramDecl->spec = psq.first;
+[?2004l[?2004h          paramDecl->qual = psq.second;
+[?2004l[?2004h          paramDecl->texp = ptexp;
+[?2004l[?2004h          funcType->params.push_back(paramDecl);
+[?2004l[?2004h        } else {
+[?2004l[?2004h          auto paramDecl = make<Type>();
+[?2004l[?2004h          paramDecl->spec = psq.first;
+[?2004l[?2004h          paramDecl->qual = psq.second;
+[?2004l[?2004h          funcType->params.push_back(paramDecl);
+[?2004l[?2004h        }
+[?2004l[?2004h      }
+[?2004l[?2004h    }
+[?2004l[?2004h    return { funcType, "" };
+[?2004l[?2004h  }
+[?2004l[?2004h[?2004l[?2004h  ABORT();
+[?2004l[?2004h}
+[?2004l[?2004h[?2004l[?2004h//============================================================================== [A[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[K=
+[?2004l[?2004h// 表达式
+[?2004l[?2004h//============================================================================== [A[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[K=
+[?2004l[?2004h[?2004l[?2004hExpr*
+[?2004l[?2004hAst2Asg::operator()(ast::ExpressionContext* ctx)
+[?2004l[?2004h{
+[?2004l[?2004h  auto list = ctx->assignmentExpression();
+[?2004l[?2004h  Expr* ret = self(list[0]);
+[?2004l[?2004h[?2004l[?2004h  for (unsigned i = 1; i < list.size(); ++i) {
+[?2004l[?2004h    auto node = make<BinaryExpr>();
+[?2004l[?2004h    node->op = node->kComma;
+[?2004l[?2004h    node->lft = ret;
+[?2004l[?2004h    node->rht = self(list[i]);
+[?2004l[?2004h    ret = node;
+[?2004l[?2004h  }
+[?2004l[?2004h[?2004l[?2004h  return ret;
+[?2004l[?2004h}
+[?2004l[?2004h[?2004l[?2004hExpr*
+[?2004l[?2004hAst2Asg::operator()(ast::AssignmentExpressionContext* ctx)
+[?2004l[?2004h{
+[?2004l[?2004h  if (auto p = ctx->conditionalExpression())
+[?2004l[?2004h    return self(p);
+[?2004l[?2004h[?2004l[?2004h  auto ret = make<BinaryExpr>();
+[?2004l[?2004h  ret->op = ret->kAssign;
+[?2004l[?2004h  ret->lft = self(ctx->unaryExpression());
+[?2004l[?2004h  ret->rht = self(ctx->assignmentExpression());
+[?2004l[?2004h  return ret;
+[?2004l[?2004h}
+[?2004l[?2004h[?2004l[?2004hExpr*
+[?2004l[?2004hAst2Asg::operator()(ast::ConditionalExpressionContext* ctx)
+[?2004l[?2004h{
+[?2004l[?2004h  return self(ctx->logicalOrExpression());
+[?2004l[?2004h}
+[?2004l[?2004h[?2004l[?2004hExpr*
+[?2004l[?2004hAst2Asg::operator()(ast::LogicalOrExpressionContext* ctx)
+[?2004l[?2004h{
+[?2004l[?2004h  auto list = ctx->logicalAndExpression();
+[?2004l[?2004h  Expr* ret = self(list[0]);
+[?2004l[?2004h  for (unsigned i = 1; i < list.size(); ++i) {
+[?2004l[?2004h    auto node = make<BinaryExpr>();
+[?2004l[?2004h    node->op = node->kOr;
+[?2004l[?2004h    node->lft = ret;
+[?2004l[?2004h    node->rht = self(list[i]);
+[?2004l[?2004h    ret = node;
+[?2004l[?2004h  }
+[?2004l[?2004h  return ret;
+[?2004l[?2004h}
+[?2004l[?2004h[?2004l[?2004hExpr*
+[?2004l[?2004hAst2Asg::operator()(ast::LogicalAndExpressionContext* ctx)
+[?2004l[?2004h{
+[?2004l[?2004h  auto list = ctx->inclusiveOrExpression();
+[?2004l[?2004h  Expr* ret = self(list[0]);
+[?2004l[?2004h  for (unsigned i = 1; i < list.size(); ++i) {
+[?2004l[?2004h    auto node = make<BinaryExpr>();
+[?2004l[?2004h    node->op = node->kAnd;
+[?2004l[?2004h    node->lft = ret;
+[?2004l[?2004h    node->rht = self(list[i]);
+[?2004l[?2004h    ret = node;
+[?2004l[?2004h  }
+[?2004l[?2004h  return ret;
+[?2004l[?2004h}
+[?2004l[?2004h[?2004l[?2004hExpr*
+[?2004l[?2004hAst2Asg::operator()(ast::InclusiveOrExpressionContext* ctx)
+[?2004l[?2004h{
+[?2004l[?2004h  return self(ctx->exclusiveOrExpression());
+[?2004l[?2004h}
+[?2004l[?2004h[?2004l[?2004hExpr*
+[?2004l[?2004hAst2Asg::operator()(ast::ExclusiveOrExpressionContext* ctx)
+[?2004l[?2004h{
+[?2004l[?2004h  return self(ctx->andExpression());
+[?2004l[?2004h}
+[?2004l[?2004h[?2004l[?2004hExpr*
+[?2004l[?2004hAst2Asg::operator()(ast::AndExpressionContext* ctx)
+[?2004l[?2004h{
+[?2004l[?2004h  return self(ctx->eq());
+[?2004l[?2004h}
+[?2004l[?2004h[?2004l[?2004hExpr*
+[?2004l[?2004hAst2Asg::operator()(ast::EqualityExpressionContext* ctx)
+[?2004l[?2004h{
+[?2004l[?2004h  auto list = ctx->relationalExpression();
+[?2004l[?2004h  Expr* ret = self(list[0]);
+[?2004l[?2004h  for (unsigned i = 1; i < list.size(); ++i) {
+[?2004l[?2004h    auto node = make<BinaryExpr>();
+[?2004l[?2004h    auto token = dynamic_cast<antlr4::tree::TerminalNode*>(ctx->children[i * 2 - 1])
+[?2004l[?2004h                   ->getSymbol()->getType();
+[?2004l[?2004h    switch (token) {
+[?2004l[?2004h      case ast::EqualEqual: node->op = node->kEq; break;
+[?2004l[?2004h      case ast::NotEqual: node->op = node->kNe; break;
+[?2004l[?2004h      default: ABORT();
+[?2004l[?2004h    }
+[?2004l[?2004h    node->lft = ret;
+[?2004l[?2004h    node->rht = self(list[i]);
+[?2004l[?2004h    ret = node;
+[?2004l[?2004h  }
+[?2004l[?2004h  return ret;
+[?2004l[?2004h}
+[?2004l[?2004h[?2004l[?2004hExpr*
+[?2004l[?2004hAst2Asg::operator()(ast::RelationalExpressionContext* ctx)
+[?2004l[?2004h{
+[?2004l[?2004h  auto list = ctx->shiftExpression();
+[?2004l[?2004h  Expr* ret = self(list[0]);
+[?2004l[?2004h  for (unsigned i = 1; i < list.size(); ++i) {
+[?2004l[?2004h    auto node = make<BinaryExpr>();
+[?2004l[?2004h    auto token = dynamic_cast<antlr4::tree::TerminalNode*>(ctx->children[i * 2 - 1])
+[?2004l[?2004h                   ->getSymbol()->getType();
+[?2004l[?2004h    switch (token) {
+[?2004l[?2004h      case ast::Less: node->op = node->kLt; break;
+[?2004l[?2004h      case ast::Greater: node->op = node->kGt; break;
+[?2004l[?2004h      case ast::LessEqual: node->op = node->kLe; break;
+[?2004l[?2004h      case ast::GreaterEqual: node->op = node->kGe; break;
+[?2004l[?2004h      default: ABORT();
+[?2004l[?2004h    }
+[?2004l[?2004h    node->lft = ret;
+[?2004l[?2004h    node->rht = self(list[i]);
+[?2004l[?2004h    ret = node;
+[?2004l[?2004h  }
+[?2004l[?2004h  return ret;
+[?2004l[?2004h}
+[?2004l[?2004h[?2004l[?2004hExpr*
+[?2004l[?2004hAst2Asg::operator()(ast::ShiftExpressionContext* ctx)
+[?2004l[?2004h{
+[?2004l[?2004h  return self(ctx->additiveExpression());
+[?2004l[?2004h}
+[?2004l[?2004h[?2004l[?2004hExpr*
+[?2004l[?2004hAst2Asg::operator()(ast::AdditiveExpressionContext* ctx)
+[?2004l[?2004h{
+[?2004l[?2004h  auto list = ctx->mul();
+[?2004l[?2004h  Expr* ret = self(list[0]);
+[?2004l[?2004h[?2004l[?2004h  for (unsign<response clipped><NOTE>Due to the max output limit, only part of the full response has been shown to you.</NOTE>namic_cast<antlr4::tree::TerminalNode*>(ctx->children[i * 2 - 1])
+[?2004l[?2004h                   ->getSymbol()->getType();
+[?2004l[?2004h    switch (token) {
+[?2004l[?2004h      case ast::Star: node->op = node->kMul; break;
+[?2004l[?2004h      case ast::Slash: node->op = node->kDiv; break;
+[?2004l[?2004h      case ast::Percent: node->op = node->kMod; break;
+[?2004l[?2004h      default: ABORT();
+[?2004l[?2004h    }
+[?2004l[?2004h    node->lft = ret;
+[?2004l[?2004h    node->rht = self(list[i]);
+[?2004l[?2004h    ret = node;
+[?2004l[?2004h  }
+[?2004l[?2004h  return ret;
+[?2004l[?2004h}
+[?2004l[?2004h[?2004l[?2004hExpr*
+[?2004l[?2004hAst2Asg::operator()(ast::CastExpressionContext* ctx)
+[?2004l[?2004h{
+[?2004l[?2004h  return self(ctx->unaryExpression());
+[?2004l[?2004h}
+[?2004l[?2004h[?2004l[?2004hExpr*
+[?2004l[?2004hAst2Asg::operator()(ast::UnaryExpressionContext* ctx)
+[?2004l[?2004h{
+[?2004l[?2004h  if (auto ret = make<UnaryExpr>();
+[?2004l[?2004h  if (auto op = ctx->unaryOperator()) {
+[?2004l[?2004h    auto token = dynamic_cast<antlr4::tree::TerminalNode*>(op->children[0])
+[?2004l[?2004h                   ->getSymbol()->getType();
+[?2004l[?2004h    switch (token) {
+[?2004l[?2004h      case ast::Plus: ret->op = ret->kPos; break;
+[?2004l[?2004h      case ast::Minus: ret->op = ret->kNeg; break;
+[?2004l[?2004h      case ast::Not: ret->op = ret->kNot; break;
+[?2004l[?2004h      default: break;
+[?2004l[?2004h    }
+[?2004l[?2004h    ret->sub = self(ctx->unaryExpression());
+[?2004l[?2004h    return ret;
+[?2004l[?2004h  }
+[?2004l[?2004h[?2004l[?2004h  return self(ctx->postfixExpression());
+[?2004l[?2004h}
+[?2004l[?2004h[?2004l[?2004hExpr*
+[?2004l[?2004hAst2Asg::operator()(ast::PostfixExpressionContext* ctx)
+[?2004l[?2004h{
+[?2004l[?2004h  auto sub = self(ctx->primaryExpression());
+[?2004l[?2004h  auto children = ctx->children;
+[?2004l[?2004h  for (unsigned i = 1; i < children.size(); ++i) {
+[?2004l[?2004h    auto child = children[i];
+[?2004l[?2004h    if (auto tn = dynamic_cast<antlr4::tree::TerminalNode*>(child)) {
+[?2004l[?2004h      if (tn->getSymbol()->getType() == ast::LeftParen) {
+[?2004l[?2004h        auto call = make<CallExpr>();
+[?2004l[?2004h        call->head = sub;
+[?2004l[?2004h        i++;
+[?2004l[?2004h        while (i < children.size()) {
+[?2004l[?2004h          if (auto argCtx = dynamic_cast<ast::ArgumentExpressionListContext*>(children[i])) {
+[?2004l[?2004h            for (auto&& expr : argCtx->assignmentExpression())
+[?2004l[?2004h              call->args.push_back(self(expr));
+[?2004l[?2004h            i++;
+[?2004l[?2004h          } else
+[?2004l[?2004h            break;
+[?2004l[?2004h        }
+[?2004l[?2004h        sub = call;
+[?2004l[?2004h      } else if (tn->getSymbol()->getType() == ast::LeftBracket) {
+[?2004l[?2004h        auto index = make<BinaryExpr>();
+[?2004l[?2004h        index->op = index->kIndex;
+[?2004l[?2004h        index->lft = sub;
+[?2004l[?2004h        i++;
+[?2004l[?2004h        if (i < children.size())
+[?2004l[?2004h          index->rht = self(dynamic_cast<ast::ExpressionContext*>(children[i])); [A[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[K;
+[?2004l[?2004h        i++;
+[?2004l[?2004h        sub = index;
+[?2004l[?2004h      }
+[?2004l[?2004h    }
+[?2004l[?2004h  }
+[?2004l[?2004h  return sub;
+[?2004l[?2004h}
+[?2004l[?2004h[?2004l[?2004hExpr*
+[?2004l[?2004hAst2Asg::operator()(ast::PrimaryExpressionContext* ctx)
+[?2004l[?2004h{
+[?2004l[?2004h  if (auto p = ctx->Identifier()) {
+[?2004l[?2004h    auto name = p->getText();
+[?2004l[?2004h    auto ret = make<DeclRefExpr>();
+[?2004l[?2004h    ret->decl = mSymtbl->resolve(name);
+[?2004l[?2004h    return ret;
+[?2004l[?2004h  }
+[?2004l[?2004h[?2004l[?2004h  if (auto p = ctx->Constant()) {
+[?2004l[?2004h    auto text = p->getText();
+[?2004l[?2004h    auto ret = make<IntegerLiteral>();
+[?2004l[?2004h    ASSERT(!text.empty());
+[?2004l[?2004h    if (text[0] != '0')
+[?2004l[?2004h      ret->val = std::stoll(text);
+[?2004l[?2004h    else if (text.size() == else if (text[1] == 'x' || text[1] == 'X')
+[?2004l[?2004h      ret->val = std::stoll(text.substr(2), nullptr, 16);
+[?2004l[?2004h    else
+[?2004l[?2004h      ret->val = std::stoll(text.substr(1), nullptr, 8);
+[?2004l[?2004h    return ret;
+[?2004l[?2004h  }
+[?2004l[?2004h[?2004l[?2004h  if (auto p = ctx->expression()) {
+[?2004l[?2004h    auto ret = make<ParenExpr>();
+[?2004l[?2004h    ret->sub = self(p);
+[?2004l[?2004h    return ret;
+[?2004l[?2004h  }
+[?2004l[?2004h[?2004l[?2004h  ABORT();
+[?2004l[?2004h}
+[?2004l[?2004h[?2004l[?2004hExpr*
+[?2004l[?2004hAst2Asg::operator()(ast::InitializerContext* ctx)
+[?2004l[?2004h{
+[?2004l[?2004h  if (auto p = ctx->assignmentExpression())
+[?2004l[?2004h    return self(p);
+[?2004l[?2004h[?2004l[?2004h  auto ret = make<InitListExpr>();
+[?2004l[?2004h  if (auto p = ctx->initializerList()) {
+[?2004l[?2004h    for (auto&& i : p->initializer()) {
+[?2004l[?2004h      auto expr = self(i);
+[?2004l[?2004h      if (auto p = expr->dcst<InitListExpr>()) {
+[?2004l[?2004h        for (auto&& sub : p->list)
+[?2004l[?2004h          ret->list.push_back(sub);
+[?2004l[?2004h      } else {
+[?2004l[?2004h        ret->list.push_back(expr);
+[?2004l[?2004h      }
+[?2004l[?2004h    }
+[?2004l[?2004h  }
+[?2004l[?2004h  return ret;
+[?2004l[?2004h}
+[?2004l[?2004h[?2004l[?2004h//============================================================================== [A[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[K=
+[?2004l[?2004h// 语句
+[?2004l[?2004h//============================================================================== [A[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[K=
+[?2004l[?2004h[?2004l[?2004hStmt*
+[?2004l[?2004hAst2Asg::operator()(ast::StatementContext* ctx)
+[?2004l[?2004h{
+[?2004l[?2004h  if (auto p = ctx->compoundStatement())
+[?2004l[?2004h    return self(p);
+[?2004l[?2004h[?2004l[?2004h  if (auto p = ctx->expressionStatement())
+[?2004l[?2004h    return self(p);
+[?2004l[?2004h[?2004l[?2004h  if (auto p = ctx->jumpStatement())
+[?2004l[?2004h    return self(p);
+[?2004l[?2004h[?2004l[?2004h  if (auto p = ctx->selectionStatement())
+[?2004l[?2004h    return self(p);
+[?2004l[?2004h[?2004l[?2004h  if (auto p = ctx->iterationStatement())
+[?2004l[?2004h    return self(p);
+[?2004l[?2004h[?2004l[?2004h  if (auto p = ctx->labeledStatement())
+[?2004l[?2004h    return self(p->statement());
+[?2004l[?2004h[?2004l[?2004h  ABORT();
+[?2004l[?2004h}
+[?2004l[?2004h[?2004l[?2004hCompoundStmt*
+[?2004l[?2004hAst2Asg::operator()(ast::CompoundStatementContext* ctx)
+[?2004l[?2004h{
+[?2004l[?2004h  auto ret = make<CompoundStmt>();
+[?2004l[?2004h[?2004l[?2004h  if (auto p = ctx->blockItemList()) {
+[?2004l[?2004h    Symtbl localDecls(self);
+[?2004l[?2004h[?2004l[?2004h    for (auto&& i : p->blockItem()) {
+[?2004l[?2004h      if (auto q = i->declaration()) {
+[?2004l[?2004h        auto sub = make<DeclStmt>();
+[?2004l[?2004h        sub->decls = self(q);
+[?2004l[?2004h        ret->subs.push_back(sub);
+[?2004l[?2004h      }
+[?2004l[?2004h[?2004l[?2004h      else if (auto q = i->statement())
+[?2004l[?2004h        ret->subs.push_back(self(q));
+[?2004l[?2004h[?2004l[?2004h      else
+[?2004l[?2004h        ABORT();
+[?2004l[?2004h    }
+[?2004l[?2004h  }
+[?2004l[?2004h[?2004l[?2004h  return ret;
+[?2004l[?2004h}
+[?2004l[?2004h[?2004l[?2004hStmt*
+[?2004l[?2004hAst2Asg::operator()(ast::ExpressionStatementContext* ctx)
+[?2004l[?2004h{
+[?2004l[?2004h  if (auto p = ctx->expression()) {
+[?2004l[?2004h    auto ret = make<ExprStmt>();
+[?2004l[?2004h    ret->expr = self(p);
+[?2004l[?2004h    return ret;
+[?2004l[?2004h  }
+[?2004l[?2004h[?2004l[?2004h  return make<NullStmt>();
+[?2004l[?2004h}
+[?2004l[?2004h[?2004l[?2004hStmt*
+[?2004l[?2004hAst2Asg::operator()(ast::JumpStatementContext* ctx)
+[?2004l[?2004h{
+[?2004l[?2004h  if (ctx->Return()) {
+[?2004l[?2004h    auto ret = make<ReturnStmt>();
+[?2004l[?2004h    ret->func = mCurrentFunc;
+[?2004l[?2004h    if (auto p = ctx->expression())
+[?2004l[?2004h      ret->expr = self(p);
+[?2004l[?2004h    return ret;
+[?2004l[?2004h  }
+[?2004l[?2004h[?2004l[?2004h  if (ctx->Break()) {
+[?2004l[?2004h    return make<BreakStmt>();
+[?2004l[?2004h  }
+[?2004l[?2004h[?2004l[?2004h  if (ctx->Continue()) {
+[?2004l[?2004h    return make<ContinueStmt>();
+[?2004l[?2004h  }
+[?2004l[?2004h[?2004l[?2004h  ABORT();
+[?2004l[?2004h}
+[?2004l[?2004h[?2004l[?2004hStmt*
+[?2004l[?2004hAst2Asg::operator()(ast::SelectionStatementContext* ctx)
+[?2004l[?2004h{
+[?2004l[?2004h  auto ret = make<IfStmt>();
+[?2004l[?2004h  ret->cond = self(ctx->expression());
+[?2004l[?2004h  ret->then = self(ctx->statement(0));
+[?2004l[?2004h  if (ctx->Else())
+[?2004l[?2004h    ret->else_ = self(ctx->statement(1));
+[?2004l[?2004h  return ret;
+[?2004l[?2004h}
+[?2004l[?2004h[?2004l[?2004hStmt*
+[?2004l[?2004hAst2Asg::operator()(ast::IterationStatementContext* ctx)
+[?2004l[?2004h{
+[?2004l[?2004h  if (ctx->While()) {
+[?2004l[?2004h    auto ret = make<WhileStmt>();
+[?2004l[?2004h    ret->cond = self(ctx->expression());
+[?2004l[?2004h    ret->body = self(ctx->statement());
+[?2004l[?2004h    return ret;
+[?2004l[?2004h  }
+[?2004l[?2004h[?2004l[?2004h  if (ctx->Do()) {
+[?2004l[?2004h    auto ret = make<DoStmt>();
+[?2004l[?2004h    ret->body = self(ctx->statement());
+[?2004l[?2004h    ret->cond = self(
+[?2004l[?2004h      dynamic_cast<ast::ExpressionContext*>(
+[?2004l[?2004h        ctx->children[ctx->children.size() - 2]));
+[?2004l[?2004h    return ret;
+[?2004l[?2004h  }
+[?2004l[?2004h[?2004l[?2004h  ABORT();
+[?2004l[?2004h}
+[?2004l[?2004h[?2004l[?2004h//============================================================================== [A[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[K=
+[?2004l[?2004h// 声明
+[?2004l[?2004h//============================================================================== [A[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[K=
+[?2004l[?2004h[?2004l[?2004hstd::vector<Decl*>
+[?2004l[?2004hAst2Asg::operator()(ast::DeclarationContext* ctx)
+[?2004l[?2004h{
+[?2004l[?2004h  std::vector<Decl*> ret;
+[?2004l[?2004h[?2004l[?2004h  auto specs = self(ctx->declarationSpecifiers());
+[?2004l[?2004h[?2004l[?2004h  if (auto p = ctx->initDeclaratorList()) {
+[?2004l[?2004h    for (auto&& j : p->initDeclarator())
+[?2004l[?2004h      ret.push_back(self(j, specs));
+[?2004l[?2004h  }
+[?2004l[?2004h[?2004l[?2004h  return ret;
+[?2004l[?2004h}
+[?2004l[?2004h[?2004l[?2004hFunctionDecl*
+[?2004l[?2004hAst2Asg::operator()(ast::FunctionDefinitionContext* ctx)
+[?2004l[?2004h{
+[?2004l[?2004h  auto ret = make<FunctionDecl>();
+[?2004l[?2004h  mCurrentFunc = ret;
+[?2004l[?2004h[?2004l[?2004h  auto type = make<Type>();
+[?2004l[?2004h  ret->type = type;
+[?2004l[?2004h[?2004l[?2004h  auto sq = self(ctx->declarationSpecifiers());
+[?2004l[?2004h  type->spec = sq.first, type->qual = sq.second;
+[?2004l[?2004h[?2004l[?2004h  auto [texp, name] = self(ctx->declarator(), nullptr);
+[?2004l[?2004h  auto funcType = make<FunctionType>();
+[?2004l[?2004h  funcType->sub = texp;
+[?2004l[?2004h  type->texp = funcType;
+[?2004l[?2004h  ret->name = std::move(name);
+[?2004l[?2004h[?2004l[?2004h  Symtbl localDecls(self);
+[?2004l[?2004h[?2004l[?2004h  (*mSymtbl)[ret->name] = ret;
+[?2004l[?2004h[?2004l[?2004h  ret->body = self(ctx->compoundStatement());
+[?2004l[?2004h[?2004l[?2004h  return ret;
+[?2004l[?2004h}
+[?2004l[?2004h[?2004l[?2004hDecl*
+[?2004l[?2004hAst2Asg::operator()(ast::InitDeclaratorContext* ctx, SpecQual sq)
+[?2004l[?2004h{
+[?2004l[?2004h  auto [texp, name] = self(ctx->declarator(), nullptr);
+[?2004l[?2004h  Decl* ret;
+[?2004l[?2004h[?2004l[?2004h  if (texp->dcst<FunctionType>()) {
+[?2004l[?2004h    auto fdecl = make<FunctionDecl>();
+[?2004l[?2004h    auto type = make<Type>();
+[?2004l[?2004h    fdecl->type = type;
+[?2004l[?2004h[?2004l[?2004h    type->spec = sq.first;
+[?2004l[?2004h    type->qual = sq.second;
+[?2004l[?2004h    type->texp = texp;
+[?2004l[?2004h[?2004l[?2004h    fdecl->name = std::move(name);
+[?2004l[?2004h    for (auto p : texp->dcst<FunctionType>()->params) {
+[?2004l[?2004h      auto paramDecl = make<VarDecl>();
+[?2004l[?2004h      paramDecl->type = p;
+[?2004l[?2004h      fdecl->params.push_back(paramDecl);
+[?2004l[?2004h    }
+[?2004l[?2004h[?2004l[?2004h    if (ctx->initializer())
+[?2004l[?2004h      ABORT();
+[?2004l[?2004h    fdecl->body = nullptr;
+[?2004l[?2004h[?2004l[?2004h    ret = fdecl;
+[?2004l[?2004h  }
+[?2004l[?2004h[?2004l[?2004h  else {
+[?2004l[?2004h    auto vdecl = make<VarDecl>();
+[?2004l[?2004h    auto type = make<Type>();
+[?2004l[?2004h    vdecl->type = type;
+[?2004l[?2004h[?2004l[?2004h    type->spec = sq.first;
+[?2004l[?2004h    type->qual = sq.second;
+[?2004l[?2004h    type->texp = texp;
+[?2004l[?2004h    vdecl->name = std::move(name);
+[?2004l[?2004h[?2004l[?2004h    if (auto p = ctx->initializer())
+[?2004l[?2004h      vdecl->init = self(p);
+[?2004l[?2004h    else
+[?2004l[?2004h      vdecl->init = nullptr;
+[?2004l[?2004h[?2004l[?2004h    ret = vdecl;
+[?2004l[?2004h  }
+[?2004l[?2004h[?2004l[?2004h  (*mSymtbl)[ret->name] = ret;
+[?2004l[?2004h  return ret;
+[?2004l[?2004h}
+[?2004l[?2004h[?2004l[?2004h} // namespace asg
+[?2004l[?2004h'''
+[?2004l[?2004h[?2004l[?2004hwith open('/workspace/YatCC/task/2/antlr/Ast2Asg.cpp', 'w') as f:
+[?2004l[?2004h    f.write(content)
+[?2004l[?2004hprint('Written successfully')
+[?2004l[?2004hPYEOF
+[?2004lWritten successfully
+[?2004h
+[The command completed with exit code 0.]
+[Current working directory: /workspace/YatCC]
+[Command finished with exit code 0]

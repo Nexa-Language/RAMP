@@ -1,0 +1,394 @@
+[?2004l--- task0 files for 056 ---
+/workspace/YatCC/build/test/task0/functional-3/056_short_circuit.sysu.c
+# 1 "/workspace/YatCC/test/cases/functional-3/056_short_circuit.sysu.c"
+# 1 "<built-in>" 1
+# 1 "<built-in>" 3
+# 389 "<built-in>" 3
+# 1 "<command line>" 1
+# 1 "<built-in>" 2
+# 1 "/workspace/YatCC/test/cases/functional-3/056_short_circuit.sysu.c" 2
+# 1 "/workspace/YatCC/test/rtlib/include/sysy/sylib.h" 1 3
+# 10 "/workspace/YatCC/test/rtlib/include/sysy/sylib.h" 3
+void _sysy_starttime(int lineno);
+void _sysy_stoptime(int lineno);
+
+
+int _sysy_getch();
+void _sysy_putch(int a);
+
+int _sysy_getint();
+void _sysy_putint(int a);
+
+int _sysy_getarray(int a[]);
+void _sysy_putarray(int n, int a[]);
+# 2 "/workspace/YatCC/test/cases/functional-3/056_short_circuit.sysu.c" 2
+int g = 0;
+
+int func(int n) {
+  g = g + n;
+  _sysy_putint(g);
+  return g;
+}
+
+int main() {
+  int i;
+  i = _sysy_getint();
+  if (i > 10 && func(i)) i = 1; else i = 0;
+  i = _sysy_getint();
+  if (i > 11 && func(i)) i = 1; else i = 0;
+  i = _sysy_getint();
+  if (i <= 99 || func(i)) i = 1; else i = 0;
+  i = _sysy_getint();
+  if (i <= 100 || func(i)) i = 1; else i = 0;
+  if (!func(99) && func(100)) i = 1; else i = 0;
+  return 0;
+}
+--- answer token names unique ---
+  71961 identifier
+  32875 semi
+  32089 equal
+  23034 plus
+  22581 numeric_constant
+  12035 int
+   2418 comma
+   1236 r_paren
+   1236 l_paren
+   1119 star
+   1112 slash
+    486 r_square
+    486 l_square
+    391 r_brace
+    391 l_brace
+    203 void
+    194 percent
+    188 return
+    133 less
+    128 while
+    120 minus
+    110 if
+     93 eof
+     68 equalequal
+     41 else
+     31 greater
+     15 const
+     15 ampamp
+     11 pipepipe
+     10 exclaimequal
+      7 exclaim
+      5 lessequal
+      4 greaterequal
+      4 continue
+      1 break
+--- token examples complex ---
+===/workspace/YatCC/build/test/task1/functional-1/023_op_priority1.sysu.c/answer.txt===
+int 'int'	 [StartOfLine]	Loc=</workspace/YatCC/test/cases/functional-1/023_op_priority1.sysu.c:2:1>
+identifier 'main'	 [LeadingSpace]	Loc=</workspace/YatCC/test/cases/functional-1/023_op_priority1.sysu.c:2:5>
+l_paren '('		Loc=</workspace/YatCC/test/cases/functional-1/023_op_priority1.sysu.c:2:9>
+r_paren ')'		Loc=</workspace/YatCC/test/cases/functional-1/023_op_priority1.sysu.c:2:10>
+l_brace '{'		Loc=</workspace/YatCC/test/cases/functional-1/023_op_priority1.sysu.c:2:11>
+int 'int'	 [StartOfLine] [LeadingSpace]	Loc=</workspace/YatCC/test/cases/functional-1/023_op_priority1.sysu.c:3:5>
+identifier 'a'	 [LeadingSpace]	Loc=</workspace/YatCC/test/cases/functional-1/023_op_priority1.sysu.c:3:9>
+comma ','		Loc=</workspace/YatCC/test/cases/functional-1/023_op_priority1.sysu.c:3:10>
+identifier 'b'	 [LeadingSpace]	Loc=</workspace/YatCC/test/cases/functional-1/023_op_priority1.sysu.c:3:12>
+comma ','		Loc=</workspace/YatCC/test/cases/functional-1/023_op_priority1.sysu.c:3:13>
+identifier 'c'	 [LeadingSpace]	Loc=</workspace/YatCC/test/cases/functional-1/023_op_priority1.sysu.c:3:15>
+comma ','		Loc=</workspace/YatCC/test/cases/functional-1/023_op_priority1.sysu.c:3:16>
+identifier 'd'	 [LeadingSpace]	Loc=</workspace/YatCC/test/cases/functional-1/023_op_priority1.sysu.c:3:18>
+semi ';'		Loc=</workspace/YatCC/test/cases/functional-1/023_op_priority1.sysu.c:3:19>
+identifier 'a'	 [StartOfLine] [LeadingSpace]	Loc=</workspace/YatCC/test/cases/functional-1/023_op_priority1.sysu.c:4:5>
+equal '='	 [LeadingSpace]	Loc=</workspace/YatCC/test/cases/functional-1/023_op_priority1.sysu.c:4:7>
+numeric_constant '10'	 [LeadingSpace]	Loc=</workspace/YatCC/test/cases/functional-1/023_op_priority1.sysu.c:4:9>
+semi ';'		Loc=</workspace/YatCC/test/cases/functional-1/023_op_priority1.sysu.c:4:11>
+identifier 'b'	 [StartOfLine] [LeadingSpace]	Loc=</workspace/YatCC/test/cases/functional-1/023_op_priority1.sysu.c:5:5>
+equal '='	 [LeadingSpace]	Loc=</workspace/YatCC/test/cases/functional-1/023_op_priority1.sysu.c:5:7>
+numeric_constant '4'	 [LeadingSpace]	Loc=</workspace/YatCC/test/cases/functional-1/023_op_priority1.sysu.c:5:9>
+semi ';'		Loc=</workspace/YatCC/test/cases/functional-1/023_op_priority1.sysu.c:5:10>
+identifier 'c'	 [StartOfLine] [LeadingSpace]	Loc=</workspace/YatCC/test/cases/functional-1/023_op_priority1.sysu.c:6:5>
+equal '='	 [LeadingSpace]	Loc=</workspace/YatCC/test/cases/functional-1/023_op_priority1.sysu.c:6:7>
+numeric_constant '2'	 [LeadingSpace]	Loc=</workspace/YatCC/test/cases/functional-1/023_op_priority1.sysu.c:6:9>
+semi ';'		Loc=</workspace/YatCC/test/cases/functional-1/023_op_priority1.sysu.c:6:10>
+identifier 'd'	 [StartOfLine] [LeadingSpace]	Loc=</workspace/YatCC/test/cases/functional-1/023_op_priority1.sysu.c:7:5>
+equal '='	 [LeadingSpace]	Loc=</workspace/YatCC/test/cases/functional-1/023_op_priority1.sysu.c:7:7>
+numeric_constant '2'	 [LeadingSpace]	Loc=</workspace/YatCC/test/cases/functional-1/023_op_priority1.sysu.c:7:9>
+semi ';'		Loc=</workspace/YatCC/test/cases/functional-1/023_op_priority1.sysu.c:7:10>
+return 'return'	 [StartOfLine] [LeadingSpace]	Loc=</workspace/YatCC/test/cases/functional-1/023_op_priority1.sysu.c:8:5>
+identifier 'c'	 [LeadingSpace]	Loc=</workspace/YatCC/test/cases/functional-1/023_op_priority1.sysu.c:8:12>
+plus '+'	 [LeadingSpace]	Loc=</workspace/YatCC/test/cases/functional-1/023_op_priority1.sysu.c:8:14>
+identifier 'a'	 [LeadingSpace]	Loc=</workspace/YatCC/test/cases/functional-1/023_op_priority1.sysu.c:8:16>
+star '*'	 [LeadingSpace]	Loc=</workspace/YatCC/test/cases/functional-1/023_op_priority1.sysu.c:8:18>
+identifier 'b'	 [LeadingSpace]	Loc=</workspace/YatCC/test/cases/functional-1/023_op_priority1.sysu.c:8:20>
+minus '-'	 [LeadingSpace]	Loc=</workspace/YatCC/test/cases/functional-1/023_op_priority1.sysu.c:8:22>
+identifier 'd'	 [LeadingSpace]	Loc=</workspace/YatCC/test/cases/functional-1/023_op_priority1.sysu.c:8:24>
+semi ';'		Loc=</workspace/YatCC/test/cases/functional-1/023_op_priority1.sysu.c:8:25>
+r_brace '}'	 [StartOfLine]	Loc=</workspace/YatCC/test/cases/functional-1/023_op_priority1.sysu.c:9:1>
+eof ''		Loc=</workspace/YatCC/test/cases/functional-1/023_op_priority1.sysu.c:9:2>
+===/workspace/YatCC/build/test/task1/functional-3/056_short_circuit.sysu.c/answer.txt===
+void 'void'	 [StartOfLine]	Loc=</workspace/YatCC/test/rtlib/include/sysy/sylib.h:10:1>
+identifier '_sysy_starttime'	 [LeadingSpace]	Loc=</workspace/YatCC/test/rtlib/include/sysy/sylib.h:10:6>
+l_paren '('		Loc=</workspace/YatCC/test/rtlib/include/sysy/sylib.h:10:21>
+int 'int'		Loc=</workspace/YatCC/test/rtlib/include/sysy/sylib.h:10:22>
+identifier 'lineno'	 [LeadingSpace]	Loc=</workspace/YatCC/test/rtlib/include/sysy/sylib.h:10:26>
+r_paren ')'		Loc=</workspace/YatCC/test/rtlib/include/sysy/sylib.h:10:32>
+semi ';'		Loc=</workspace/YatCC/test/rtlib/include/sysy/sylib.h:10:33>
+void 'void'	 [StartOfLine]	Loc=</workspace/YatCC/test/rtlib/include/sysy/sylib.h:11:1>
+identifier '_sysy_stoptime'	 [LeadingSpace]	Loc=</workspace/YatCC/test/rtlib/include/sysy/sylib.h:11:6>
+l_paren '('		Loc=</workspace/YatCC/test/rtlib/include/sysy/sylib.h:11:20>
+int 'int'		Loc=</workspace/YatCC/test/rtlib/include/sysy/sylib.h:11:21>
+identifier 'lineno'	 [LeadingSpace]	Loc=</workspace/YatCC/test/rtlib/include/sysy/sylib.h:11:25>
+r_paren ')'		Loc=</workspace/YatCC/test/rtlib/include/sysy/sylib.h:11:31>
+semi ';'		Loc=</workspace/YatCC/test/rtlib/include/sysy/sylib.h:11:32>
+int 'int'	 [StartOfLine]	Loc=</workspace/YatCC/test/rtlib/include/sysy/sylib.h:14:1>
+identifier '_sysy_getch'	 [LeadingSpace]	Loc=</workspace/YatCC/test/rtlib/include/sysy/sylib.h:14:5>
+l_paren '('		Loc=</workspace/YatCC/test/rtlib/include/sysy/sylib.h:14:16>
+r_paren ')'		Loc=</workspace/YatCC/test/rtlib/include/sysy/sylib.h:14:17>
+semi ';'		Loc=</workspace/YatCC/test/rtlib/include/sysy/sylib.h:14:18>
+void 'void'	 [StartOfLine]	Loc=</workspace/YatCC/test/rtlib/include/sysy/sylib.h:15:1>
+identifier '_sysy_putch'	 [LeadingSpace]	Loc=</workspace/YatCC/test/rtlib/include/sysy/sylib.h:15:6>
+l_paren '('		Loc=</workspace/YatCC/test/rtlib/include/sysy/sylib.h:15:17>
+int 'int'		Loc=</workspace/YatCC/test/rtlib/include/sysy/sylib.h:15:18>
+identifier 'a'	 [LeadingSpace]	Loc=</workspace/YatCC/test/rtlib/include/sysy/sylib.h:15:22>
+r_paren ')'		Loc=</workspace/YatCC/test/rtlib/include/sysy/sylib.h:15:23>
+semi ';'		Loc=</workspace/YatCC/test/rtlib/include/sysy/sylib.h:15:24>
+int 'int'	 [StartOfLine]	Loc=</workspace/YatCC/test/rtlib/include/sysy/sylib.h:17:1>
+identifier '_sysy_getint'	 [LeadingSpace]	Loc=</workspace/YatCC/test/rtlib/include/sysy/sylib.h:17:5>
+l_paren '('		Loc=</workspace/YatCC/test/rtlib/include/sysy/sylib.h:17:17>
+r_paren ')'		Loc=</workspace/YatCC/test/rtlib/include/sysy/sylib.h:17:18>
+semi ';'		Loc=</workspace/YatCC/test/rtlib/include/sysy/sylib.h:17:19>
+void 'void'	 [StartOfLine]	Loc=</workspace/YatCC/test/rtlib/include/sysy/sylib.h:18:1>
+identifier '_sysy_putint'	 [LeadingSpace]	Loc=</workspace/YatCC/test/rtlib/include/sysy/sylib.h:18:6>
+l_paren '('		Loc=</workspace/YatCC/test/rtlib/include/sysy/sylib.h:18:18>
+int 'int'		Loc=</workspace/YatCC/test/rtlib/include/sysy/sylib.h:18:19>
+identifier 'a'	 [LeadingSpace]	Loc=</workspace/YatCC/test/rtlib/include/sysy/sylib.h:18:23>
+r_paren ')'		Loc=</workspace/YatCC/test/rtlib/include/sysy/sylib.h:18:24>
+semi ';'		Loc=</workspace/YatCC/test/rtlib/include/sysy/sylib.h:18:25>
+int 'int'	 [StartOfLine]	Loc=</workspace/YatCC/test/rtlib/include/sysy/sylib.h:20:1>
+identifier '_sysy_getarray'	 [LeadingSpace]	Loc=</workspace/YatCC/test/rtlib/include/sysy/sylib.h:20:5>
+l_paren '('		Loc=</workspace/YatCC/test/rtlib/include/sysy/sylib.h:20:19>
+int 'int'		Loc=</workspace/YatCC/test/rtlib/include/sysy/sylib.h:20:20>
+identifier 'a'	 [LeadingSpace]	Loc=</workspace/YatCC/test/rtlib/include/sysy/sylib.h:20:24>
+l_square '['		Loc=</workspace/YatCC/test/rtlib/include/sysy/sylib.h:20:25>
+r_square ']'		Loc=</workspace/YatCC/test/rtlib/include/sysy/sylib.h:20:26>
+r_paren ')'		Loc=</workspace/YatCC/test/rtlib/include/sysy/sylib.h:20:27>
+semi ';'		Loc=</workspace/YatCC/test/rtlib/include/sysy/sylib.h:20:28>
+void 'void'	 [StartOfLine]	Loc=</workspace/YatCC/test/rtlib/include/sysy/sylib.h:21:1>
+identifier '_sysy_putarray'	 [LeadingSpace]	Loc=</workspace/YatCC/test/rtlib/include/sysy/sylib.h:21:6>
+l_paren '('		Loc=</workspace/YatCC/test/rtlib/include/sysy/sylib.h:21:20>
+int 'int'		Loc=</workspace/YatCC/test/rtlib/include/sysy/sylib.h:21:21>
+identifier 'n'	 [LeadingSpace]	Loc=</workspace/YatCC/test/rtlib/include/sysy/sylib.h:21:25>
+comma ','		Loc=</workspace/YatCC/test/rtlib/include/sysy/sylib.h:21:26>
+int 'int'	 [LeadingSpace]	Loc=</workspace/YatCC/test/rtlib/include/sysy/sylib.h:21:28>
+identifier 'a'	 [LeadingSpace]	Loc=</workspace/YatCC/test/rtlib/include/sysy/sylib.h:21:32>
+l_square '['		Loc=</workspace/YatCC/test/rtlib/include/sysy/sylib.h:21:33>
+r_square ']'		Loc=</workspace/YatCC/test/rtlib/include/sysy/sylib.h:21:34>
+r_paren ')'		Loc=</workspace/YatCC/test/rtlib/include/sysy/sylib.h:21:35>
+semi ';'		Loc=</workspace/YatCC/test/rtlib/include/sysy/sylib.h:21:36>
+int 'int'	 [StartOfLine]	Loc=</workspace/YatCC/test/cases/functional-3/056_short_circuit.sysu.c:2:1>
+identifier 'g'	 [LeadingSpace]	Loc=</workspace/YatCC/test/cases/functional-3/056_short_circuit.sysu.c:2:5>
+equal '='	 [LeadingSpace]	Loc=</workspace/YatCC/test/cases/functional-3/056_short_circuit.sysu.c:2:7>
+numeric_constant '0'	 [LeadingSpace]	Loc=</workspace/YatCC/test/cases/functional-3/056_short_circuit.sysu.c:2:9>
+semi ';'		Loc=</workspace/YatCC/test/cases/functional-3/056_short_circuit.sysu.c:2:10>
+int 'int'	 [StartOfLine]	Loc=</workspace/YatCC/test/cases/functional-3/056_short_circuit.sysu.c:4:1>
+identifier 'func'	 [LeadingSpace]	Loc=</workspace/YatCC/test/cases/functional-3/056_short_circuit.sysu.c:4:5>
+l_paren '('		Loc=</workspace/YatCC/test/cases/functional-3/056_short_circuit.sysu.c:4:9>
+int 'int'		Loc=</workspace/YatCC/test/cases/functional-3/056_short_circuit.sysu.c:4:10>
+identifier 'n'	 [LeadingSpace]	Loc=</workspace/YatCC/test/cases/functional-3/056_short_circuit.sysu.c:4:14>
+r_paren ')'		Loc=</workspace/YatCC/test/cases/functional-3/056_short_circuit.sysu.c:4:15>
+l_brace '{'	 [LeadingSpace]	Loc=</workspace/YatCC/test/cases/functional-3/056_short_circuit.sysu.c:4:17>
+identifier 'g'	 [StartOfLine] [LeadingSpace]	Loc=</workspace/YatCC/test/cases/functional-3/056_short_circuit.sysu.c:5:3>
+equal '='	 [LeadingSpace]	Loc=</workspace/YatCC/test/cases/functional-3/056_short_circuit.sysu.c:5:5>
+identifier 'g'	 [LeadingSpace]	Loc=</workspace/YatCC/test/cases/functional-3/056_short_circuit.sysu.c:5:7>
+plus '+'	 [LeadingSpace]	Loc=</workspace/YatCC/test/cases/functional-3/056_short_circuit.sysu.c:5:9>
+identifier 'n'	 [LeadingSpace]	Loc=</workspace/YatCC/test/cases/functional-3/056_short_circuit.sysu.c:5:11>
+semi ';'		Loc=</workspace/YatCC/test/cases/functional-3/056_short_circuit.sysu.c:5:12>
+identifier '_sysy_putint'	 [StartOfLine] [LeadingSpace]	Loc=</workspace/YatCC/test/cases/functional-3/056_short_circuit.sysu.c:6:3>
+l_paren '('		Loc=</workspace/YatCC/test/cases/functional-3/056_short_circuit.sysu.c:6:15>
+identifier 'g'		Loc=</workspace/YatCC/test/cases/functional-3/056_short_circuit.sysu.c:6:16>
+r_paren ')'		Loc=</workspace/YatCC/test/cases/functional-3/056_short_circuit.sysu.c:6:17>
+semi ';'		Loc=</workspace/YatCC/test/cases/functional-3/056_short_circuit.sysu.c:6:18>
+return 'return'	 [StartOfLine] [LeadingSpace]	Loc=</workspace/YatCC/test/cases/functional-3/056_short_circuit.sysu.c:7:3>
+identifier 'g'	 [LeadingSpace]	Loc=</workspace/YatCC/test/cases/functional-3/056_short_circuit.sysu.c:7:10>
+semi ';'		Loc=</workspace/YatCC/test/cases/functional-3/056_short_circuit.sysu.c:7:11>
+r_brace '}'	 [StartOfLine]	Loc=</workspace/YatCC/test/cases/functional-3/056_short_circuit.sysu.c:8:1>
+int 'int'	 [StartOfLine]	Loc=</workspace/YatCC/test/cases/functional-3/056_short_circuit.sysu.c:10:1>
+identifier 'main'	 [LeadingSpace]	Loc=</workspace/YatCC/test/cases/functional-3/056_short_circuit.sysu.c:10:5>
+l_paren '('		Loc=</workspace/YatCC/test/cases/functional-3/056_short_circuit.sysu.c:10:9>
+r_paren ')'		Loc=</workspace/YatCC/test/cases/functional-3/056_short_circuit.sysu.c:10:10>
+l_brace '{'	 [LeadingSpace]	Loc=</workspace/YatCC/test/cases/functional-3/056_short_circuit.sysu.c:10:12>
+int 'int'	 [StartOfLine] [LeadingSpace]	Loc=</workspace/YatCC/test/cases/functional-3/056_short_circuit.sysu.c:11:3>
+identifier 'i'	 [LeadingSpace]	Loc=</workspace/YatCC/test/cases/functional-3/056_short_circuit.sysu.c:11:7>
+semi ';'		Loc=</workspace/YatCC/test/cases/functional-3/056_short_circuit.sysu.c:11:8>
+identifier 'i'	 [StartOfLine] [LeadingSpace]	Loc=</workspace/YatCC/test/cases/functional-3/056_short_circuit.sysu.c:12:3>
+equal '='	 [LeadingSpace]	Loc=</workspace/YatCC/test/cases/functional-3/056_short_circuit.sysu.c:12:5>
+identifier '_sysy_getint'	 [LeadingSpace]	Loc=</workspace/YatCC/test/cases/functional-3/056_short_circuit.sysu.c:12:7>
+l_paren '('		Loc=</workspace/YatCC/test/cases/functional-3/056_short_circuit.sysu.c:12<response clipped><NOTE>Due to the max output limit, only part of the full response has been shown to you.</NOTE>3/056_short_circuit.sysu.c:17:6>
+identifier 'i'		Loc=</workspace/YatCC/test/cases/functional-3/056_short_circuit.sysu.c:17:7>
+lessequal '<='	 [LeadingSpace]	Loc=</workspace/YatCC/test/cases/functional-3/056_short_circuit.sysu.c:17:9>
+numeric_constant '99'	 [LeadingSpace]	Loc=</workspace/YatCC/test/cases/functional-3/056_short_circuit.sysu.c:17:12>
+pipepipe '||'	 [LeadingSpace]	Loc=</workspace/YatCC/test/cases/functional-3/056_short_circuit.sysu.c:17:15>
+identifier 'func'	 [LeadingSpace]	Loc=</workspace/YatCC/test/cases/functional-3/056_short_circuit.sysu.c:17:18>
+l_paren '('		Loc=</workspace/YatCC/test/cases/functional-3/056_short_circuit.sysu.c:17:22>
+===/workspace/YatCC/build/test/task1/mini-performance/bitset.sysu.c/answer.txt===
+void 'void'	 [StartOfLine]	Loc=</workspace/YatCC/test/rtlib/include/sysy/sylib.h:10:1>
+identifier '_sysy_starttime'	 [LeadingSpace]	Loc=</workspace/YatCC/test/rtlib/include/sysy/sylib.h:10:6>
+l_paren '('		Loc=</workspace/YatCC/test/rtlib/include/sysy/sylib.h:10:21>
+int 'int'		Loc=</workspace/YatCC/test/rtlib/include/sysy/sylib.h:10:22>
+identifier 'lineno'	 [LeadingSpace]	Loc=</workspace/YatCC/test/rtlib/include/sysy/sylib.h:10:26>
+r_paren ')'		Loc=</workspace/YatCC/test/rtlib/include/sysy/sylib.h:10:32>
+semi ';'		Loc=</workspace/YatCC/test/rtlib/include/sysy/sylib.h:10:33>
+void 'void'	 [StartOfLine]	Loc=</workspace/YatCC/test/rtlib/include/sysy/sylib.h:11:1>
+identifier '_sysy_stoptime'	 [LeadingSpace]	Loc=</workspace/YatCC/test/rtlib/include/sysy/sylib.h:11:6>
+l_paren '('		Loc=</workspace/YatCC/test/rtlib/include/sysy/sylib.h:11:20>
+int 'int'		Loc=</workspace/YatCC/test/rtlib/include/sysy/sylib.h:11:21>
+identifier 'lineno'	 [LeadingSpace]	Loc=</workspace/YatCC/test/rtlib/include/sysy/sylib.h:11:25>
+r_paren ')'		Loc=</workspace/YatCC/test/rtlib/include/sysy/sylib.h:11:31>
+semi ';'		Loc=</workspace/YatCC/test/rtlib/include/sysy/sylib.h:11:32>
+int 'int'	 [StartOfLine]	Loc=</workspace/YatCC/test/rtlib/include/sysy/sylib.h:14:1>
+identifier '_sysy_getch'	 [LeadingSpace]	Loc=</workspace/YatCC/test/rtlib/include/sysy/sylib.h:14:5>
+l_paren '('		Loc=</workspace/YatCC/test/rtlib/include/sysy/sylib.h:14:16>
+r_paren ')'		Loc=</workspace/YatCC/test/rtlib/include/sysy/sylib.h:14:17>
+semi ';'		Loc=</workspace/YatCC/test/rtlib/include/sysy/sylib.h:14:18>
+void 'void'	 [StartOfLine]	Loc=</workspace/YatCC/test/rtlib/include/sysy/sylib.h:15:1>
+identifier '_sysy_putch'	 [LeadingSpace]	Loc=</workspace/YatCC/test/rtlib/include/sysy/sylib.h:15:6>
+l_paren '('		Loc=</workspace/YatCC/test/rtlib/include/sysy/sylib.h:15:17>
+int 'int'		Loc=</workspace/YatCC/test/rtlib/include/sysy/sylib.h:15:18>
+identifier 'a'	 [LeadingSpace]	Loc=</workspace/YatCC/test/rtlib/include/sysy/sylib.h:15:22>
+r_paren ')'		Loc=</workspace/YatCC/test/rtlib/include/sysy/sylib.h:15:23>
+semi ';'		Loc=</workspace/YatCC/test/rtlib/include/sysy/sylib.h:15:24>
+int 'int'	 [StartOfLine]	Loc=</workspace/YatCC/test/rtlib/include/sysy/sylib.h:17:1>
+identifier '_sysy_getint'	 [LeadingSpace]	Loc=</workspace/YatCC/test/rtlib/include/sysy/sylib.h:17:5>
+l_paren '('		Loc=</workspace/YatCC/test/rtlib/include/sysy/sylib.h:17:17>
+r_paren ')'		Loc=</workspace/YatCC/test/rtlib/include/sysy/sylib.h:17:18>
+semi ';'		Loc=</workspace/YatCC/test/rtlib/include/sysy/sylib.h:17:19>
+void 'void'	 [StartOfLine]	Loc=</workspace/YatCC/test/rtlib/include/sysy/sylib.h:18:1>
+identifier '_sysy_putint'	 [LeadingSpace]	Loc=</workspace/YatCC/test/rtlib/include/sysy/sylib.h:18:6>
+l_paren '('		Loc=</workspace/YatCC/test/rtlib/include/sysy/sylib.h:18:18>
+int 'int'		Loc=</workspace/YatCC/test/rtlib/include/sysy/sylib.h:18:19>
+identifier 'a'	 [LeadingSpace]	Loc=</workspace/YatCC/test/rtlib/include/sysy/sylib.h:18:23>
+r_paren ')'		Loc=</workspace/YatCC/test/rtlib/include/sysy/sylib.h:18:24>
+semi ';'		Loc=</workspace/YatCC/test/rtlib/include/sysy/sylib.h:18:25>
+int 'int'	 [StartOfLine]	Loc=</workspace/YatCC/test/rtlib/include/sysy/sylib.h:20:1>
+identifier '_sysy_getarray'	 [LeadingSpace]	Loc=</workspace/YatCC/test/rtlib/include/sysy/sylib.h:20:5>
+l_paren '('		Loc=</workspace/YatCC/test/rtlib/include/sysy/sylib.h:20:19>
+int 'int'		Loc=</workspace/YatCC/test/rtlib/include/sysy/sylib.h:20:20>
+identifier 'a'	 [LeadingSpace]	Loc=</workspace/YatCC/test/rtlib/include/sysy/sylib.h:20:24>
+l_square '['		Loc=</workspace/YatCC/test/rtlib/include/sysy/sylib.h:20:25>
+r_square ']'		Loc=</workspace/YatCC/test/rtlib/include/sysy/sylib.h:20:26>
+r_paren ')'		Loc=</workspace/YatCC/test/rtlib/include/sysy/sylib.h:20:27>
+semi ';'		Loc=</workspace/YatCC/test/rtlib/include/sysy/sylib.h:20:28>
+void 'void'	 [StartOfLine]	Loc=</workspace/YatCC/test/rtlib/include/sysy/sylib.h:21:1>
+identifier '_sysy_putarray'	 [LeadingSpace]	Loc=</workspace/YatCC/test/rtlib/include/sysy/sylib.h:21:6>
+l_paren '('		Loc=</workspace/YatCC/test/rtlib/include/sysy/sylib.h:21:20>
+int 'int'		Loc=</workspace/YatCC/test/rtlib/include/sysy/sylib.h:21:21>
+identifier 'n'	 [LeadingSpace]	Loc=</workspace/YatCC/test/rtlib/include/sysy/sylib.h:21:25>
+comma ','		Loc=</workspace/YatCC/test/rtlib/include/sysy/sylib.h:21:26>
+int 'int'	 [LeadingSpace]	Loc=</workspace/YatCC/test/rtlib/include/sysy/sylib.h:21:28>
+identifier 'a'	 [LeadingSpace]	Loc=</workspace/YatCC/test/rtlib/include/sysy/sylib.h:21:32>
+l_square '['		Loc=</workspace/YatCC/test/rtlib/include/sysy/sylib.h:21:33>
+r_square ']'		Loc=</workspace/YatCC/test/rtlib/include/sysy/sylib.h:21:34>
+r_paren ')'		Loc=</workspace/YatCC/test/rtlib/include/sysy/sylib.h:21:35>
+semi ';'		Loc=</workspace/YatCC/test/rtlib/include/sysy/sylib.h:21:36>
+int 'int'	 [StartOfLine]	Loc=</workspace/YatCC/test/cases/mini-performance/bitset.sysu.c:2:1>
+identifier 'set'	 [LeadingSpace]	Loc=</workspace/YatCC/test/cases/mini-performance/bitset.sysu.c:2:5>
+l_paren '('		Loc=</workspace/YatCC/test/cases/mini-performance/bitset.sysu.c:2:8>
+int 'int'		Loc=</workspace/YatCC/test/cases/mini-performance/bitset.sysu.c:2:9>
+identifier 'a'	 [LeadingSpace]	Loc=</workspace/YatCC/test/cases/mini-performance/bitset.sysu.c:2:13>
+l_square '['		Loc=</workspace/YatCC/test/cases/mini-performance/bitset.sysu.c:2:14>
+r_square ']'		Loc=</workspace/YatCC/test/cases/mini-performance/bitset.sysu.c:2:15>
+comma ','		Loc=</workspace/YatCC/test/cases/mini-performance/bitset.sysu.c:2:16>
+int 'int'	 [LeadingSpace]	Loc=</workspace/YatCC/test/cases/mini-performance/bitset.sysu.c:2:18>
+identifier 'pos'	 [LeadingSpace]	Loc=</workspace/YatCC/test/cases/mini-performance/bitset.sysu.c:2:22>
+comma ','		Loc=</workspace/YatCC/test/cases/mini-performance/bitset.sysu.c:2:25>
+int 'int'	 [LeadingSpace]	Loc=</workspace/YatCC/test/cases/mini-performance/bitset.sysu.c:2:27>
+identifier 'd'	 [LeadingSpace]	Loc=</workspace/YatCC/test/cases/mini-performance/bitset.sysu.c:2:31>
+r_paren ')'		Loc=</workspace/YatCC/test/cases/mini-performance/bitset.sysu.c:2:32>
+l_brace '{'		Loc=</workspace/YatCC/test/cases/mini-performance/bitset.sysu.c:2:33>
+const 'const'	 [StartOfLine] [LeadingSpace]	Loc=</workspace/YatCC/test/cases/mini-performance/bitset.sysu.c:3:5>
+int 'int'	 [LeadingSpace]	Loc=</workspace/YatCC/test/cases/mini-performance/bitset.sysu.c:3:11>
+identifier 'bitcount'	 [LeadingSpace]	Loc=</workspace/YatCC/test/cases/mini-performance/bitset.sysu.c:3:15>
+equal '='	 [LeadingSpace]	Loc=</workspace/YatCC/test/cases/mini-performance/bitset.sysu.c:3:24>
+numeric_constant '30'	 [LeadingSpace]	Loc=</workspace/YatCC/test/cases/mini-performance/bitset.sysu.c:3:26>
+semi ';'		Loc=</workspace/YatCC/test/cases/mini-performance/bitset.sysu.c:3:28>
+int 'int'	 [StartOfLine] [LeadingSpace]	Loc=</workspace/YatCC/test/cases/mini-performance/bitset.sysu.c:4:5>
+identifier 'x'	 [LeadingSpace]	Loc=</workspace/YatCC/test/cases/mini-performance/bitset.sysu.c:4:9>
+l_square '['		Loc=</workspace/YatCC/test/cases/mini-performance/bitset.sysu.c:4:10>
+numeric_constant '31'		Loc=</workspace/YatCC/test/cases/mini-performance/bitset.sysu.c:4:11>
+r_square ']'		Loc=</workspace/YatCC/test/cases/mini-performance/bitset.sysu.c:4:13>
+equal '='	 [LeadingSpace]	Loc=</workspace/YatCC/test/cases/mini-performance/bitset.sysu.c:4:15>
+l_brace '{'	 [LeadingSpace]	Loc=</workspace/YatCC/test/cases/mini-performance/bitset.sysu.c:4:17>
+r_brace '}'		Loc=</workspace/YatCC/test/cases/mini-performance/bitset.sysu.c:4:18>
+semi ';'		Loc=</workspace/YatCC/test/cases/mini-performance/bitset.sysu.c:4:19>
+identifier 'x'	 [StartOfLine] [LeadingSpace]	Loc=</workspace/YatCC/test/cases/mini-performance/bitset.sysu.c:6:5>
+l_square '['		Loc=</workspace/YatCC/test/cases/mini-performance/bitset.sysu.c:6:6>
+numeric_constant '0'		Loc=</workspace/YatCC/test/cases/mini-performance/bitset.sysu.c:6:7>
+r_square ']'		Loc=</workspace/YatCC/test/cases/mini-performance/bitset.sysu.c:6:8>
+equal '='	 [LeadingSpace]	Loc=</workspace/YatCC/test/cases/mini-performance/bitset.sysu.c:6:10>
+numeric_constant '1'	 [LeadingSpace]	Loc=</workspace/YatCC/test/cases/mini-performance/bitset.sysu.c:6:12>
+semi ';'		Loc=</workspace/YatCC/test/cases/mini-performance/bitset.sysu.c:6:13>
+identifier 'x'	 [StartOfLine] [LeadingSpace]	Loc=</workspace/YatCC/test/cases/mini-performance/bitset.sysu.c:7:5>
+l_square '['		Loc=</workspace/YatCC/test/cases/mini-performance/bitset.sysu.c:7:6>
+numeric_constant '1'		Loc=</workspace/YatCC/test/cases/mini-performance/bitset.sysu.c:7:7>
+r_square ']'		Loc=</workspace/YatCC/test/cases/mini-performance/bitset.sysu.c:7:8>
+equal '='	 [LeadingSpace]	Loc=</workspace/YatCC/test/cases/mini-performance/bitset.sysu.c:7:10>
+identifier 'x'	 [LeadingSpace]	Loc=</workspace/YatCC/test/cases/mini-performance/bitset.sysu.c:7:12>
+l_square '['		Loc=</workspace/YatCC/test/cases/mini-performance/bitset.sysu.c:7:13>
+numeric_constant '0'		Loc=</workspace/YatCC/test/cases/mini-performance/bitset.sysu.c:7:14>
+r_square ']'		Loc=</workspace/YatCC/test/cases/mini-performance/bitset.sysu.c:7:15>
+star '*'	 [LeadingSpace]	Loc=</workspace/YatCC/test/cases/mini-performance/bitset.sysu.c:7:17>
+numeric_constant '2'	 [LeadingSpace]	Loc=</workspace/YatCC/test/cases/mini-performance/bitset.sysu.c:7:19>
+semi ';'		Loc=</workspace/YatCC/test/cases/mini-performance/bitset.sysu.c:7:20>
+identifier 'x'	 [StartOfLine] [LeadingSpace]	Loc=</workspace/YatCC/test/cases/mini-performance/bitset.sysu.c:8:5>
+l_square '['		Loc=</workspace/YatCC/test/cases/mini-performance/bitset.sysu.c:8:6>
+numeric_constant '2'		Loc=</workspace/YatCC/test/cases/mini-performance/bitset.sysu.c:8:7>
+r_square ']'		Loc=</workspace/YatCC/test/cases/mini-performance/bitset.sysu.c:8:8>
+equal '='	 [LeadingSpace]	Loc=</workspace/YatCC/test/cases/mini-performance/bitset.sysu.c:8:10>
+identifier 'x'	 [LeadingSpace]	Loc=</workspace/YatCC/test/cases/mini-performance/bitset.sysu.c:8:12>
+l_square '['		Loc=</workspace/YatCC/test/cases/mini-performance/bitset.sysu.c:8:13>
+numeric_constant '1'		Loc=</workspace/YatCC/test/cases/mini-performance/bitset.sysu.c:8:14>
+r_square ']'		Loc=</workspace/YatCC/test/cases/mini-performance/bitset.sysu.c:8:15>
+star '*'	 [LeadingSpace]	Loc=</workspace/YatCC/test/cases/mini-performance/bitset.sysu.c:8:17>
+numeric_constant '2'	 [LeadingSpace]	Loc=</workspace/YatCC/test/cases/mini-performance/bitset.sysu.c:8:19>
+semi ';'		Loc=</workspace/YatCC/test/cases/mini-performance/bitset.sysu.c:8:20>
+identifier 'x'	 [StartOfLine] [LeadingSpace]	Loc=</workspace/YatCC/test/cases/mini-performance/bitset.sysu.c:9:5>
+l_square '['		Loc=</workspace/YatCC/test/cases/mini-performance/bitset.sysu.c:9:6>
+numeric_constant '3'		Loc=</workspace/YatCC/test/cases/mini-performance/bitset.sysu.c:9:7>
+r_square ']'		Loc=</workspace/YatCC/test/cases/mini-performance/bitset.sysu.c:9:8>
+equal '='	 [LeadingSpace]	Loc=</workspace/YatCC/test/cases/mini-performance/bitset.sysu.c:9:10>
+identifier 'x'	 [LeadingSpace]	Loc=</workspace/YatCC/test/cases/mini-performance/bitset.sysu.c:9:12>
+l_square '['		Loc=</workspace/YatCC/test/cases/mini-performance/bitset.sysu.c:9:13>
+numeric_constant '2'		Loc=</workspace/YatCC/test/cases/mini-performance/bitset.sysu.c:9:14>
+r_square ']'		Loc=</workspace/YatCC/test/cases/mini-performance/bitset.sysu.c:9:15>
+star '*'	 [LeadingSpace]	Loc=</workspace/YatCC/test/cases/mini-performance/bitset.sysu.c:9:17>
+numeric_constant '2'	 [LeadingSpace]	Loc=</workspace/YatCC/test/cases/mini-performance/bitset.sysu.c:9:19>
+semi ';'		Loc=</workspace/YatCC/test/cases/mini-performance/bitset.sysu.c:9:20>
+identifier 'x'	 [StartOfLine] [LeadingSpace]	Loc=</workspace/YatCC/test/cases/mini-performance/bitset.sysu.c:10:5>
+l_square '['		Loc=</workspace/YatCC/test/cases/mini-performance/bitset.sysu.c:10:6>
+numeric_constant '4'		Loc=</workspace/YatCC/test/cases/mini-performance/bitset.sysu.c:10:7>
+r_square ']'		Loc=</workspace/YatCC/test/cases/mini-performance/bitset.sysu.c:10:8>
+equal '='	 [LeadingSpace]	Loc=</workspace/YatCC/test/cases/mini-performance/bitset.sysu.c:10:10>
+identifier 'x'	 [LeadingSpace]	Loc=</workspace/YatCC/test/cases/mini-performance/bitset.sysu.c:10:12>
+l_square '['		Loc=</workspace/YatCC/test/cases/mini-performance/bitset.sysu.c:10:13>
+numeric_constant '3'		Loc=</workspace/YatCC/test/cases/mini-performance/bitset.sysu.c:10:14>
+r_square ']'		Loc=</workspace/YatCC/test/cases/mini-performance/bitset.sysu.c:10:15>
+star '*'	 [LeadingSpace]	Loc=</workspace/YatCC/test/cases/mini-performance/bitset.sysu.c:10:17>
+numeric_constant '2'	 [LeadingSpace]	Loc=</workspace/YatCC/test/cases/mini-performance/bitset.sysu.c:10:19>
+semi ';'		Loc=</workspace/YatCC/test/cases/mini-performance/bitset.sysu.c:10:20>
+identifier 'x'	 [StartOfLine] [LeadingSpace]	Loc=</workspace/YatCC/test/cases/mini-performance/bitset.sysu.c:11:5>
+l_square '['		Loc=</workspace/YatCC/test/cases/mini-performance/bitset.sysu.c:11:6>
+numeric_constant '5'		Loc=</workspace/YatCC/test/cases/mini-performance/bitset.sysu.c:11:7>
+r_square ']'		Loc=</workspace/YatCC/test/cases/mini-performance/bitset.sysu.c:11:8>
+equal '='	 [LeadingSpace]	Loc=</workspace/YatCC/test/cases/mini-performance/bitset.sysu.c:11:10>
+identifier 'x'	 [LeadingSpace]	Loc=</workspace/YatCC/test/cases/mini-performance/bitset.sysu.c:11:12>
+l_square '['		Loc=</workspace/YatCC/test/cases/mini-performance/bitset.sysu.c:11:13>
+numeric_constant '4'		Loc=</workspace/YatCC/test/cases/mini-performance/bitset.sysu.c:11:14>
+r_square ']'		Loc=</workspace/YatCC/test/cases/mini-performance/bitset.sysu.c:11:15>
+star '*'	 [LeadingSpace]	Loc=</workspace/YatCC/test/cases/mini-performance/bitset.sysu.c:11:17>
+numeric_constant '2'	 [LeadingSpace]	Loc=</workspace/YatCC/test/cases/mini-performance/bitset.sysu.c:11:19>
+semi ';'		Loc=</workspace/YatCC/test/cases/mini-performance/bitset.sysu.c:11:20>
+identifier 'x'	 [StartOfLine] [LeadingSpace]	Loc=</workspace/YatCC/test/cases/mini-performance/bitset.sysu.c:12:5>
+l_square '['		Loc=</workspace/YatCC/test/cases/mini-performance/bitset.sysu.c:12:6>
+numeric_constant '6'		Loc=</workspace/YatCC/test/cases/mini-performance/bitset.sysu.c:12:7>
+r_square ']'		Loc=</workspace/YatCC/test/cases/mini-performance/bitset.sysu.c:12:8>
+[?2004h
+[The command completed with exit code 0.]
+[Current working directory: /workspace/YatCC]
+[Command finished with exit code 0]

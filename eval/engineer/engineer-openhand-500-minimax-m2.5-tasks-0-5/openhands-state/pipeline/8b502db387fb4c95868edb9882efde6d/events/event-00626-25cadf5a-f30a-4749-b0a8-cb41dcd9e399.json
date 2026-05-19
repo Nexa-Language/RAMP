@@ -1,0 +1,1 @@
+{"id":"25cadf5a-f30a-4749-b0a8-cb41dcd9e399","timestamp":"2026-05-17T19:03:28.328283","source":"agent","tool_name":"file_editor","tool_call_id":"call_91e42f0332f449e68d39ca6e","error":"Error validating tool 'file_editor': Expecting ',' delimiter: line 1 column 1257 (char 1256). Arguments: unparseable JSON","kind":"AgentErrorEvent"}

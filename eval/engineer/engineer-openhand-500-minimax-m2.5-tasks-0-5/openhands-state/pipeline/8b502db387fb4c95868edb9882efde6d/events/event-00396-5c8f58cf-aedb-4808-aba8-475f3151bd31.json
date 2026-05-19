@@ -1,0 +1,1 @@
+{"id":"5c8f58cf-aedb-4808-aba8-475f3151bd31","timestamp":"2026-05-17T18:49:07.758428","source":"agent","tool_name":"terminal","tool_call_id":"call_efaafda722b74dc4b96ebb7c","error":"Error validating tool 'terminal': Expecting ',' delimiter: line 1 column 495 (char 494). Arguments: unparseable JSON","kind":"AgentErrorEvent"}

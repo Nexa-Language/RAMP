@@ -1,0 +1,1 @@
+{"id":"09986ed7-73dc-4c68-9190-94b671e522fb","timestamp":"2026-05-18T21:43:43.137385","source":"environment","code":"LLMBadRequestError","detail":"litellm.BadRequestError: OpenAIException - <400> InternalError.Algo.InvalidParameter: Range of input length should be [1, 169984]","kind":"ConversationErrorEvent"}

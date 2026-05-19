@@ -1,0 +1,32 @@
+[
+  {
+    "title": "Task 0: Environment Setup",
+    "notes": "Completed with 100/100",
+    "status": "done"
+  },
+  {
+    "title": "Task 1: Lexer",
+    "notes": "Completed with 100/100",
+    "status": "done"
+  },
+  {
+    "title": "Task 2: Parser",
+    "notes": "Completed with 20.55/100 - basic parsing works",
+    "status": "done"
+  },
+  {
+    "title": "Task 3: IR Generation",
+    "notes": "Need to implement LLVM IR generation from ASG",
+    "status": "in_progress"
+  },
+  {
+    "title": "Task 4: IR Optimization",
+    "notes": "Optimize LLVM IR",
+    "status": "todo"
+  },
+  {
+    "title": "Task 5: Backend Code Generation",
+    "notes": "Generate RV64 assembly",
+    "status": "todo"
+  }
+]

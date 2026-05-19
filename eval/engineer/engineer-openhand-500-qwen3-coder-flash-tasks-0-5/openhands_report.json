@@ -1,0 +1,77 @@
+{
+  "benchmark": "EvoBench-v2",
+  "agent_backend": "openhands",
+  "agent_model": "qwen3-coder-flash",
+  "context_mode": "pipeline",
+  "run_id": "engineer-openhand-500-qwen3-coder-flash-tasks-0-5",
+  "timestamp": "2026-05-17T10:25:48Z",
+  "total_elapsed_seconds": 608.3625113964081,
+  "tasks": [
+    {
+      "task_id": 0,
+      "score": 100.0,
+      "max_score": 100.0,
+      "passed": true,
+      "test_count": 1,
+      "passed_count": 1,
+      "elapsed_seconds": 21.658018589019775,
+      "backend": "openhands"
+    },
+    {
+      "task_id": 1,
+      "score": 56.02,
+      "max_score": 100.0,
+      "passed": false,
+      "test_count": 73,
+      "passed_count": 0,
+      "elapsed_seconds": 116.96142721176147,
+      "backend": "openhands"
+    },
+    {
+      "task_id": 2,
+      "score": 20.55,
+      "max_score": 100.0,
+      "passed": false,
+      "test_count": 73,
+      "passed_count": 15,
+      "elapsed_seconds": 25.046268701553345,
+      "backend": "openhands"
+    },
+    {
+      "task_id": 3,
+      "score": 1.37,
+      "max_score": 100.0,
+      "passed": false,
+      "test_count": 73,
+      "passed_count": 1,
+      "elapsed_seconds": 43.203954458236694,
+      "backend": "openhands"
+    },
+    {
+      "task_id": 4,
+      "score": 35.14,
+      "max_score": 100.0,
+      "passed": false,
+      "test_count": 12,
+      "passed_count": 0,
+      "elapsed_seconds": 151.07843041419983,
+      "backend": "openhands"
+    },
+    {
+      "task_id": 5,
+      "score": 0.0,
+      "max_score": 100.0,
+      "passed": false,
+      "test_count": 0,
+      "passed_count": 0,
+      "elapsed_seconds": 130.8098657131195,
+      "backend": "openhands",
+      "error": "/workspace/YatCC/task/5/EmitMIR.cpp:35:10: fatal error: RISCVGenRegisterInfo.inc: No such file or directory\n   35 | #include \"RISCVGenRegisterInfo.inc\"\n      |          ^~~~~~~~~~~~~~~~~~~~~~~~~~\ncompilation terminated.\ngmake[3]: *** [task/5/CMakeFiles/task5-classic.dir/build.make:90: task/5/CMakeFiles/task5-classic.dir/EmitMIR.cpp.o] Error 1\ngmake[2]: *** [CMakeFiles/Makefile2:1476: task/5/CMakeFiles/task5-classic.dir/all] Error 2\ngmake[1]: *** [CMakeFiles/Makefile2:1483: task/5/CMakeFiles/task5-classic.dir/rule] Error 2\ngmake: *** [Makefile:668: task5-classic] Error 2\n"
+    }
+  ],
+  "metrics": {
+    "zero_shot_pass": false,
+    "prior_non_full_score_count": 4,
+    "total_iterations": 3000
+  }
+}

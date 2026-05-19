@@ -1,0 +1,1 @@
+{"id":"cee2f635-e7c2-48b2-8015-2c473f827d96","timestamp":"2026-05-17T17:25:47.496369","source":"agent","tool_name":"terminal","tool_call_id":"functions.terminal:69","error":"Error validating tool 'terminal': Invalid \\escape: line 1 column 302 (char 301). Arguments: unparseable JSON","kind":"AgentErrorEvent"}

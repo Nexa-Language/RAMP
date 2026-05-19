@@ -1,0 +1,81 @@
+{
+  "benchmark": "EvoBench-v2",
+  "agent_backend": "openhands",
+  "agent_model": "deepseek-reasoner",
+  "context_mode": "pipeline",
+  "run_id": "engineer-openhand-500-deepseek-reasoner-tasks-0-5",
+  "timestamp": "2026-05-17T10:38:12Z",
+  "total_elapsed_seconds": 5165.5205636024475,
+  "tasks": [
+    {
+      "task_id": 0,
+      "score": 100.0,
+      "max_score": 100.0,
+      "passed": true,
+      "test_count": 1,
+      "passed_count": 1,
+      "elapsed_seconds": 4051.016918182373,
+      "backend": "openhands"
+    },
+    {
+      "task_id": 1,
+      "score": 0.0,
+      "max_score": 100.0,
+      "passed": false,
+      "test_count": 73,
+      "passed_count": 0,
+      "elapsed_seconds": 150.00290870666504,
+      "backend": "openhands"
+    },
+    {
+      "task_id": 2,
+      "score": 0.0,
+      "max_score": 100.0,
+      "passed": false,
+      "test_count": 0,
+      "passed_count": 0,
+      "elapsed_seconds": 833.9684908390045,
+      "backend": "openhands",
+      "error": "Lists.txt:8 (message):\n  使用 ANTLR 完成实验一\nThis warning is for project developers.  Use -Wno-dev to suppress it.\n\nCMake Warning (dev) at task/2/CMakeLists.txt:8 (message):\n  使用 ANTLR 完成实验二\nThis warning is for project developers.  Use -Wno-dev to suppress it.\n\nCMake Error at task/2/antlr/CMakeLists.txt:30 (find_package):\n  By not providing \"Findnlohmann_json.cmake\" in CMAKE_MODULE_PATH this\n  project has asked CMake to find a package configuration file provided by\n  \"nlohmann_json\", but CMake did not find one.\n\n  Could not find a package configuration file provided by \"nlohmann_json\"\n  with any of the following names:\n\n    nlohmann_jsonConfig.cmake\n    nlohmann_json-config.cmake\n\n  Add the installation prefix of \"nlohmann_json\" to CMAKE_PREFIX_PATH or set\n  \"nlohmann_json_DIR\" to a directory containing one of the above files.  If\n  \"nlohmann_json\" provides a separate development package or SDK, be sure it\n  has been installed.\n\n\ngmake: *** [Makefile:1047: cmake_check_build_system] Error 1\n"
+    },
+    {
+      "task_id": 3,
+      "score": 0.0,
+      "max_score": 100.0,
+      "passed": false,
+      "test_count": 0,
+      "passed_count": 0,
+      "elapsed_seconds": 2.178313732147217,
+      "backend": "openhands",
+      "error": "Lists.txt:8 (message):\n  使用 ANTLR 完成实验一\nThis warning is for project developers.  Use -Wno-dev to suppress it.\n\nCMake Warning (dev) at task/2/CMakeLists.txt:8 (message):\n  使用 ANTLR 完成实验二\nThis warning is for project developers.  Use -Wno-dev to suppress it.\n\nCMake Error at task/2/antlr/CMakeLists.txt:30 (find_package):\n  By not providing \"Findnlohmann_json.cmake\" in CMAKE_MODULE_PATH this\n  project has asked CMake to find a package configuration file provided by\n  \"nlohmann_json\", but CMake did not find one.\n\n  Could not find a package configuration file provided by \"nlohmann_json\"\n  with any of the following names:\n\n    nlohmann_jsonConfig.cmake\n    nlohmann_json-config.cmake\n\n  Add the installation prefix of \"nlohmann_json\" to CMAKE_PREFIX_PATH or set\n  \"nlohmann_json_DIR\" to a directory containing one of the above files.  If\n  \"nlohmann_json\" provides a separate development package or SDK, be sure it\n  has been installed.\n\n\ngmake: *** [Makefile:1047: cmake_check_build_system] Error 1\n"
+    },
+    {
+      "task_id": 4,
+      "score": 0.0,
+      "max_score": 100.0,
+      "passed": false,
+      "test_count": 0,
+      "passed_count": 0,
+      "elapsed_seconds": 2.227311849594116,
+      "backend": "openhands",
+      "error": "Lists.txt:8 (message):\n  使用 ANTLR 完成实验一\nThis warning is for project developers.  Use -Wno-dev to suppress it.\n\nCMake Warning (dev) at task/2/CMakeLists.txt:8 (message):\n  使用 ANTLR 完成实验二\nThis warning is for project developers.  Use -Wno-dev to suppress it.\n\nCMake Error at task/2/antlr/CMakeLists.txt:30 (find_package):\n  By not providing \"Findnlohmann_json.cmake\" in CMAKE_MODULE_PATH this\n  project has asked CMake to find a package configuration file provided by\n  \"nlohmann_json\", but CMake did not find one.\n\n  Could not find a package configuration file provided by \"nlohmann_json\"\n  with any of the following names:\n\n    nlohmann_jsonConfig.cmake\n    nlohmann_json-config.cmake\n\n  Add the installation prefix of \"nlohmann_json\" to CMAKE_PREFIX_PATH or set\n  \"nlohmann_json_DIR\" to a directory containing one of the above files.  If\n  \"nlohmann_json\" provides a separate development package or SDK, be sure it\n  has been installed.\n\n\ngmake: *** [Makefile:1047: cmake_check_build_system] Error 1\n"
+    },
+    {
+      "task_id": 5,
+      "score": 0.0,
+      "max_score": 100.0,
+      "passed": false,
+      "test_count": 0,
+      "passed_count": 0,
+      "elapsed_seconds": 1.9652900695800781,
+      "backend": "openhands",
+      "error": "Lists.txt:8 (message):\n  使用 ANTLR 完成实验一\nThis warning is for project developers.  Use -Wno-dev to suppress it.\n\nCMake Warning (dev) at task/2/CMakeLists.txt:8 (message):\n  使用 ANTLR 完成实验二\nThis warning is for project developers.  Use -Wno-dev to suppress it.\n\nCMake Error at task/2/antlr/CMakeLists.txt:30 (find_package):\n  By not providing \"Findnlohmann_json.cmake\" in CMAKE_MODULE_PATH this\n  project has asked CMake to find a package configuration file provided by\n  \"nlohmann_json\", but CMake did not find one.\n\n  Could not find a package configuration file provided by \"nlohmann_json\"\n  with any of the following names:\n\n    nlohmann_jsonConfig.cmake\n    nlohmann_json-config.cmake\n\n  Add the installation prefix of \"nlohmann_json\" to CMAKE_PREFIX_PATH or set\n  \"nlohmann_json_DIR\" to a directory containing one of the above files.  If\n  \"nlohmann_json\" provides a separate development package or SDK, be sure it\n  has been installed.\n\n\ngmake: *** [Makefile:1047: cmake_check_build_system] Error 1\n"
+    }
+  ],
+  "metrics": {
+    "zero_shot_pass": false,
+    "prior_non_full_score_count": 4,
+    "total_iterations": 3000
+  },
+  "_error": "ConversationRunError: Conversation run failed for id=b9f8b24f-3a39-48a6-8ba5-45efd391600f: litellm.BadRequestError: OpenAIException - litellm.BadRequestError: OpenAIException - <400> InternalError.Algo.InvalidParameter: Range of input length should be [1, 131072]. Received Model Group=deepseek-reasoner\nAvailable Model Group Fallbacks=None\n\nConversation logs are stored at: /workspace/output/openhands-state/pipeline/b9f8b24f3a3948a68ba545efd391600f\n\nTo help debug this issue, please file a bug report at:\n  https://github.com/OpenHands/software-agent-sdk/issues/new\nand attach the conversation logs from the directory above."
+}

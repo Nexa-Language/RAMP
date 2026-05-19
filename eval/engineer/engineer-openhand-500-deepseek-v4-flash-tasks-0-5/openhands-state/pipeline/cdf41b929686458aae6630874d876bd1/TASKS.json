@@ -1,0 +1,7 @@
+[
+  {
+    "title": "Task 5: \u540e\u7aef\u4ee3\u7801\u751f\u6210 (Asm Gen)",
+    "notes": "100/100! Implemented 4 functions: emitBinary, emitICmpInst, emitLoadInst, emitStoreInst",
+    "status": "done"
+  }
+]

@@ -1,0 +1,17 @@
+{
+  "run_id": "engineer-openhand-500-openhands-qwen3.5-plus-tasks-0-5",
+  "backend": "openhands",
+  "model": "qwen3.5-plus",
+  "tasks": "0-5",
+  "context_mode": "pipeline",
+  "max_iterations": 500,
+  "image": "evobench-openhands:bachelor",
+  "api_base": "https://aihub.arcsysu.cn/v1",
+  "api_key_name": "qwen3.5-plus-hard",
+  "llm_cache_prompt": 1,
+  "prompt_cache_retention": "24h",
+  "litellm_log_level": "",
+  "max_agent_hours": 5,
+  "container": "oh-engineer-openhand-500-openhands-qwen3.5-plus-tasks-0-5",
+  "started_at": "2026-05-17T16:04:57Z"
+}

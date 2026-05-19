@@ -1,0 +1,17 @@
+[
+  {
+    "title": "Complete Task 0: Environment Setup",
+    "notes": "Score: 100/100",
+    "status": "done"
+  },
+  {
+    "title": "Complete Task 1: Lexical Analysis",
+    "notes": "Score: 63.88/100, all tests passing",
+    "status": "done"
+  },
+  {
+    "title": "Start Task 2: Syntax Analysis",
+    "notes": "Parse token stream to JSON AST",
+    "status": "in_progress"
+  }
+]

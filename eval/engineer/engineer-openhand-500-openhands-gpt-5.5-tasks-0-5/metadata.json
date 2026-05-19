@@ -1,0 +1,17 @@
+{
+  "run_id": "engineer-openhand-500-openhands-gpt-5.5-tasks-0-5",
+  "backend": "openhands",
+  "model": "gpt-5.5",
+  "tasks": "0-5",
+  "context_mode": "pipeline",
+  "max_iterations": 500,
+  "image": "evobench-openhands:bachelor",
+  "api_base": "https://api.duckcoding.ai/v1",
+  "api_key_name": "gpt-5.5-codex-hard",
+  "llm_cache_prompt": 1,
+  "prompt_cache_retention": "24h",
+  "litellm_log_level": "",
+  "max_agent_hours": 5,
+  "container": "oh-engineer-openhand-500-openhands-gpt-5.5-tasks-0-5",
+  "started_at": "2026-05-18T13:09:36Z"
+}

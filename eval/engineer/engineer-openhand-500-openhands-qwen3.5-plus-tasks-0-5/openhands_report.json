@@ -1,0 +1,79 @@
+{
+  "benchmark": "EvoBench-v2",
+  "agent_backend": "openhands",
+  "agent_model": "qwen3.5-plus",
+  "context_mode": "pipeline",
+  "run_id": "engineer-openhand-500-openhands-qwen3.5-plus-tasks-0-5",
+  "timestamp": "2026-05-17T16:40:09Z",
+  "total_elapsed_seconds": 2102.5773754119873,
+  "tasks": [
+    {
+      "task_id": 0,
+      "score": 100.0,
+      "max_score": 100.0,
+      "passed": true,
+      "test_count": 1,
+      "passed_count": 1,
+      "elapsed_seconds": 692.0701205730438,
+      "backend": "openhands"
+    },
+    {
+      "task_id": 1,
+      "score": 100.0,
+      "max_score": 100.0,
+      "passed": true,
+      "test_count": 73,
+      "passed_count": 73,
+      "elapsed_seconds": 361.4456765651703,
+      "backend": "openhands"
+    },
+    {
+      "task_id": 2,
+      "score": 0.0,
+      "max_score": 100.0,
+      "passed": false,
+      "test_count": 0,
+      "passed_count": 0,
+      "elapsed_seconds": 178.8661081790924,
+      "backend": "openhands",
+      "error": " SYsUParser.g4:230:33: implicit definition of token Tilde in parser\nwarning(125): SYsUParser.g4:238:26: implicit definition of token Arrow in parser\nwarning(125): SYsUParser.g4:239:26: implicit definition of token PlusPlus in parser\nwarning(125): SYsUParser.g4:240:26: implicit definition of token MinusMinus in parser\nerror(126): SYsUParser.g4:23:47: cannot create implicit token for string literal in non-combined grammar: '('\nerror(126): SYsUParser.g4:23:70: cannot create implicit token for string literal in non-combined grammar: ')'\nerror(126): SYsUParser.g4:28:50: cannot create implicit token for string literal in non-combined grammar: ';'\ngmake[3]: *** [task/2/antlr/CMakeFiles/task2.dir/build.make:91: antlr4_generated_src/task2-antlr-parser/SYsUParser.tokens] Error 1\ngmake[2]: *** [CMakeFiles/Makefile2:1344: task/2/antlr/CMakeFiles/task2.dir/all] Error 2\ngmake[1]: *** [CMakeFiles/Makefile2:1352: task/2/antlr/CMakeFiles/task2.dir/rule] Error 2\ngmake: *** [Makefile:603: task2] Error 2\n"
+    },
+    {
+      "task_id": 3,
+      "score": 0.0,
+      "max_score": 100.0,
+      "passed": false,
+      "test_count": 0,
+      "passed_count": 0,
+      "elapsed_seconds": 421.57563948631287,
+      "backend": "openhands",
+      "error": "/workspace/YatCC/task/3/EmitIR.cpp:65:15: error: expected initializer before ‘*’ token\n   65 | llvm::Constant*\n      |               ^\n/workspace/YatCC/task/3/EmitIR.cpp:77:1: error: two or more data types in declaration of ‘operator()’\n   77 | void\n      | ^~~~\n/workspace/YatCC/task/3/EmitIR.cpp:118:11: error: expected initializer before ‘*’ token\n  118 | llvm::Type*\n      |           ^\ngmake[3]: *** [task/3/CMakeFiles/task3.dir/build.make:76: task/3/CMakeFiles/task3.dir/EmitIR.cpp.o] Error 1\ngmake[2]: *** [CMakeFiles/Makefile2:1371: task/3/CMakeFiles/task3.dir/all] Error 2\ngmake[1]: *** [CMakeFiles/Makefile2:1378: task/3/CMakeFiles/task3.dir/rule] Error 2\ngmake: *** [Makefile:616: task3] Error 2\n"
+    },
+    {
+      "task_id": 4,
+      "score": 38.04,
+      "max_score": 100.0,
+      "passed": false,
+      "test_count": 12,
+      "passed_count": 0,
+      "elapsed_seconds": 243.47614669799805,
+      "backend": "openhands"
+    },
+    {
+      "task_id": 5,
+      "score": 0.0,
+      "max_score": 100.0,
+      "passed": false,
+      "test_count": 0,
+      "passed_count": 0,
+      "elapsed_seconds": 85.62855625152588,
+      "backend": "openhands",
+      "error": "/workspace/YatCC/task/5/EmitMIR.cpp:35:10: fatal error: RISCVGenRegisterInfo.inc: No such file or directory\n   35 | #include \"RISCVGenRegisterInfo.inc\"\n      |          ^~~~~~~~~~~~~~~~~~~~~~~~~~\ncompilation terminated.\ngmake[3]: *** [task/5/CMakeFiles/task5-classic.dir/build.make:90: task/5/CMakeFiles/task5-classic.dir/EmitMIR.cpp.o] Error 1\ngmake[2]: *** [CMakeFiles/Makefile2:1476: task/5/CMakeFiles/task5-classic.dir/all] Error 2\ngmake[1]: *** [CMakeFiles/Makefile2:1483: task/5/CMakeFiles/task5-classic.dir/rule] Error 2\ngmake: *** [Makefile:668: task5-classic] Error 2\n"
+    }
+  ],
+  "metrics": {
+    "zero_shot_pass": false,
+    "prior_non_full_score_count": 3,
+    "total_iterations": 3000
+  }
+}

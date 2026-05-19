@@ -1,0 +1,16 @@
+{
+  "run_id": "engineer-openhand-500-glm-5.1-tasks-0-5",
+  "model": "glm-5.1",
+  "tasks": "0-5",
+  "context_mode": "pipeline",
+  "max_iterations": 500,
+  "image": "evobench-openhands:bachelor",
+  "api_base": "https://aihub.arcsysu.cn/v1",
+  "api_key_name": "glm-5.1-hard-openhand",
+  "llm_cache_prompt": 1,
+  "prompt_cache_retention": "24h",
+  "litellm_log_level": "",
+  "max_agent_hours": 5,
+  "container": "oh-engineer-openhand-500-glm-5.1-tasks-0-5",
+  "started_at": "2026-05-17T09:12:03Z"
+}

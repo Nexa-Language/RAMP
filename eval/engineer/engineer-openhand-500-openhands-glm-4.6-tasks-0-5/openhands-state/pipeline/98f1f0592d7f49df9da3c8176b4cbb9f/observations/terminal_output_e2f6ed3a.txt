@@ -1,0 +1,397 @@
+[?2004l测例源码目录 /workspace/YatCC/test/cases
+输出目录 /workspace/YatCC/build/test/task0
+测例表路径 /workspace/YatCC/build/test/task0/cases.txt
+Clang 程序路径 /workspace/YatCC/llvm/install/bin/clang
+运行时库路径 /workspace/YatCC/test/rtlib
+禁用缓存机制 False
+
+测例表已缓存，什么都不用做
+[  0%] Built target task0-answer
+[  0%] Built target test-rtlib
+测例源码目录 /workspace/YatCC/test/cases
+输出目录 /workspace/YatCC/build/test/task4
+测例表路径 /workspace/YatCC/build/test/cases.txt
+Clang 程序路径 /workspace/YatCC/llvm/install/bin/clang
+运行时库源码路径 /workspace/YatCC/test/rtlib
+运行时库文件路径 /workspace/YatCC/build/test/libtest-rtlib.so
+
+加载测例表...完成
+/workspace/YatCC/build/test/task4/functional-0/000_main.sysu.c/answer.ll ... OK
+/workspace/YatCC/build/test/task4/functional-0/000_main.sysu.c/answer.exe ... OK
+/workspace/YatCC/build/test/task4/functional-0/000_main.sysu.c/answer.out ... OK
+/workspace/YatCC/build/test/task4/functional-0/000_main.sysu.c/answer.err ... OK
+/workspace/YatCC/build/test/task4/functional-0/001_var_defn.sysu.c/answer.ll ... OK
+/workspace/YatCC/build/test/task4/functional-0/001_var_defn.sysu.c/answer.exe ... OK
+/workspace/YatCC/build/test/task4/functional-0/001_var_defn.sysu.c/answer.out ... OK
+/workspace/YatCC/build/test/task4/functional-0/001_var_defn.sysu.c/answer.err ... OK
+/workspace/YatCC/build/test/task4/functional-0/002_var_defn2.sysu.c/answer.ll ... OK
+/workspace/YatCC/build/test/task4/functional-0/002_var_defn2.sysu.c/answer.exe ... OK
+/workspace/YatCC/build/test/task4/functional-0/002_var_defn2.sysu.c/answer.out ... OK
+/workspace/YatCC/build/test/task4/functional-0/002_var_defn2.sysu.c/answer.err ... OK
+/workspace/YatCC/build/test/task4/functional-0/003_var_defn3.sysu.c/answer.ll ... OK
+/workspace/YatCC/build/test/task4/functional-0/003_var_defn3.sysu.c/answer.exe ... OK
+/workspace/YatCC/build/test/task4/functional-0/003_var_defn3.sysu.c/answer.out ... OK
+/workspace/YatCC/build/test/task4/functional-0/003_var_defn3.sysu.c/answer.err ... OK
+/workspace/YatCC/build/test/task4/functional-0/004_const_var_defn.sysu.c/answer.ll ... OK
+/workspace/YatCC/build/test/task4/functional-0/004_const_var_defn.sysu.c/answer.exe ... OK
+/workspace/YatCC/build/test/task4/functional-0/004_const_var_defn.sysu.c/answer.out ... OK
+/workspace/YatCC/build/test/task4/functional-0/004_const_var_defn.sysu.c/answer.err ... OK
+/workspace/YatCC/build/test/task4/functional-0/005_const_var_defn2.sysu.c/answer.ll ... OK
+/workspace/YatCC/build/test/task4/functional-0/005_const_var_defn2.sysu.c/answer.exe ... OK
+/workspace/YatCC/build/test/task4/functional-0/005_const_var_defn2.sysu.c/answer.out ... OK
+/workspace/YatCC/build/test/task4/functional-0/005_const_var_defn2.sysu.c/answer.err ... OK
+/workspace/YatCC/build/test/task4/functional-0/006_const_var_defn3.sysu.c/answer.ll ... OK
+/workspace/YatCC/build/test/task4/functional-0/006_const_var_defn3.sysu.c/answer.exe ... OK
+/workspace/YatCC/build/test/task4/functional-0/006_const_var_defn3.sysu.c/answer.out ... OK
+/workspace/YatCC/build/test/task4/functional-0/006_const_var_defn3.sysu.c/answer.err ... OK
+/workspace/YatCC/build/test/task4/functional-0/007_comment1.sysu.c/answer.ll ... OK
+/workspace/YatCC/build/test/task4/functional-0/007_comment1.sysu.c/answer.exe ... OK
+/workspace/YatCC/build/test/task4/functional-0/007_comment1.sysu.c/answer.out ... OK
+/workspace/YatCC/build/test/task4/functional-0/007_comment1.sysu.c/answer.err ... OK
+/workspace/YatCC/build/test/task4/functional-0/008_comment2.sysu.c/answer.ll ... OK
+/workspace/YatCC/build/test/task4/functional-0/008_comment2.sysu.c/answer.exe ... OK
+/workspace/YatCC/build/test/task4/functional-0/008_comment2.sysu.c/answer.out ... OK
+/workspace/YatCC/build/test/task4/functional-0/008_comment2.sysu.c/answer.err ... OK
+/workspace/YatCC/build/test/task4/functional-0/009_hex_defn.sysu.c/answer.ll ... OK
+/workspace/YatCC/build/test/task4/functional-0/009_hex_defn.sysu.c/answer.exe ... OK
+/workspace/YatCC/build/test/task4/functional-0/009_hex_defn.sysu.c/answer.out ... OK
+/workspace/YatCC/build/test/task4/functional-0/009_hex_defn.sysu.c/answer.err ... OK
+/workspace/YatCC/build/test/task4/functional-0/010_hex_oct_add.sysu.c/answer.ll ... OK
+/workspace/YatCC/build/test/task4/functional-0/010_hex_oct_add.sysu.c/answer.exe ... OK
+/workspace/YatCC/build/test/task4/functional-0/010_hex_oct_add.sysu.c/answer.out ... OK
+/workspace/YatCC/build/test/task4/functional-0/010_hex_oct_add.sysu.c/answer.err ... OK
+/workspace/YatCC/build/test/task4/functional-1/011_add.sysu.c/answer.ll ... OK
+/workspace/YatCC/build/test/task4/functional-1/011_add.sysu.c/answer.exe ... OK
+/workspace/YatCC/build/test/task4/functional-1/011_add.sysu.c/answer.out ... OK
+/workspace/YatCC/build/test/task4/functional-1/011_add.sysu.c/answer.err ... OK
+/workspace/YatCC/build/test/task4/functional-1/012_add2.sysu.c/answer.ll ... OK
+/workspace/YatCC/build/test/task4/functional-1/012_add2.sysu.c/answer.exe ... OK
+/workspace/YatCC/build/test/task4/functional-1/012_add2.sysu.c/answer.out ... OK
+/workspace/YatCC/build/test/task4/functional-1/012_add2.sysu.c/answer.err ... OK
+/workspace/YatCC/build/test/task4/functional-1/013_addc.sysu.c/answer.ll ... OK
+/workspace/YatCC/build/test/task4/functional-1/013_addc.sysu.c/answer.exe ... OK
+/workspace/YatCC/build/test/task4/functional-1/013_addc.sysu.c/answer.out ... OK
+/workspace/YatCC/build/test/task4/functional-1/013_addc.sysu.c/answer.err ... OK
+/workspace/YatCC/build/test/task4/functional-1/014_sub.sysu.c/answer.ll ... OK
+/workspace/YatCC/build/test/task4/functional-1/014_sub.sysu.c/answer.exe ... OK
+/workspace/YatCC/build/test/task4/functional-1/014_sub.sysu.c/answer.out ... OK
+/workspace/YatCC/build/test/task4/functional-1/014_sub.sysu.c/answer.err ... OK
+/workspace/YatCC/build/test/task4/functional-1/015_sub2.sysu.c/answer.ll ... OK
+/workspace/YatCC/build/test/task4/functional-1/015_sub2.sysu.c/answer.exe ... OK
+/workspace/YatCC/build/test/task4/functional-1/015_sub2.sysu.c/answer.out ... OK
+/workspace/YatCC/build/test/task4/functional-1/015_sub2.sysu.c/answer.err ... OK
+/workspace/YatCC/build/test/task4/functional-1/016_subc.sysu.c/answer.ll ... OK
+/workspace/YatCC/build/test/task4/functional-1/016_subc.sysu.c/answer.exe ... OK
+/workspace/YatCC/build/test/task4/functional-1/016_subc.sysu.c/answer.out ... OK
+/workspace/YatCC/build/test/task4/functional-1/016_subc.sysu.c/answer.err ... OK
+/workspace/YatCC/build/test/task4/functional-1/017_mul.sysu.c/answer.ll ... OK
+/workspace/YatCC/build/test/task4/functional-1/017_mul.sysu.c/answer.exe ... OK
+/workspace/YatCC/build/test/task4/functional-1/017_mul.sysu.c/answer.out ... OK
+/workspace/YatCC/build/test/task4/functional-1/017_mul.sysu.c/answer.err ... OK
+/workspace/YatCC/build/test/task4/functional-1/018_mulc.sysu.c/answer.ll ... OK
+/workspace/YatCC/build/test/task4/functional-1/018_mulc.sysu.c/answer.exe ... OK
+/workspace/YatCC/build/test/task4/functional-1/018_mulc.sysu.c/answer.out ... OK
+/workspace/YatCC/build/test/task4/functional-1/018_mulc.sysu.c/answer.err ... OK
+/workspace/YatCC/build/test/task4/functional-1/019_div.sysu.c/answer.ll ... OK
+/workspace/YatCC/build/test/task4/functional-1/019_div.sysu.c/answer.exe ... OK
+/workspace/YatCC/build/test/task4/functional-1/019_div.sysu.c/answer.out ... OK
+/workspace/YatCC/build/test/task4/functional-1/019_div.sysu.c/answer.err ... OK
+/workspace/YatCC/build/test/task4/functional-1/020_divc.sysu.c/answer.ll ... OK
+/workspace/YatCC/build/test/task4/functional-1/020_divc.sysu.c/answer.exe ... OK
+/workspace/YatCC/build/test/task4/functional-1/020_divc.sysu.c/answer.out ... OK
+/workspace/YatCC/build/test/task4/functional-1/020_divc.sysu.c/answer.err ... OK
+/workspace/YatCC/build/test/task4/functional-1/021_mod.sysu.c/answer.ll ... OK
+/workspace/YatCC/build/test/task4/functional-1/021_mod.sysu.c/answer.exe ... OK
+/workspace/YatCC/build/test/task4/functional-1/021_mod.sysu.c/answer.out ... OK
+/workspace/YatCC/build/test/task4/functional-1/021_mod.sysu.c/answer.err ... OK
+/workspace/YatCC/build/test/task4/functional-1/022_rem.sysu.c/answer.ll ... OK
+/workspace/YatCC/build/test/task4/functional-1/022_rem.sysu.c/answer.exe ... OK
+/workspace/YatCC/build/test/task4/functional-1/022_rem.sysu.c/answer.out ... OK
+/workspace/YatCC/build/test/task4/functional-1/022_rem.sysu.c/answer.err ... OK
+/workspace/YatCC/build/test/task4/functional-1/023_op_priority1.sysu.c/answer.ll ... OK
+/workspace/YatCC/build/test/task4/functional-1/023_op_priority1.sysu.c/answer.exe ... OK
+/workspace/YatCC/build/test/task4/functional-1/023_op_priority1.sysu.c/answer.out ... OK
+/workspace/YatCC/build/test/task4/functional-1/023_op_priority1.sysu.c/answer.err ... OK
+/workspace/YatCC/build/test/task4/functional-1/024_op_priority2.sysu.c/answer.ll ... OK
+/workspace/YatCC/build/test/task4/functional-1/024_op_priority2.sysu.c/answer.exe ... OK
+/workspace/YatCC/build/test/task4/functional-1/024_op_priority2.sysu.c/answer.out ... OK
+/workspace/YatCC/build/test/task4/functional-1/024_op_priority2.sysu.c/answer.err ... OK
+/workspace/YatCC/build/test/task4/functional-1/025_op_priority3.sysu.c/answer.ll ... OK
+/workspace/YatCC/build/test/task4/functional-1/025_op_priority3.sysu.c/answer.exe ... OK
+/workspace/YatCC/build/test/task4/functional-1/025_op_priority3.sysu.c/answer.out ... OK
+/workspace/YatCC/build/test/task4/functional-1/025_op_priority3.sysu.c/answer.err ... OK
+/workspace/YatCC/build/test/task4/functional-2/026_arr_defn.sysu.c/answer.ll ... OK
+/workspace/YatCC/build/test/task4/functional-2/026_arr_defn.sysu.c/answer.exe ... OK
+/workspace/YatCC/build/test/task4/functional-2/026_arr_defn.sysu.c/answer.out ... OK
+/workspace/YatCC/build/test/task4/functional-2/026_arr_defn.sysu.c/answer.err ... OK
+/workspace/YatCC/build/test/task4/functional-2/027_arr_defn2.sysu.c/answer.ll ... OK
+/workspace/YatCC/build/test/task4/functional-2/027_arr_defn2.sysu.c/answer.exe ... OK
+/workspace/YatCC/build/test/task4/functional-2/027_arr_defn2.sysu.c/answer.out ... OK
+/workspace/YatCC/build/test/task4/functional-2/027_arr_defn2.sysu.c/answer.err ... OK
+/workspace/YatCC/build/test/task4/functional-2/028_arr_defn3.sysu.c/answer.ll ... OK
+/workspace/YatCC/build/test/task4/functional-2/028_arr_defn3.sysu.c/answer.exe ... OK
+/workspace/YatCC/build/test/task4/functional-2/028_arr_defn3.sysu.c/answer.out ... OK
+/workspace/YatCC/build/test/task4/functional-2/028_arr_defn3.sysu.c/answer.err ... OK
+/workspace/YatCC/build/test/task4/functional-2/029_const_array_defn.sysu.c/answer.ll ... OK
+/workspace/YatCC/build/test/task4/functional-2/029_const_array_defn.sysu.c/answer.exe ... OK
+/workspace/YatCC/build/test/task4/functional-2/029_const_array_defn.sysu.c/answer.out ... OK
+/workspace/YatCC/build/test/task4/functional-2/029_const_array_defn.sysu.c/answer.err ... OK
+/workspace/YatCC/build/test/task4/functional-2/030_func_defn.sysu.c/answer.ll ... OK
+/workspace/YatCC/build/test/task4/functional-2/030_func_defn.sysu.c/answer.exe ... OK
+/workspace/YatCC/build/test/task4/functional-2/030_func_defn.sysu.c/answer.out ... OK
+/workspace/YatCC/build/test/task4/functional-2/030_func_defn.sysu.c/answer.err ... OK
+/workspace/YatCC/build/test/task4/functional-2/031_var_defn_func.sysu.c/answer.ll ... OK
+/workspace/YatCC/build/test/task4/functional-2/031_var_defn_func.sysu.c/answer.exe ... OK
+/workspace/YatCC/build/test/task4/functional-2/031_var_defn_func.sysu.c/answer.out ... OK
+/workspace/YatCC/build/test/task4/functional-2/031_var_defn_func.sysu.c/answer.err ... OK
+/workspace/YatCC/build/test/task4/functional-3/032_if.sysu.c/answer.ll ... OK
+/workspace/YatCC/build/test/task4/functional-3/032_if.sysu.c/answer.exe ... OK
+/workspace/YatCC/build/test/task4/functional-3/032_if.sysu.c/answer.out ... OK
+/workspace/YatCC/build/test/task4/functional-3/032_if.sysu.c/answer.err ... OK
+/workspace/YatCC/build/test/task4/functional-3/033_if2.sysu.c/answer.ll ... OK
+/workspace/YatCC/build/test/task4/functional-3/033_if2.sysu.c/answer.exe ... OK
+/workspace/YatCC/build/test/task4/functional-3/033_if2.sysu.c/answer.out ... OK
+/workspace/YatCC/build/test/task4/functional-3/033_if2.sysu.c/answer.err ... OK
+/workspace/YatCC/build/test/task4/functional-3/034_if_test1.sysu.c/answer.ll ... OK
+/workspace/YatCC/build/test/task4/functional-3/034_if_test1.sysu.c/answer.exe ... OK
+/workspace/YatCC/build/test/task4/functional-3/034_if_test1.sysu.c/answer.out ... OK
+/workspace/YatCC/build/test/task4/functional-3/034_if_test1.sysu.c/answer.err ... OK
+/workspace/YatCC/build/test/task4/functional-3/035_if_test2.sysu.c/answer.ll ... OK
+/workspace/YatCC/build/test/task4/functional-3/035_if_test2.sysu.c/answer.exe ... OK
+/workspace/YatCC/build/test/task4/functional-3/035_if_test2.sysu.c/answer.out ... OK
+/workspace/YatCC/build/test/task4/functional-3/035_if_test2.sysu.c/answer.err ... OK
+/workspace/YatCC/build/test/task4/functional-3/036_if_test3.sysu.c/answer.ll ... /workspace/YatCC/test/cases/functional-3/036_if_test3.sysu.c:10:5: warning: add explicit braces to avoid dangling else [-Wdangling-else]
+   10 |     else 
+      |     ^
+1 warning generated.
+OK
+/workspace/YatCC/build/test/task4/functional-3/036_if_test3.sysu.c/answer.exe ... OK
+/workspace/YatCC/build/test/task4/functional-3/036_if_test3.sysu.c/answer.out ... OK
+/workspace/YatCC/build/test/task4/functional-3/036_if_test3.sysu.c/answer.err ... OK
+/workspace/YatCC/build/test/task4/functional-3/037_if_test4.sysu.c/answer.ll ... OK
+/workspace/YatCC/build/test/task4/functional-3/037_if_test4.sysu.c/answer.exe ... OK
+/workspace/YatCC/build/test/task4/functional-3/037_if_test4.sysu.c/answer.out ... OK
+/workspace/YatCC/build/test/task4/functional-3/037_if_test4.sysu.c/answer.err ... OK
+/workspace/YatCC/build/test/task4/functional-3/038_if_test5.sysu.c/answer.ll ... OK
+/workspace/YatCC/build/test/task4/functional-3/038_if_test5.sysu.c/answer.exe ... OK
+/workspace/YatCC/build/test/task4/functional-3/038_if_test5.sysu.c/answer.out ... OK
+/workspace/YatCC/build/test/task4/functional-3/038_if_test5.sysu.c/answer.err ... OK
+/workspace/YatCC/build/test/task4/functional-3/039_while_if_test1.sysu.c/answer.ll ... OK
+/workspace/YatCC/build/test/task4/functional-3/039_while_if_test1.sysu.c/answer.exe ... OK
+/workspace/YatCC/build/test/task4/functional-3/039_while_if_test1.sysu.c/answer.out ... OK
+/workspace/YatCC/build/test/task4/functional-3/039_while_if_test1.sysu.c/answer.err ... OK
+/workspace/YatCC/build/test/task4/functional-3/040_while_if_test2.sysu.c/answer.ll ... OK
+/workspace/YatCC/build/test/task4/functional-3/040_while_if_test2.sysu.c/answer.exe ... OK
+/workspace/YatCC/build/test/task4/functional-3/040_while_if_test2.sysu.c/answer.out ... OK
+/workspace/YatCC/build/test/task4/functional-3/040_while_if_test2.sysu.c/answer.err ... OK
+/workspace/YatCC/build/test/task4/functional-3/041_while_if_test3.sysu.c/answer.ll ... OK
+/workspace/YatCC/build/test/task4/functional-3/041_while_if_test3.sysu.c/answer.exe ... OK
+/workspace/YatCC/build/test/task4/functional-3/041_while_if_test3.sysu.c/answer.out ... OK
+/workspace/YatCC/<response clipped><NOTE>Due to the max output limit, only part of the full response has been shown to you.</NOTE>er.err ... OK
+/workspace/YatCC/build/test/task4/llm-backend/000_main.sysu.c/answer.ll ... OK
+/workspace/YatCC/build/test/task4/llm-backend/000_main.sysu.c/answer.exe ... OK
+/workspace/YatCC/build/test/task4/llm-backend/000_main.sysu.c/answer.out ... OK
+/workspace/YatCC/build/test/task4/llm-backend/000_main.sysu.c/answer.err ... OK
+/workspace/YatCC/build/test/task4/llm-backend/001_var_defn.sysu.c/answer.ll ... OK
+/workspace/YatCC/build/test/task4/llm-backend/001_var_defn.sysu.c/answer.exe ... OK
+/workspace/YatCC/build/test/task4/llm-backend/001_var_defn.sysu.c/answer.out ... OK
+/workspace/YatCC/build/test/task4/llm-backend/001_var_defn.sysu.c/answer.err ... OK
+/workspace/YatCC/build/test/task4/llm-backend/005_const_var_defn2.sysu.c/answer.ll ... OK
+/workspace/YatCC/build/test/task4/llm-backend/005_const_var_defn2.sysu.c/answer.exe ... OK
+/workspace/YatCC/build/test/task4/llm-backend/005_const_var_defn2.sysu.c/answer.out ... OK
+/workspace/YatCC/build/test/task4/llm-backend/005_const_var_defn2.sysu.c/answer.err ... OK
+/workspace/YatCC/build/test/task4/llm-backend/026_arr_defn.sysu.c/answer.ll ... OK
+/workspace/YatCC/build/test/task4/llm-backend/026_arr_defn.sysu.c/answer.exe ... OK
+/workspace/YatCC/build/test/task4/llm-backend/026_arr_defn.sysu.c/answer.out ... OK
+/workspace/YatCC/build/test/task4/llm-backend/026_arr_defn.sysu.c/answer.err ... OK
+/workspace/YatCC/build/test/task4/llm-backend/027_arr_defn2.sysu.c/answer.ll ... OK
+/workspace/YatCC/build/test/task4/llm-backend/027_arr_defn2.sysu.c/answer.exe ... OK
+/workspace/YatCC/build/test/task4/llm-backend/027_arr_defn2.sysu.c/answer.out ... OK
+/workspace/YatCC/build/test/task4/llm-backend/027_arr_defn2.sysu.c/answer.err ... OK
+/workspace/YatCC/build/test/task4/llm-backend/032_if.sysu.c/answer.ll ... OK
+/workspace/YatCC/build/test/task4/llm-backend/032_if.sysu.c/answer.exe ... OK
+/workspace/YatCC/build/test/task4/llm-backend/032_if.sysu.c/answer.out ... OK
+/workspace/YatCC/build/test/task4/llm-backend/032_if.sysu.c/answer.err ... OK
+/workspace/YatCC/build/test/task4/llm-performance/fft.sysu.c/answer.ll ... /workspace/YatCC/test/cases/llm-performance/fft.sysu.c:24:5: warning: incompatible redeclaration of library function 'memmove' [-Wincompatible-library-redeclaration]
+   24 | int memmove(int dst[], int dst_pos, int src[], int len){
+      |     ^
+/workspace/YatCC/test/cases/llm-performance/fft.sysu.c:24:5: note: 'memmove' is a builtin with type 'void *(void *, const void *, unsigned long)'
+1 warning generated.
+OK
+/workspace/YatCC/build/test/task4/llm-performance/fft.sysu.c/answer.exe ... OK
+/workspace/YatCC/build/test/task4/llm-performance/fft.sysu.c/answer.out ... OK
+/workspace/YatCC/build/test/task4/llm-performance/fft.sysu.c/answer.err ... OK
+/workspace/YatCC/build/test/task4/llm-performance/mm.sysu.c/answer.ll ... OK
+/workspace/YatCC/build/test/task4/llm-performance/mm.sysu.c/answer.exe ... OK
+/workspace/YatCC/build/test/task4/llm-performance/mm.sysu.c/answer.out ... OK
+/workspace/YatCC/build/test/task4/llm-performance/mm.sysu.c/answer.err ... OK
+/workspace/YatCC/build/test/task4/mini-performance/bitset.sysu.c/answer.ll ... OK
+/workspace/YatCC/build/test/task4/mini-performance/bitset.sysu.c/answer.exe ... OK
+/workspace/YatCC/build/test/task4/mini-performance/bitset.sysu.c/answer.out ... OK
+/workspace/YatCC/build/test/task4/mini-performance/bitset.sysu.c/answer.err ... OK
+/workspace/YatCC/build/test/task4/mini-performance/crypto.sysu.c/answer.ll ... OK
+/workspace/YatCC/build/test/task4/mini-performance/crypto.sysu.c/answer.exe ... OK
+/workspace/YatCC/build/test/task4/mini-performance/crypto.sysu.c/answer.out ... OK
+/workspace/YatCC/build/test/task4/mini-performance/crypto.sysu.c/answer.err ... OK
+/workspace/YatCC/build/test/task4/mini-performance/dead-code-elimination.sysu.c/answer.ll ... OK
+/workspace/YatCC/build/test/task4/mini-performance/dead-code-elimination.sysu.c/answer.exe ... OK
+/workspace/YatCC/build/test/task4/mini-performance/dead-code-elimination.sysu.c/answer.out ... OK
+/workspace/YatCC/build/test/task4/mini-performance/dead-code-elimination.sysu.c/answer.err ... OK
+/workspace/YatCC/build/test/task4/mini-performance/fft.sysu.c/answer.ll ... /workspace/YatCC/test/cases/mini-performance/fft.sysu.c:24:5: warning: incompatible redeclaration of library function 'memmove' [-Wincompatible-library-redeclaration]
+   24 | int memmove(int dst[], int dst_pos, int src[], int len){
+      |     ^
+/workspace/YatCC/test/cases/mini-performance/fft.sysu.c:24:5: note: 'memmove' is a builtin with type 'void *(void *, const void *, unsigned long)'
+1 warning generated.
+OK
+/workspace/YatCC/build/test/task4/mini-performance/fft.sysu.c/answer.exe ... OK
+/workspace/YatCC/build/test/task4/mini-performance/fft.sysu.c/answer.out ... OK
+/workspace/YatCC/build/test/task4/mini-performance/fft.sysu.c/answer.err ... OK
+/workspace/YatCC/build/test/task4/mini-performance/hoist.sysu.c/answer.ll ... OK
+/workspace/YatCC/build/test/task4/mini-performance/hoist.sysu.c/answer.exe ... OK
+/workspace/YatCC/build/test/task4/mini-performance/hoist.sysu.c/answer.out ... OK
+/workspace/YatCC/build/test/task4/mini-performance/hoist.sysu.c/answer.err ... OK
+/workspace/YatCC/build/test/task4/mini-performance/if-combine.sysu.c/answer.ll ... OK
+/workspace/YatCC/build/test/task4/mini-performance/if-combine.sysu.c/answer.exe ... OK
+/workspace/YatCC/build/test/task4/mini-performance/if-combine.sysu.c/answer.out ... OK
+/workspace/YatCC/build/test/task4/mini-performance/if-combine.sysu.c/answer.err ... OK
+/workspace/YatCC/build/test/task4/mini-performance/instruction-combining.sysu.c/answer.ll ... OK
+/workspace/YatCC/build/test/task4/mini-performance/instruction-combining.sysu.c/answer.exe ... OK
+/workspace/YatCC/build/test/task4/mini-performance/instruction-combining.sysu.c/answer.out ... OK
+/workspace/YatCC/build/test/task4/mini-performance/instruction-combining.sysu.c/answer.err ... OK
+/workspace/YatCC/build/test/task4/mini-performance/integer-divide-optimization.sysu.c/answer.ll ... OK
+/workspace/YatCC/build/test/task4/mini-performance/integer-divide-optimization.sysu.c/answer.exe ... OK
+/workspace/YatCC/build/test/task4/mini-performance/integer-divide-optimization.sysu.c/answer.out ... OK
+/workspace/YatCC/build/test/task4/mini-performance/integer-divide-optimization.sysu.c/answer.err ... OK
+/workspace/YatCC/build/test/task4/mini-performance/mm.sysu.c/answer.ll ... OK
+/workspace/YatCC/build/test/task4/mini-performance/mm.sysu.c/answer.exe ... OK
+/workspace/YatCC/build/test/task4/mini-performance/mm.sysu.c/answer.out ... OK
+/workspace/YatCC/build/test/task4/mini-performance/mm.sysu.c/answer.err ... OK
+/workspace/YatCC/build/test/task4/performance/algebraic-identity.sysu.c/answer.ll ... OK
+/workspace/YatCC/build/test/task4/performance/algebraic-identity.sysu.c/answer.exe ... OK
+/workspace/YatCC/build/test/task4/performance/algebraic-identity.sysu.c/answer.out ... OK
+/workspace/YatCC/build/test/task4/performance/algebraic-identity.sysu.c/answer.err ... OK
+/workspace/YatCC/build/test/task4/performance/bitset.sysu.c/answer.ll ... OK
+/workspace/YatCC/build/test/task4/performance/bitset.sysu.c/answer.exe ... OK
+/workspace/YatCC/build/test/task4/performance/bitset.sysu.c/answer.out ... OK
+/workspace/YatCC/build/test/task4/performance/bitset.sysu.c/answer.err ... OK
+/workspace/YatCC/build/test/task4/performance/const-propagation.sysu.c/answer.ll ... OK
+/workspace/YatCC/build/test/task4/performance/const-propagation.sysu.c/answer.exe ... OK
+/workspace/YatCC/build/test/task4/performance/const-propagation.sysu.c/answer.out ... OK
+/workspace/YatCC/build/test/task4/performance/const-propagation.sysu.c/answer.err ... OK
+/workspace/YatCC/build/test/task4/performance/crypto.sysu.c/answer.ll ... OK
+/workspace/YatCC/build/test/task4/performance/crypto.sysu.c/answer.exe ... OK
+/workspace/YatCC/build/test/task4/performance/crypto.sysu.c/answer.out ... OK
+/workspace/YatCC/build/test/task4/performance/crypto.sysu.c/answer.err ... OK
+/workspace/YatCC/build/test/task4/performance/dead-code-elimination.sysu.c/answer.ll ... OK
+/workspace/YatCC/build/test/task4/performance/dead-code-elimination.sysu.c/answer.exe ... OK
+/workspace/YatCC/build/test/task4/performance/dead-code-elimination.sysu.c/answer.out ... OK
+/workspace/YatCC/build/test/task4/performance/dead-code-elimination.sysu.c/answer.err ... OK
+/workspace/YatCC/build/test/task4/performance/dead-storage-elimination.sysu.c/answer.ll ... OK
+/workspace/YatCC/build/test/task4/performance/dead-storage-elimination.sysu.c/answer.exe ... OK
+/workspace/YatCC/build/test/task4/performance/dead-storage-elimination.sysu.c/answer.out ... OK
+/workspace/YatCC/build/test/task4/performance/dead-storage-elimination.sysu.c/answer.err ... OK
+/workspace/YatCC/build/test/task4/performance/fft.sysu.c/answer.ll ... /workspace/YatCC/test/cases/performance/fft.sysu.c:24:5: warning: incompatible redeclaration of library function 'memmove' [-Wincompatible-library-redeclaration]
+   24 | int memmove(int dst[], int dst_pos, int src[], int len){
+      |     ^
+/workspace/YatCC/test/cases/performance/fft.sysu.c:24:5: note: 'memmove' is a builtin with type 'void *(void *, const void *, unsigned long)'
+1 warning generated.
+OK
+/workspace/YatCC/build/test/task4/performance/fft.sysu.c/answer.exe ... OK
+/workspace/YatCC/build/test/task4/performance/fft.sysu.c/answer.out ... OK
+/workspace/YatCC/build/test/task4/performance/fft.sysu.c/answer.err ... OK
+/workspace/YatCC/build/test/task4/performance/hoist.sysu.c/answer.ll ... OK
+/workspace/YatCC/build/test/task4/performance/hoist.sysu.c/answer.exe ... OK
+/workspace/YatCC/build/test/task4/performance/hoist.sysu.c/answer.out ... OK
+/workspace/YatCC/build/test/task4/performance/hoist.sysu.c/answer.err ... OK
+/workspace/YatCC/build/test/task4/performance/if-combine.sysu.c/answer.ll ... OK
+/workspace/YatCC/build/test/task4/performance/if-combine.sysu.c/answer.exe ... OK
+/workspace/YatCC/build/test/task4/performance/if-combine.sysu.c/answer.out ... OK
+/workspace/YatCC/build/test/task4/performance/if-combine.sysu.c/answer.err ... OK
+/workspace/YatCC/build/test/task4/performance/instruction-combining.sysu.c/answer.ll ... OK
+/workspace/YatCC/build/test/task4/performance/instruction-combining.sysu.c/answer.exe ... OK
+/workspace/YatCC/build/test/task4/performance/instruction-combining.sysu.c/answer.out ... OK
+/workspace/YatCC/build/test/task4/performance/instruction-combining.sysu.c/answer.err ... OK
+/workspace/YatCC/build/test/task4/performance/integer-divide-optimization.sysu.c/answer.ll ... OK
+/workspace/YatCC/build/test/task4/performance/integer-divide-optimization.sysu.c/answer.exe ... OK
+/workspace/YatCC/build/test/task4/performance/integer-divide-optimization.sysu.c/answer.out ... OK
+/workspace/YatCC/build/test/task4/performance/integer-divide-optimization.sysu.c/answer.err ... OK
+/workspace/YatCC/build/test/task4/performance/mm.sysu.c/answer.ll ... OK
+/workspace/YatCC/build/test/task4/performance/mm.sysu.c/answer.exe ... OK
+/workspace/YatCC/build/test/task4/performance/mm.sysu.c/answer.out ... OK
+/workspace/YatCC/build/test/task4/performance/mm.sysu.c/answer.err ... OK
+[  0%] Built target task4-answer
+[ 57%] Built target task4-llm
+[100%] Built target task4-classic
+[100%] Built target task4
+测例源码目录 /workspace/YatCC/test/cases
+输出目录 /workspace/YatCC/build/test/task3
+测例表路径 /workspace/YatCC/build/test/cases.txt
+Clang 程序路径 /workspace/YatCC/llvm/install/bin/clang
+运行时库源码路径 /workspace/YatCC/test/rtlib
+运行时库文件路径 /workspace/YatCC/build/test/libtest-rtlib.so
+禁用缓存机制 False
+
+测例表已缓存，什么都不用做
+[100%] Built target task3-answer
+测例目录 /workspace/YatCC/test/cases
+测评输出目录 /workspace/YatCC/build/test/task4
+测例表路径 /workspace/YatCC/build/test/task4/cases.txt
+CTest 程序路径 /usr/bin/ctest
+编译器路径 /workspace/YatCC/llvm/install/bin/clang++
+运行时库路径 /workspace/YatCC/build/test/libtest-rtlib.so
+运行单个测例 None
+
+加载测例表...完成
+CTest 运行日志： /workspace/YatCC/build/test/task4/ctest.stdout /workspace/YatCC/build/test/task4/ctest.stderr
+运行 CTest 以得到结果...完成
+
+/workspace/YatCC/build/test/task4/performance/algebraic-identity.sysu.c/score.txt ... [PASS]
+/workspace/YatCC/build/test/task4/performance/bitset.sysu.c/score.txt ... [PASS]
+/workspace/YatCC/build/test/task4/performance/const-propagation.sysu.c/score.txt ... [PASS]
+/workspace/YatCC/build/test/task4/performance/crypto.sysu.c/score.txt ... [PASS]
+/workspace/YatCC/build/test/task4/performance/dead-code-elimination.sysu.c/score.txt ... [PASS]
+/workspace/YatCC/build/test/task4/performance/dead-storage-elimination.sysu.c/score.txt ... [PASS]
+/workspace/YatCC/build/test/task4/performance/fft.sysu.c/score.txt ... [PASS]
+/workspace/YatCC/build/test/task4/performance/hoist.sysu.c/score.txt ... [PASS]
+/workspace/YatCC/build/test/task4/performance/if-combine.sysu.c/score.txt ... [PASS]
+/workspace/YatCC/build/test/task4/performance/instruction-combining.sysu.c/score.txt ... [PASS]
+/workspace/YatCC/build/test/task4/performance/integer-divide-optimization.sysu.c/score.txt ... [PASS]
+/workspace/YatCC/build/test/task4/performance/mm.sysu.c/score.txt ... [PASS]
+
+================================================================================
+performance/algebraic-identity.sysu.c ......................... 30.22/100.00
+performance/bitset.sysu.c ..................................... 54.69/100.00
+performance/const-propagation.sysu.c ........................... 4.44/100.00
+performance/crypto.sysu.c ..................................... 80.98/100.00
+performance/dead-code-elimination.sysu.c ...................... 18.46/100.00
+performance/dead-storage-elimination.sysu.c ................... 58.72/100.00
+performance/fft.sysu.c ........................................ 55.91/100.00
+performance/hoist.sysu.c ...................................... 16.25/100.00
+performance/if-combine.sysu.c ................................. 28.90/100.00
+performance/instruction-combining.sysu.c ....................... 2.92/100.00
+performance/integer-divide-optimization.sysu.c ................. 8.77/100.00
+performance/mm.sysu.c ......................................... 82.97/100.00
+
+task4-classic
+总分（加权）：36.94/100.00
+================================================================================
+成绩单已保存： /workspace/YatCC/build/test/task4/score-classic.txt
+JSON 格式： /workspace/YatCC/build/test/task4/score-classic.json
+
+/workspace/YatCC/build/test/task4/llm-performance/fft.sysu.c/score.txt ... 运行输出结果时出错
+/workspace/YatCC/build/test/task4/llm-performance/mm.sysu.c/score.txt ... 运行输出结果时出错
+
+================================================================================
+llm-performance/fft.sysu.c ..................................... 0.00/100.00
+llm-performance/mm.sysu.c ...................................... 0.00/100.00
+
+task4-llm
+总分（加权）：0.00/100.00
+================================================================================
+成绩单已保存： /workspace/YatCC/build/test/task4/score-llm.txt
+JSON 格式： /workspace/YatCC/build/test/task4/score-llm.json
+[100%] Built target task4-score
+[?2004h
+[The command completed with exit code 0.]
+[Current working directory: /workspace/YatCC]
+[Command finished with exit code 0]

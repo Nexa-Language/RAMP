@@ -1,0 +1,1 @@
+{"id":"c3830fed-6d08-4256-a4d8-0a29faf1d5aa","timestamp":"2026-05-18T22:40:19.528448","source":"environment","code":"LLMTimeoutError","detail":"litellm.Timeout: Timeout Error: OpenAIException - litellm.Timeout: Connection timed out after 300 seconds.","kind":"ConversationErrorEvent"}

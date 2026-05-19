@@ -1,0 +1,32 @@
+[
+  {
+    "title": "Task 1: \u8bcd\u6cd5\u5206\u6790",
+    "notes": "Task 1 \u5b8c\u6210\uff0c100/100\u5206",
+    "status": "done"
+  },
+  {
+    "title": "Task 2: \u8bed\u6cd5\u5206\u6790",
+    "notes": "Task 2 \u5b8c\u6210\uff0c97.66/100\u5206",
+    "status": "done"
+  },
+  {
+    "title": "Task 3: \u4e2d\u95f4\u4ee3\u7801\u751f\u6210 - \u7406\u89e3\u4ee3\u7801\u548c\u9700\u6c42",
+    "notes": "\u9605\u8bfbREADME\u3001\u7406\u89e3\u4ee3\u7801\u7ed3\u6784\u3001\u5206\u6790\u73b0\u6709\u5b9e\u73b0",
+    "status": "in_progress"
+  },
+  {
+    "title": "Task 3: \u4e2d\u95f4\u4ee3\u7801\u751f\u6210 - \u5b9e\u73b0IR\u751f\u6210",
+    "notes": "\u5b9e\u73b0EmitIR\uff0c\u751f\u6210LLVM IR",
+    "status": "todo"
+  },
+  {
+    "title": "Task 3: \u4e2d\u95f4\u4ee3\u7801\u751f\u6210 - \u7f16\u8bd1\u548c\u8bc4\u6d4b",
+    "notes": "\u6784\u5efatask3\uff0c\u8fd0\u884ctask3-score\uff0c\u5206\u6790\u7ed3\u679c\u5e76\u4fee\u590d",
+    "status": "todo"
+  },
+  {
+    "title": "Task 3: \u4e2d\u95f4\u4ee3\u7801\u751f\u6210 - \u8fed\u4ee3\u4f18\u5316",
+    "notes": "\u53cd\u590d\u8bc4\u6d4b\u548c\u4fee\u590d\uff0c\u76f4\u5230\u5f97\u5206\u8fbe\u5230\u8981\u6c42",
+    "status": "todo"
+  }
+]

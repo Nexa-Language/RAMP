@@ -1,0 +1,80 @@
+{
+  "benchmark": "EvoBench-v2",
+  "agent_backend": "openhands",
+  "agent_model": "glm-5.1",
+  "context_mode": "pipeline",
+  "run_id": "engineer-openhand-500-glm-5.1-tasks-0-5",
+  "timestamp": "2026-05-17T10:26:07Z",
+  "total_elapsed_seconds": 4442.00138759613,
+  "tasks": [
+    {
+      "task_id": 0,
+      "score": 100.0,
+      "max_score": 100.0,
+      "passed": true,
+      "test_count": 1,
+      "passed_count": 1,
+      "elapsed_seconds": 37.848180532455444,
+      "backend": "openhands"
+    },
+    {
+      "task_id": 1,
+      "score": 0.0,
+      "max_score": 100.0,
+      "passed": false,
+      "test_count": 0,
+      "passed_count": 0,
+      "elapsed_seconds": 2439.974745988846,
+      "backend": "openhands",
+      "error": "ace/YatCC/task/1/flex/lex.hpp:94:1: note: declared here\n   94 | come(int tokenId, const char* yytext, int yyleng);\n      | ^~~~\n/workspace/YatCC/task/1/flex/lex.l:8:29: error: too many arguments to function ‘int lex::come(int, const char*, int)’\n    8 | #define COME(id) return come(id, yytext, yyleng, yylineno)\n      |                         ~~~~^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n/workspace/YatCC/task/1/flex/lex.l:100:13: note: in expansion of macro ‘COME’\n  100 | <<EOF>>     { ADDCOL(); COME(YYEOF); }\n      |             ^~~~\n/workspace/YatCC/task/1/flex/lex.hpp:94:1: note: declared here\n   94 | come(int tokenId, const char* yytext, int yyleng);\n      | ^~~~\ngmake[3]: *** [task/1/flex/CMakeFiles/task1.dir/build.make:111: task/1/flex/CMakeFiles/task1.dir/lex.l.cc.o] Error 1\ngmake[2]: *** [CMakeFiles/Makefile2:1319: task/1/flex/CMakeFiles/task1.dir/all] Error 2\ngmake[1]: *** [CMakeFiles/Makefile2:1326: task/1/flex/CMakeFiles/task1.dir/rule] Error 2\ngmake: *** [Makefile:590: task1] Error 2\n"
+    },
+    {
+      "task_id": 2,
+      "score": 97.66,
+      "max_score": 100.0,
+      "passed": true,
+      "test_count": 73,
+      "passed_count": 49,
+      "elapsed_seconds": 1249.0124199390411,
+      "backend": "openhands"
+    },
+    {
+      "task_id": 3,
+      "score": 0.0,
+      "max_score": 100.0,
+      "passed": false,
+      "test_count": 0,
+      "passed_count": 0,
+      "elapsed_seconds": 447.1125376224518,
+      "backend": "openhands",
+      "error": "ator()(IntegerLiteral* obj)\n      | ^~~~~~\n/workspace/YatCC/task/3/EmitIR.cpp:81:1: note:                 ‘llvm::Value* EmitIR::operator()(asg::Expr*)’\n   81 | EmitIR::operator()(Expr* obj)\n      | ^~~~~~\n/workspace/YatCC/task/3/EmitIR.cpp:31:1: note:                 ‘llvm::Type* EmitIR::operator()(const asg::Type*)’\n   31 | EmitIR::operator()(const Type* type)\n      | ^~~~~~\n/workspace/YatCC/task/3/EmitIR.cpp:19:1: note:                 ‘llvm::Module& EmitIR::operator()(asg::TranslationUnit*)’\n   19 | EmitIR::operator()(asg::TranslationUnit* tu)\n      | ^~~~~~\n/workspace/YatCC/task/3/EmitIR.hpp:6:7: note: ‘class EmitIR’ defined here\n    6 | class EmitIR\n      |       ^~~~~~\ngmake[3]: *** [task/3/CMakeFiles/task3.dir/build.make:76: task/3/CMakeFiles/task3.dir/EmitIR.cpp.o] Error 1\ngmake[2]: *** [CMakeFiles/Makefile2:1371: task/3/CMakeFiles/task3.dir/all] Error 2\ngmake[1]: *** [CMakeFiles/Makefile2:1378: task/3/CMakeFiles/task3.dir/rule] Error 2\ngmake: *** [Makefile:616: task3] Error 2\n"
+    },
+    {
+      "task_id": 4,
+      "score": 36.62,
+      "max_score": 100.0,
+      "passed": false,
+      "test_count": 12,
+      "passed_count": 0,
+      "elapsed_seconds": 141.77719688415527,
+      "backend": "openhands"
+    },
+    {
+      "task_id": 5,
+      "score": 0.0,
+      "max_score": 100.0,
+      "passed": false,
+      "test_count": 0,
+      "passed_count": 0,
+      "elapsed_seconds": 3.529557228088379,
+      "backend": "openhands",
+      "error": "/workspace/YatCC/task/5/EmitMIR.cpp:35:10: fatal error: RISCVGenRegisterInfo.inc: No such file or directory\n   35 | #include \"RISCVGenRegisterInfo.inc\"\n      |          ^~~~~~~~~~~~~~~~~~~~~~~~~~\ncompilation terminated.\ngmake[3]: *** [task/5/CMakeFiles/task5-classic.dir/build.make:90: task/5/CMakeFiles/task5-classic.dir/EmitMIR.cpp.o] Error 1\ngmake[2]: *** [CMakeFiles/Makefile2:1476: task/5/CMakeFiles/task5-classic.dir/all] Error 2\ngmake[1]: *** [CMakeFiles/Makefile2:1483: task/5/CMakeFiles/task5-classic.dir/rule] Error 2\ngmake: *** [Makefile:668: task5-classic] Error 2\n"
+    }
+  ],
+  "metrics": {
+    "zero_shot_pass": false,
+    "prior_non_full_score_count": 4,
+    "total_iterations": 3000
+  },
+  "_error": "ConversationRunError: Conversation run failed for id=90da4c7c-214a-4b04-831f-dddb51f564e6: litellm.BadRequestError: OpenAIException - litellm.BadRequestError: OpenAIException - Range of input length should be [1, 202745]. Received Model Group=glm-5.1\nAvailable Model Group Fallbacks=None\n\nConversation logs are stored at: /workspace/output/openhands-state/pipeline/90da4c7c214a4b04831fdddb51f564e6\n\nTo help debug this issue, please file a bug report at:\n  https://github.com/OpenHands/software-agent-sdk/issues/new\nand attach the conversation logs from the directory above."
+}

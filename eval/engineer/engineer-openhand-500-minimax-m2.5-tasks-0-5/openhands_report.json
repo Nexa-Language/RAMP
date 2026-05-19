@@ -1,0 +1,79 @@
+{
+  "benchmark": "EvoBench-v2",
+  "agent_backend": "openhands",
+  "agent_model": "minimax-m2.5",
+  "context_mode": "pipeline",
+  "run_id": "engineer-openhand-500-minimax-m2.5-tasks-0-5",
+  "timestamp": "2026-05-17T11:31:53Z",
+  "total_elapsed_seconds": 3940.615513563156,
+  "tasks": [
+    {
+      "task_id": 0,
+      "score": 100.0,
+      "max_score": 100.0,
+      "passed": true,
+      "test_count": 1,
+      "passed_count": 1,
+      "elapsed_seconds": 1198.533367395401,
+      "backend": "openhands"
+    },
+    {
+      "task_id": 1,
+      "score": 64.22,
+      "max_score": 100.0,
+      "passed": true,
+      "test_count": 73,
+      "passed_count": 0,
+      "elapsed_seconds": 1045.0373170375824,
+      "backend": "openhands"
+    },
+    {
+      "task_id": 2,
+      "score": 0.0,
+      "max_score": 100.0,
+      "passed": false,
+      "test_count": 0,
+      "passed_count": 0,
+      "elapsed_seconds": 64.0583610534668,
+      "backend": "openhands",
+      "error": "{\n      | ^~~~~~~~~\n/workspace/YatCC/task/2/antlr/Ast2Asg.cpp:225:14: error: expected ‘}’ at end of input\n  225 |   return ret;\n      |              ^\nIn file included from /workspace/YatCC/task/2/antlr/Ast2Asg.cpp:1:\n/workspace/YatCC/task/2/antlr/Ast2Asg.hpp:11:1: note: to match this ‘{’\n   11 | {\n      | ^\n/workspace/YatCC/task/2/antlr/Ast2Asg.cpp:225:14: error: expected unqualified-id at end of input\n  225 |   return ret;\n      |              ^\n/workspace/YatCC/task/2/antlr/Ast2Asg.cpp:225:14: error: expected ‘}’ at end of input\n/workspace/YatCC/task/2/antlr/Ast2Asg.hpp:6:15: note: to match this ‘{’\n    6 | namespace asg {\n      |               ^\ngmake[3]: *** [task/2/antlr/CMakeFiles/task2.dir/build.make:152: task/2/antlr/CMakeFiles/task2.dir/Ast2Asg.cpp.o] Error 1\ngmake[2]: *** [CMakeFiles/Makefile2:1345: task/2/antlr/CMakeFiles/task2.dir/all] Error 2\ngmake[1]: *** [CMakeFiles/Makefile2:1352: task/2/antlr/CMakeFiles/task2.dir/rule] Error 2\ngmake: *** [Makefile:603: task2] Error 2\n"
+    },
+    {
+      "task_id": 3,
+      "score": 2.74,
+      "max_score": 100.0,
+      "passed": false,
+      "test_count": 73,
+      "passed_count": 2,
+      "elapsed_seconds": 1364.6627190113068,
+      "backend": "openhands"
+    },
+    {
+      "task_id": 4,
+      "score": 36.37,
+      "max_score": 100.0,
+      "passed": false,
+      "test_count": 12,
+      "passed_count": 0,
+      "elapsed_seconds": 144.66147637367249,
+      "backend": "openhands"
+    },
+    {
+      "task_id": 5,
+      "score": 0.0,
+      "max_score": 100.0,
+      "passed": false,
+      "test_count": 0,
+      "passed_count": 0,
+      "elapsed_seconds": 4.410302400588989,
+      "backend": "openhands",
+      "error": "/workspace/YatCC/task/5/EmitMIR.cpp:35:10: fatal error: RISCVGenRegisterInfo.inc: No such file or directory\n   35 | #include \"RISCVGenRegisterInfo.inc\"\n      |          ^~~~~~~~~~~~~~~~~~~~~~~~~~\ncompilation terminated.\ngmake[3]: *** [task/5/CMakeFiles/task5-classic.dir/build.make:90: task/5/CMakeFiles/task5-classic.dir/EmitMIR.cpp.o] Error 1\ngmake[2]: *** [CMakeFiles/Makefile2:1476: task/5/CMakeFiles/task5-classic.dir/all] Error 2\ngmake[1]: *** [CMakeFiles/Makefile2:1483: task/5/CMakeFiles/task5-classic.dir/rule] Error 2\ngmake: *** [Makefile:668: task5-classic] Error 2\n"
+    }
+  ],
+  "metrics": {
+    "zero_shot_pass": false,
+    "prior_non_full_score_count": 4,
+    "total_iterations": 3000
+  },
+  "_error": "ConversationRunError: Conversation run failed for id=8b502db3-87fb-4c95-868e-db9882efde6d: litellm.BadRequestError: OpenAIException - litellm.BadRequestError: OpenAIException - <400> InternalError.Algo.InvalidParameter: Range of input length should be [1, 196601]. Received Model Group=minimax-m2.5\nAvailable Model Group Fallbacks=None\n\nConversation logs are stored at: /workspace/output/openhands-state/pipeline/8b502db387fb4c95868edb9882efde6d\n\nTo help debug this issue, please file a bug report at:\n  https://github.com/OpenHands/software-agent-sdk/issues/new\nand attach the conversation logs from the directory above."
+}

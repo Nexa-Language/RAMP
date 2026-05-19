@@ -1,0 +1,1 @@
+{"id":"21d58665-dc4b-4269-92c7-0ed1d2d1f716","timestamp":"2026-05-17T17:58:56.208783","source":"agent","tool_name":"terminal","tool_call_id":"functions.terminal:256","error":"Error validating tool 'terminal': Expecting value: line 1 column 1 (char 0). Arguments: unparseable JSON","kind":"AgentErrorEvent"}

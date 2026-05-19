@@ -1,0 +1,996 @@
+[?2004l===functional-0/004_const_var_defn.sysu.c answer===
+{
+    "id": "0x55a285d763d8",
+    "kind": "TranslationUnitDecl",
+    "loc": {},
+    "range": {
+        "begin": {},
+        "end": {}
+    },
+    "inner": [
+        {
+            "id": "0x55a285d76c08",
+            "kind": "TypedefDecl",
+            "loc": {},
+            "range": {
+                "begin": {},
+                "end": {}
+            },
+            "isImplicit": true,
+            "name": "__int128_t",
+            "type": {
+                "qualType": "__int128"
+            },
+            "inner": [
+                {
+                    "id": "0x55a285d769a0",
+                    "kind": "BuiltinType",
+                    "type": {
+                        "qualType": "__int128"
+                    }
+                }
+            ]
+        },
+        {
+            "id": "0x55a285d76c78",
+            "kind": "TypedefDecl",
+            "loc": {},
+            "range": {
+                "begin": {},
+                "end": {}
+            },
+            "isImplicit": true,
+            "name": "__uint128_t",
+            "type": {
+                "qualType": "unsigned __int128"
+            },
+            "inner": [
+                {
+                    "id": "0x55a285d769c0",
+                    "kind": "BuiltinType",
+                    "type": {
+                        "qualType": "unsigned __int128"
+                    }
+                }
+            ]
+        },
+        {
+            "id": "0x55a285d76f80",
+            "kind": "TypedefDecl",
+            "loc": {},
+            "range": {
+                "begin": {},
+                "end": {}
+            },
+            "isImplicit": true,
+            "name": "__NSConstantString",
+            "type": {
+                "qualType": "struct __NSConstantString_tag"
+            },
+            "inner": [
+                {
+                    "id": "0x55a285d76d50",
+                    "kind": "RecordType",
+                    "type": {
+                        "qualType": "struct __NSConstantString_tag"
+                    },
+                    "decl": {
+                        "id": "0x55a285d76cd0",
+                        "kind": "RecordDecl",
+                        "name": "__NSConstantString_tag"
+                    }
+                }
+            ]
+        },
+        {
+            "id": "0x55a285d77028",
+            "kind": "TypedefDecl",
+            "loc": {},
+            "range": {
+                "begin": {},
+                "end": {}
+            },
+            "isImplicit": true,
+            "name": "__builtin_ms_va_list",
+            "type": {
+                "qualType": "char *"
+            },
+            "inner": [
+                {
+                    "id": "0x55a285d76fe0",
+                    "kind": "PointerType",
+                    "type": {
+                        "qualType": "char *"
+                    },
+                    "inner": [
+                        {
+                            "id": "0x55a285d76480",
+                            "kind": "BuiltinType",
+                            "type": {
+                                "qualType": "char"
+                            }
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "id": "0x55a285d77320",
+            "kind": "TypedefDecl",
+            "loc": {},
+            "range": {
+                "begin": {},
+                "end": {}
+            },
+            "isImplicit": true,
+            "name": "__builtin_va_list",
+            "type": {
+                "qualType": "struct __va_list_tag[1]"
+            },
+            "inner": [
+                {
+                    "id": "0x55a285d772c0",
+                    "kind": "ConstantArrayType",
+                    "type": {
+                        "qualType": "struct __va_list_tag[1]"
+                    },
+                    "size": 1,
+                    "inner": [
+                        {
+                            "id": "0x55a285d77100",
+                            "kind": "RecordType",
+                            "type": {
+                                "qualType": "struct __va_list_tag"
+                            },
+                            "decl": {
+                                "id": "0x55a285d77080",
+                                "kind": "RecordDecl",
+                                "name": "__va_list_tag"
+                            }
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "id": "0x55a285dc8c70",
+            "kind": "VarDecl",
+            "loc": {
+                "offset": 260,
+                "file": "/workspace/YatCC/build/test/task0/functional-0/004_const_var_defn.sysu.c",
+                "line": 9,
+                "presumedFile": "/workspace/YatCC/test/cases/functional-0/004_const_var_defn.sysu.c",
+                "presumedLine": 2,
+                "col": 11,
+                "tokLen": 1
+            },
+            "range": {
+                "begin": {
+                    "offset": 250,
+                    "col": 1,
+                    "tokLen": 5
+                },
+                "end": {
+                    "offset": 264,
+                    "col": 15,
+                    "tokLen": 2
+                }
+            },
+            "isUsed": true,
+            "name": "a",
+            "mangledName": "a",
+            "type": {
+                "qualType": "const int"
+            },
+            "init": "c",
+            "inner": [
+                {
+                    "id": "0x55a285dc8d20",
+                    "kind": "IntegerLiteral",
+                    "range": {
+                        "begin": {
+                            "offset": 264,
+                            "col": 15,
+                            "tokLen": 2
+                        },
+                        "end": {
+                            "offset": 264,
+                            "col": 15,
+                            "tokLen": 2
+                        }
+                    },
+                    "type": {
+                        "qualType": "int"
+                    },
+                    "valueCategory": "prvalue",
+                    "value": "10"
+                }
+            ]
+        },
+        {
+            "id": "0x55a285dc8d98",
+            "kind": "FunctionDecl",
+            "loc": {
+                "offset": 273,
+                "line": 11,
+                "presumedLine": 4,
+                "col": 5,
+                "tokLen": 4
+            },
+            "range": {
+                "begin": {
+===functional-0/004_const_var_defn.sysu.c output===
+
+score
+输出结果文件损坏： /workspace/YatCC/build/test/task2/functional-0/004_const_var_defn.sysu.c/output.json
+===functional-1/017_mul.sysu.c answer===
+{
+    "id": "0x555c924f08f8",
+    "kind": "TranslationUnitDecl",
+    "loc": {},
+    "range": {
+        "begin": {},
+        "end": {}
+    },
+    "inner": [
+        {
+            "id": "0x555c924f1128",
+            "kind": "TypedefDecl",
+            "loc": {},
+            "range": {
+                "begin": {},
+                "end": {}
+            },
+            "isImplicit": true,
+            "name": "__int128_t",
+            "type": {
+                "qualType": "__int128"
+            },
+            "inner": [
+                {
+                    "id": "0x555c924f0ec0",
+                    "kind": "BuiltinType",
+                    "type": {
+                        "qualType": "__int128"
+                    }
+                }
+            ]
+        },
+        {
+            "id": "0x555c924f1198",
+            "kind": "TypedefDecl",
+            "loc": {},
+            "range": {
+                "begin": {},
+                "end": {}
+            },
+            "isImplicit": true,
+            "name": "__uint128_t",
+            "type": {
+                "qualType": "unsigned __int128"
+            },
+            "inner": [
+                {
+                    "id": "0x555c924f0ee0",
+                    "kind": "BuiltinType",
+                    "type": {
+                        "qualType": "unsigned __int128"
+                    }
+                }
+            ]
+        },
+        {
+            "id": "0x555c924f14a0",
+            "kind": "TypedefDecl",
+            "loc": {},
+            "range": {
+                "begin": {},
+                "end": {}
+            },
+            "isImplicit": true,
+            "name": "__NSConstantString",
+            "type": {
+                "qualType": "struct __NSConstantString_tag"
+            },
+            "inner": [
+                {
+                    "id": "0x555c924f1270",
+                    "kind": "RecordType",
+                    "type": {
+                        "qualType": "struct __NSConstantString_tag"
+                    },
+                    "decl": {
+                        "id": "0x555c924f11f0",
+                        "kind": "RecordDecl",
+                        "name": "__NSConstantString_tag"
+                    }
+                }
+            ]
+        },
+        {
+            "id": "0x555c924f1548",
+            "kind": "TypedefDecl",
+            "loc": {},
+            "range": {
+                "begin": {},
+                "end": {}
+            },
+            "isImplicit": true,
+            "name": "__builtin_ms_va_list",
+            "type": {
+                "qualType": "char *"
+            },
+            "inner": [
+                {
+                    "id": "0x555c924f1500",
+                    "kind": "PointerType",
+                    "type": {
+                        "qualType": "char *"
+                    },
+                    "inner": [
+                        {
+                            "id": "0x555c924f09a0",
+                            "kind": "BuiltinType",
+                            "type": {
+                                "qualType": "char"
+                            }
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "id": "0x555c924f1840",
+            "kind": "TypedefDecl",
+            "loc": {},
+            "range": {
+                "begin": {},
+                "end": {}
+            },
+            "isImplicit": true,
+            "name": "__builtin_va_list",
+            "type": {
+                "qualType": "struct __va_list_tag[1]"
+            },
+            "inner": [
+                {
+                    "id": "0x555c924f17e0",
+                    "kind": "ConstantArrayType",
+                    "type": {
+                        "qualType": "struct __va_list_tag[1]"
+                    },
+                    "size": 1,
+                    "inner": [
+                        {
+                            "id": "0x555c924f1620",
+                            "kind": "RecordType",
+                            "type": {
+                                "qualType": "struct __va_list_tag"
+                            },
+                            "decl": {
+                                "id": "0x555c924f15a0",
+                                "kind": "RecordDecl",
+                                "name": "__va_list_tag"
+                            }
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "id": "0x555c92542bc8",
+            "kind": "FunctionDecl",
+            "loc": {
+                "offset": 232,
+                "file": "/workspace/YatCC/build/test/task0/functional-1/017_mul.sysu.c",
+                "line": 9,
+                "presumedFile": "/workspace/YatCC/test/cases/functional-1/017_mul.sysu.c",
+                "presumedLine": 2,
+                "col": 5,
+                "tokLen": 4
+            },
+            "range": {
+                "begin": {
+                    "offset": 228,
+                    "col": 1,
+                    "tokLen": 3
+                },
+                "end": {
+                    "offset": 295,
+                    "line": 14,
+                    "presumedLine": 7,
+                    "col": 1,
+                    "tokLen": 1
+                }
+            },
+            "name": "main",
+            "mangledName": "main",
+            "type": {
+                "qualType": "int ()"
+            },
+            "inner": [
+                {
+                    "id": "0x555c92542f48",
+                    "kind": "CompoundStmt",
+                    "range": {
+                        "begin": {
+                            "offset": 238,
+                            "line": 9,
+                            "presumedLine": 2,
+                            "col": 11,
+                            "tokLen": 1
+                        },
+                        "end": {
+                            "offset": 295,
+                            "line": 14,
+                            "presumedLine": 7,
+                            "col": 1,
+                            "tokLen": 1
+                        }
+                    },
+                    "inner": [
+                        {
+                            "id": "0x555c92542dd0",
+                            "kind": "DeclStmt",
+                            "range": {
+                                "begin": {
+                                    "offset": 244,
+                                    "line": 10,
+                                    "presumedLine": 3,
+                                    "col": 5,
+                                    "tokLen": 3
+                                },
+                                "end": {
+                                    "offset": 252,
+                                    "col": 13,
+                                    "tokLen": 1
+===functional-1/017_mul.sysu.c output===
+
+score
+输出结果文件损坏： /workspace/YatCC/build/test/task2/functional-1/017_mul.sysu.c/output.json
+===functional-2/030_func_defn.sysu.c answer===
+{
+    "id": "0x556cecf30708",
+    "kind": "TranslationUnitDecl",
+    "loc": {},
+    "range": {
+        "begin": {},
+        "end": {}
+    },
+    "inner": [
+        {
+            "id": "0x556cecf30f38",
+            "kind": "TypedefDecl",
+            "loc": {},
+            "range": {
+                "begin": {},
+                "end": {}
+            },
+            "isImplicit": true,
+            "name": "__int128_t",
+            "type": {
+                "qualType": "__int128"
+            },
+            "inner": [
+                {
+                    "id": "0x556cecf30cd0",
+                    "kind": "BuiltinType",
+                    "type": {
+                        "qualType": "__int128"
+                    }
+                }
+            ]
+        },
+        {
+            "id": "0x556cecf30fa8",
+            "kind": "TypedefDecl",
+            "loc": {},
+            "range": {
+                "begin": {},
+                "end": {}
+            },
+            "isImplicit": true,
+            "name": "__uint128_t",
+            "type": {
+                "qualType": "unsigned __int128"
+            },
+            "inne<response clipped><NOTE>Due to the max output limit, only part of the full response has been shown to you.</NOTE>e": "a",
+            "mangledName": "a",
+            "type": {
+                "qualType": "int"
+            }
+        },
+        {
+            "id": "0x556cecf82c08",
+            "kind": "FunctionDecl",
+            "loc": {
+                "offset": 250,
+                "line": 9,
+                "presumedLine": 2,
+                "col": 5,
+                "tokLen": 4
+            },
+            "range": {
+                "begin": {
+                    "offset": 246,
+                    "col": 1,
+                    "tokLen": 3
+                },
+                "end": {
+                    "offset": 286,
+                    "line": 12,
+                    "presumedLine": 5,
+                    "col": 1,
+                    "tokLen": 1
+                }
+            },
+            "isUsed": true,
+            "name": "func",
+            "mangledName": "func",
+            "type": {
+                "qualType": "int (int)"
+            },
+            "inner": [
+                {
+                    "id": "0x556cecf82b38",
+                    "kind": "ParmVarDecl",
+                    "loc": {
+                        "offset": 259,
+===functional-2/030_func_defn.sysu.c output===
+
+score
+输出结果文件损坏： /workspace/YatCC/build/test/task2/functional-2/030_func_defn.sysu.c/output.json
+===functional-3/032_if.sysu.c answer===
+{
+    "id": "0x562cdae9ca58",
+    "kind": "TranslationUnitDecl",
+    "loc": {},
+    "range": {
+        "begin": {},
+        "end": {}
+    },
+    "inner": [
+        {
+            "id": "0x562cdae9d288",
+            "kind": "TypedefDecl",
+            "loc": {},
+            "range": {
+                "begin": {},
+                "end": {}
+            },
+            "isImplicit": true,
+            "name": "__int128_t",
+            "type": {
+                "qualType": "__int128"
+            },
+            "inner": [
+                {
+                    "id": "0x562cdae9d020",
+                    "kind": "BuiltinType",
+                    "type": {
+                        "qualType": "__int128"
+                    }
+                }
+            ]
+        },
+        {
+            "id": "0x562cdae9d2f8",
+            "kind": "TypedefDecl",
+            "loc": {},
+            "range": {
+                "begin": {},
+                "end": {}
+            },
+            "isImplicit": true,
+            "name": "__uint128_t",
+            "type": {
+                "qualType": "unsigned __int128"
+            },
+            "inner": [
+                {
+                    "id": "0x562cdae9d040",
+                    "kind": "BuiltinType",
+                    "type": {
+                        "qualType": "unsigned __int128"
+                    }
+                }
+            ]
+        },
+        {
+            "id": "0x562cdae9d600",
+            "kind": "TypedefDecl",
+            "loc": {},
+            "range": {
+                "begin": {},
+                "end": {}
+            },
+            "isImplicit": true,
+            "name": "__NSConstantString",
+            "type": {
+                "qualType": "struct __NSConstantString_tag"
+            },
+            "inner": [
+                {
+                    "id": "0x562cdae9d3d0",
+                    "kind": "RecordType",
+                    "type": {
+                        "qualType": "struct __NSConstantString_tag"
+                    },
+                    "decl": {
+                        "id": "0x562cdae9d350",
+                        "kind": "RecordDecl",
+                        "name": "__NSConstantString_tag"
+                    }
+                }
+            ]
+        },
+        {
+            "id": "0x562cdae9d6a8",
+            "kind": "TypedefDecl",
+            "loc": {},
+            "range": {
+                "begin": {},
+                "end": {}
+            },
+            "isImplicit": true,
+            "name": "__builtin_ms_va_list",
+            "type": {
+                "qualType": "char *"
+            },
+            "inner": [
+                {
+                    "id": "0x562cdae9d660",
+                    "kind": "PointerType",
+                    "type": {
+                        "qualType": "char *"
+                    },
+                    "inner": [
+                        {
+                            "id": "0x562cdae9cb00",
+                            "kind": "BuiltinType",
+                            "type": {
+                                "qualType": "char"
+                            }
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "id": "0x562cdae9d9a0",
+            "kind": "TypedefDecl",
+            "loc": {},
+            "range": {
+                "begin": {},
+                "end": {}
+            },
+            "isImplicit": true,
+            "name": "__builtin_va_list",
+            "type": {
+                "qualType": "struct __va_list_tag[1]"
+            },
+            "inner": [
+                {
+                    "id": "0x562cdae9d940",
+                    "kind": "ConstantArrayType",
+                    "type": {
+                        "qualType": "struct __va_list_tag[1]"
+                    },
+                    "size": 1,
+                    "inner": [
+                        {
+                            "id": "0x562cdae9d780",
+                            "kind": "RecordType",
+                            "type": {
+                                "qualType": "struct __va_list_tag"
+                            },
+                            "decl": {
+                                "id": "0x562cdae9d700",
+                                "kind": "RecordDecl",
+                                "name": "__va_list_tag"
+                            }
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "id": "0x562cdaeeed00",
+            "kind": "VarDecl",
+            "loc": {
+                "offset": 229,
+                "file": "/workspace/YatCC/build/test/task0/functional-3/032_if.sysu.c",
+                "line": 8,
+                "presumedFile": "/workspace/YatCC/test/cases/functional-3/032_if.sysu.c",
+                "presumedLine": 1,
+                "col": 5,
+                "tokLen": 1
+            },
+            "range": {
+                "begin": {
+                    "offset": 225,
+                    "col": 1,
+                    "tokLen": 3
+                },
+                "end": {
+                    "offset": 229,
+                    "col": 5,
+                    "tokLen": 1
+                }
+            },
+            "isUsed": true,
+            "name": "a",
+            "mangledName": "a",
+            "type": {
+                "qualType": "int"
+            }
+        },
+        {
+            "id": "0x562cdaeeee08",
+            "kind": "FunctionDecl",
+            "loc": {
+                "offset": 237,
+                "line": 10,
+                "presumedLine": 3,
+                "col": 5,
+                "tokLen": 4
+            },
+            "range": {
+                "begin": {
+                    "offset": 233,
+                    "col": 1,
+                    "tokLen": 3
+                },
+                "end": {
+                    "offset": 292,
+                    "line": 16,
+                    "presumedLine": 9,
+                    "col": 1,
+                    "tokLen": 1
+                }
+            },
+            "name": "main",
+            "mangledName": "main",
+            "type": {
+                "qualType": "int ()"
+            },
+            "inner": [
+                {
+                    "id": "0x562cdaeef020",
+                    "kind": "CompoundStmt",
+                    "range": {
+                        "begin": {
+                            "offset": 243,
+===functional-3/032_if.sysu.c output===
+
+score
+输出结果文件损坏： /workspace/YatCC/build/test/task2/functional-3/032_if.sysu.c/output.json
+===functional-3/049_unary_op.sysu.c answer===
+{
+    "id": "0x5650d0a057c8",
+    "kind": "TranslationUnitDecl",
+    "loc": {},
+    "range": {
+        "begin": {},
+        "end": {}
+    },
+    "inner": [
+        {
+            "id": "0x5650d0a05ff8",
+            "kind": "TypedefDecl",
+            "loc": {},
+            "range": {
+                "begin": {},
+                "end": {}
+            },
+            "isImplicit": true,
+            "name": "__int128_t",
+            "type": {
+                "qualType": "__int128"
+            },
+            "inner": [
+                {
+                    "id": "0x5650d0a05d90",
+                    "kind": "BuiltinType",
+                    "type": {
+                        "qualType": "__int128"
+                    }
+                }
+            ]
+        },
+        {
+            "id": "0x5650d0a06068",
+            "kind": "TypedefDecl",
+            "loc": {},
+            "range": {
+                "begin": {},
+                "end": {}
+            },
+            "isImplicit": true,
+            "name": "__uint128_t",
+            "type": {
+                "qualType": "unsigned __int128"
+            },
+            "inner": [
+                {
+                    "id": "0x5650d0a05db0",
+                    "kind": "BuiltinType",
+                    "type": {
+                        "qualType": "unsigned __int128"
+                    }
+                }
+            ]
+        },
+        {
+            "id": "0x5650d0a06370",
+            "kind": "TypedefDecl",
+            "loc": {},
+            "range": {
+                "begin": {},
+                "end": {}
+            },
+            "isImplicit": true,
+            "name": "__NSConstantString",
+            "type": {
+                "qualType": "struct __NSConstantString_tag"
+            },
+            "inner": [
+                {
+                    "id": "0x5650d0a06140",
+                    "kind": "RecordType",
+                    "type": {
+                        "qualType": "struct __NSConstantString_tag"
+                    },
+                    "decl": {
+                        "id": "0x5650d0a060c0",
+                        "kind": "RecordDecl",
+                        "name": "__NSConstantString_tag"
+                    }
+                }
+            ]
+        },
+        {
+            "id": "0x5650d0a06418",
+            "kind": "TypedefDecl",
+            "loc": {},
+            "range": {
+                "begin": {},
+                "end": {}
+            },
+            "isImplicit": true,
+            "name": "__builtin_ms_va_list",
+            "type": {
+                "qualType": "char *"
+            },
+            "inner": [
+                {
+                    "id": "0x5650d0a063d0",
+                    "kind": "PointerType",
+                    "type": {
+                        "qualType": "char *"
+                    },
+                    "inner": [
+                        {
+                            "id": "0x5650d0a05870",
+                            "kind": "BuiltinType",
+                            "type": {
+                                "qualType": "char"
+                            }
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "id": "0x5650d0a06710",
+            "kind": "TypedefDecl",
+            "loc": {},
+            "range": {
+                "begin": {},
+                "end": {}
+            },
+            "isImplicit": true,
+            "name": "__builtin_va_list",
+            "type": {
+                "qualType": "struct __va_list_tag[1]"
+            },
+            "inner": [
+                {
+                    "id": "0x5650d0a066b0",
+                    "kind": "ConstantArrayType",
+                    "type": {
+                        "qualType": "struct __va_list_tag[1]"
+                    },
+                    "size": 1,
+                    "inner": [
+                        {
+                            "id": "0x5650d0a064f0",
+                            "kind": "RecordType",
+                            "type": {
+                                "qualType": "struct __va_list_tag"
+                            },
+                            "decl": {
+                                "id": "0x5650d0a06470",
+                                "kind": "RecordDecl",
+                                "name": "__va_list_tag"
+                            }
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "id": "0x5650d0a57a98",
+            "kind": "FunctionDecl",
+            "loc": {
+                "offset": 241,
+                "file": "/workspace/YatCC/build/test/task0/functional-3/049_unary_op.sysu.c",
+                "line": 8,
+                "presumedFile": "/workspace/YatCC/test/cases/functional-3/049_unary_op.sysu.c",
+                "presumedLine": 1,
+                "col": 5,
+                "tokLen": 4
+            },
+            "range": {
+                "begin": {
+                    "offset": 237,
+                    "col": 1,
+                    "tokLen": 3
+                },
+                "end": {
+                    "offset": 363,
+                    "line": 18,
+                    "presumedLine": 11,
+                    "col": 1,
+                    "tokLen": 1
+                }
+            },
+            "name": "main",
+            "mangledName": "main",
+            "type": {
+                "qualType": "int ()"
+            },
+            "inner": [
+                {
+                    "id": "0x5650d0a57ee0",
+                    "kind": "CompoundStmt",
+                    "range": {
+                        "begin": {
+                            "offset": 248,
+                            "line": 8,
+                            "presumedLine": 1,
+                            "col": 12,
+                            "tokLen": 1
+                        },
+                        "end": {
+                            "offset": 363,
+                            "line": 18,
+                            "presumedLine": 11,
+                            "col": 1,
+                            "tokLen": 1
+                        }
+                    },
+                    "inner": [
+                        {
+                            "id": "0x5650d0a57c08",
+                            "kind": "DeclStmt",
+                            "range": {
+                                "begin": {
+                                    "offset": 254,
+                                    "line": 9,
+                                    "presumedLine": 2,
+                                    "col": 5,
+                                    "tokLen": 3
+                                },
+                                "end": {
+                                    "offset": 259,
+                                    "col": 10,
+                                    "tokLen": 1
+===functional-3/049_unary_op.sysu.c output===
+
+score
+输出结果文件损坏： /workspace/YatCC/build/test/task2/functional-3/049_unary_op.sysu.c/output.json
+[?2004h
+[The command completed with exit code 0.]
+[Current working directory: /workspace/YatCC]
+[Command finished with exit code 0]
