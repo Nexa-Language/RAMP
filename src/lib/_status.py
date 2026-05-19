@@ -38,6 +38,8 @@ def classify_termination(
         return Termination("error_llm_bad_request", "LLM 请求被服务端拒绝", detail)
     if "ratelimit" in text or "rate limit" in text:
         return Termination("error_llm_rate_limit", "LLM 触发限流", detail)
+    if "timeout" in text or "timed out" in text:
+        return Termination("error_llm_timeout", "LLM 请求超时", detail)
     if last_error_code == "RunnerError" or "typeerror" in text:
         return Termination("error_container_exit", "Runner 执行异常", detail)
     if openhands_status == "error":

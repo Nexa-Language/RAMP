@@ -28,6 +28,25 @@ def _load_env() -> None:
     load_dotenv(ROOT / "src" / ".env")
 
 
+def _native_tool_calling_enabled(model: str) -> bool:
+    raw = os.getenv("OPENHANDS_NATIVE_TOOL_CALLING", "").strip().lower()
+    if raw:
+        return raw in {"1", "true", "yes", "on"}
+    disabled = os.getenv(
+        "OPENHANDS_DISABLE_NATIVE_TOOL_CALLING_MODELS",
+        "kimi-k2-thinking,qwen3.6-flash",
+    )
+    disabled_models = {item.strip() for item in disabled.split(",") if item.strip()}
+    return model not in disabled_models
+
+
+def _env_int(name: str, default: int) -> int:
+    try:
+        return int(os.getenv(name, "").strip() or default)
+    except ValueError:
+        return default
+
+
 def create_agent(model: str, api_base: str, api_key: str, *, caching_prompt: bool, prompt_cache_retention: str | None):
     os.environ["OPENHANDS_SUPPRESS_BANNER"] = "1"
     from openhands.sdk import Agent, LLM, Tool
@@ -53,6 +72,7 @@ def create_agent(model: str, api_base: str, api_key: str, *, caching_prompt: boo
         "timeout": 300,
         "caching_prompt": caching_prompt,
         "prompt_cache_retention": prompt_cache_retention if caching_prompt else None,
+        "native_tool_calling": _native_tool_calling_enabled(model),
     }
     if extra_body:
         llm_kwargs["litellm_extra_body"] = extra_body
@@ -81,6 +101,27 @@ def event_logger(path: Path) -> Callable[[Any], None]:
     return log_event
 
 
+def count_action_events(path: Path) -> int:
+    count = 0
+    if not path.is_file():
+        return 0
+    try:
+        with path.open(encoding="utf-8", errors="replace") as handle:
+            for line in handle:
+                line = line.strip()
+                if not line:
+                    continue
+                try:
+                    obj = json.loads(line)
+                except json.JSONDecodeError:
+                    continue
+                if isinstance(obj, dict) and obj.get("event_type") == "ActionEvent":
+                    count += 1
+    except OSError:
+        return 0
+    return count
+
+
 def run_conversation(conversation: Any, max_iterations: int) -> None:
     """Run a Conversation across OpenHands SDK versions.
 
@@ -96,6 +137,28 @@ def run_conversation(conversation: Any, max_iterations: int) -> None:
         conversation.run(max_iterations=max_iterations)
     else:
         conversation.run()
+
+
+def build_retry_prompt(task_id: int, score: dict[str, Any], remaining_iterations: int) -> str:
+    score_value = float(score.get("score") or 0.0)
+    max_score = float(score.get("max_score") or 100.0)
+    passed_count = score.get("passed_count", "")
+    test_count = score.get("test_count", "")
+    lines = [
+        f"Task {task_id} 本轮评测未通过，当前得分 {score_value:.2f}/{max_score:.0f}。",
+    ]
+    if test_count != "":
+        lines.append(f"通过用例数：{passed_count}/{test_count}。")
+    if score.get("error"):
+        lines.append("构建或评测错误如下：")
+        lines.append(str(score["error"])[-2000:])
+    lines.extend(
+        [
+            f"你还剩约 {remaining_iterations} 轮 LLM 调用预算。",
+            "请继续分析失败原因，修改代码，重新构建和评测。当前 Task 达到通过标准前不要结束或转入下一 Task。",
+        ]
+    )
+    return "\n".join(lines) + "\n"
 
 
 def prepare_workspace(workspace: Path | None) -> Path:
@@ -171,31 +234,40 @@ def run_openhands(args: argparse.Namespace) -> int:
 
         guides = TaskGuides(ROOT)
         pipeline_conversation = None
+        pipeline_event_path = events_dir / "pipeline.jsonl"
         if args.context_mode == "pipeline":
             pipeline_conversation = Conversation(
                 agent=agent,
                 workspace=str(workspace),
                 max_iteration_per_run=args.max_iterations,
-                callbacks=[event_logger(events_dir / "pipeline.jsonl")],
+                callbacks=[event_logger(pipeline_event_path)],
                 persistence_dir=persistence_root / "pipeline",
                 tags={"runid": run_id, "model": args.model, "contextmode": "pipeline"},
             )
 
         first_pipeline_task = True
+        max_no_action_attempts = max(1, _env_int("EVOBENCH_MAX_NO_ACTION_ATTEMPTS", 3))
         for task_id in tasks:
             task_start = time.time()
             print(f"[Task {task_id}] 开始")
+            if args.context_mode == "pipeline" and remaining_iterations_budget(
+                output_dir, args.context_mode, args.max_iterations
+            ) <= 0:
+                print(f"[Task {task_id}] pipeline 全局 LLM 轮数已耗尽，结束后续 task。")
+                break
             if pipeline_conversation is not None:
                 conversation = pipeline_conversation
+                event_path = pipeline_event_path
                 stage = "first" if first_pipeline_task else "continue"
                 first_pipeline_task = False
             else:
                 stage = None
+                event_path = events_dir / f"task{task_id}.jsonl"
                 conversation = Conversation(
                     agent=agent,
                     workspace=str(workspace),
                     max_iteration_per_run=args.max_iterations,
-                    callbacks=[event_logger(events_dir / f"task{task_id}.jsonl")],
+                    callbacks=[event_logger(event_path)],
                     persistence_dir=persistence_root / f"task{task_id}",
                     tags={"runid": run_id, "taskid": str(task_id), "model": args.model},
                 )
@@ -212,26 +284,62 @@ def run_openhands(args: argparse.Namespace) -> int:
                 budget_wall_display=format_wall_remaining_display(wall_sec),
                 budget_remaining_iterations=iter_remaining,
             )
-            # pipeline 共用一个 Conversation：OpenHands 往往按每次 run() 单独计数，
-            # 若不按已消耗轮数递减，successful_llm_calls 会超过 metadata 的 max_iterations。
-            if iter_remaining <= 0:
-                print(
-                    f"[Task {task_id}] pipeline 全局 LLM 轮数已达 --max-iterations={args.max_iterations}，"
-                    "跳过本轮对话（不再 send_message / run）。"
+            score: dict[str, Any] | None = None
+            attempt = 0
+            no_action_attempts = 0
+            task_failure_error = ""
+            next_prompt = prompt
+            while True:
+                iter_remaining = remaining_iterations_budget(
+                    output_dir, args.context_mode, args.max_iterations
                 )
-            else:
+                # pipeline 共用一个 Conversation：OpenHands 往往按每次 run() 单独计数，
+                # 若不按已消耗轮数递减，successful_llm_calls 会超过 metadata 的 max_iterations。
+                if iter_remaining <= 0:
+                    print(
+                        f"[Task {task_id}] pipeline 全局 LLM 轮数已达 --max-iterations={args.max_iterations}，"
+                        "跳过本轮对话（不再 send_message / run）。"
+                    )
+                    if score is None:
+                        score = build_and_score(workspace, task_id)
+                    break
+                attempt += 1
                 if hasattr(conversation, "max_iteration_per_run"):
                     try:
                         conversation.max_iteration_per_run = iter_remaining
                     except (AttributeError, TypeError):
                         pass
-                conversation.send_message(prompt)
+                action_count_before = count_action_events(event_path)
+                conversation.send_message(next_prompt)
                 try:
                     run_conversation(conversation, iter_remaining)
                 except Exception as exc:
                     error = f"{type(exc).__name__}: {exc}"
                     print(f"[Task {task_id}] Agent 异常: {error}")
-            score = build_and_score(workspace, task_id)
+                    raise
+                action_count_after = count_action_events(event_path)
+                made_action = action_count_after > action_count_before
+                no_action_attempts = 0 if made_action else no_action_attempts + 1
+                score = build_and_score(workspace, task_id)
+                print(
+                    f"[Task {task_id}] attempt={attempt} score={float(score.get('score', 0)):.1f}/100 "
+                    f"passed={score.get('passed', False)}"
+                )
+                if score.get("passed") or args.context_mode != "pipeline":
+                    break
+                if no_action_attempts >= max_no_action_attempts:
+                    task_failure_error = (
+                        f"AgentNoProgressError: Task {task_id} 连续 {no_action_attempts} 次 run() "
+                        "没有产生任何工具 ActionEvent，判定模型未能驱动 OpenHands 工具。"
+                    )
+                    print(f"[Task {task_id}] {task_failure_error}")
+                    break
+                iter_remaining = remaining_iterations_budget(
+                    output_dir, args.context_mode, args.max_iterations
+                )
+                if iter_remaining <= 0:
+                    break
+                next_prompt = build_retry_prompt(task_id, score, iter_remaining)
             entry = {
                 "task_id": task_id,
                 "score": score.get("score", 0),
@@ -246,6 +354,14 @@ def run_openhands(args: argparse.Namespace) -> int:
                 entry["error"] = score["error"]
             results.append(entry)
             print(f"[Task {task_id}] score={entry['score']:.1f}/100 passed={entry['passed']}")
+            if task_failure_error:
+                error = task_failure_error
+                raise RuntimeError(task_failure_error)
+            if args.context_mode == "pipeline" and remaining_iterations_budget(
+                output_dir, args.context_mode, args.max_iterations
+            ) <= 0:
+                print("[pipeline] 全局 LLM 轮数已耗尽，结束 job。")
+                break
     except BaseException as exc:
         error = f"{type(exc).__name__}: {exc}"
         raise
