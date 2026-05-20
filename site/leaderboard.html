@@ -8,26 +8,37 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     <style>
+        .lb-tab-row { display: flex; justify-content: center; gap: 4px; margin-bottom: 24px; background: var(--bg-card); border-radius: 10px; padding: 4px; border: 1px solid var(--border-subtle); max-width: 480px; margin-left: auto; margin-right: auto; }
+        .lb-tab { padding: 10px 28px; border-radius: 8px; font-weight: 600; font-size: 0.9rem; cursor: pointer; border: none; background: transparent; color: var(--text-secondary); transition: all 0.2s; }
+        .lb-tab.active { background: var(--accent-primary); color: #fff; }
+        .lb-tab:hover:not(.active) { color: var(--text-primary); }
+        .scoring-row { display: flex; justify-content: center; gap: 6px; margin-bottom: 16px; flex-wrap: wrap; }
+        .score-btn { padding: 7px 16px; border-radius: 100px; font-size: 0.78rem; font-weight: 600; cursor: pointer; border: 1px solid var(--border-subtle); background: transparent; color: var(--text-secondary); transition: all 0.2s; }
+        .score-btn.active { background: var(--accent-primary); border-color: var(--accent-primary); color: white; }
+        .score-btn:hover:not(.active) { border-color: var(--border-accent); color: var(--text-primary); }
+        .workload-row { display: flex; justify-content: center; gap: 6px; margin-bottom: 20px; flex-wrap: wrap; }
+        .wl-chip { padding: 6px 14px; border-radius: 100px; font-size: 0.75rem; font-weight: 600; cursor: pointer; border: 1px solid var(--border-subtle); background: transparent; color: var(--text-secondary); transition: all 0.2s; }
+        .wl-chip.active { background: rgba(99,102,241,0.15); border-color: var(--accent-primary); color: var(--accent-primary); }
+        .wl-chip:hover:not(.active) { border-color: var(--border-accent); color: var(--text-primary); }
         .filter-bar { display: flex; align-items: center; gap: 12px; flex-wrap: wrap; margin-bottom: 24px; }
-        .filter-bar input[type="text"] { flex: 1; min-width: 200px; padding: 10px 16px; background: var(--bg-card); border: 1px solid var(--border-subtle); border-radius: var(--radius-md); color: var(--text-primary); font-family: var(--font-sans); font-size: 0.9rem; outline: none; transition: border-color 0.2s; }
+        .filter-bar input[type="text"] { flex: 1; min-width: 200px; padding: 10px 16px; background: var(--bg-card); border: 1px solid var(--border-subtle); border-radius: 10px; color: var(--text-primary); font-family: var(--font-sans); font-size: 0.9rem; outline: none; transition: border-color 0.2s; }
         .filter-bar input[type="text"]:focus { border-color: var(--accent-primary); }
         .filter-bar input[type="text"]::placeholder { color: var(--text-muted); }
-        .filter-chips { display: flex; gap: 8px; flex-wrap: wrap; }
-        .chip { padding: 6px 16px; border-radius: 100px; font-size: 0.8rem; font-weight: 600; cursor: pointer; border: 1px solid var(--border-subtle); background: transparent; color: var(--text-secondary); transition: all 0.2s; user-select: none; }
-        .chip:hover { border-color: var(--border-accent); color: var(--text-primary); }
-        .chip.active { background: var(--accent-primary); border-color: var(--accent-primary); color: white; }
-        .sort-btn { padding: 6px 16px; border-radius: 100px; font-size: 0.8rem; font-weight: 600; cursor: pointer; border: 1px solid var(--border-subtle); background: transparent; color: var(--text-secondary); transition: all 0.2s; display: flex; align-items: center; gap: 6px; }
-        .sort-btn:hover { border-color: var(--border-accent); color: var(--text-primary); }
+        .sort-btn { padding: 7px 14px; border-radius: 100px; font-size: 0.78rem; font-weight: 600; cursor: pointer; border: 1px solid var(--border-subtle); background: transparent; color: var(--text-secondary); transition: all 0.2s; }
         .sort-btn.active { background: rgba(99,102,241,0.15); border-color: var(--accent-primary); color: var(--accent-primary); }
-        .table-wrapper { overflow-x: auto; border-radius: var(--radius-lg); border: 1px solid var(--border-subtle); }
-        .table-wrapper::-webkit-scrollbar { height: 8px; width: 8px; }
+        .sort-btn:hover:not(.active) { border-color: var(--border-accent); color: var(--text-primary); }
+        .table-wrapper { overflow-x: auto; border-radius: 12px; border: 1px solid var(--border-subtle); }
+        .table-wrapper::-webkit-scrollbar { height: 7px; width: 7px; }
         .table-wrapper::-webkit-scrollbar-track { background: var(--bg-secondary); border-radius: 4px; }
         .table-wrapper::-webkit-scrollbar-thumb { background: linear-gradient(90deg, var(--accent-primary), var(--accent-secondary)); border-radius: 4px; }
         .model-name { display: flex; align-items: center; gap: 8px; }
-        .model-icon { width: 28px; height: 28px; border-radius: 6px; background: var(--bg-secondary); display: flex; align-items: center; justify-content: center; font-size: 0.75rem; font-weight: 700; color: var(--accent-primary); flex-shrink: 0; }
+        .model-icon { width: 26px; height: 26px; border-radius: 6px; background: var(--bg-secondary); display: flex; align-items: center; justify-content: center; font-size: 0.7rem; font-weight: 700; color: var(--accent-primary); flex-shrink: 0; }
         .no-results { text-align: center; padding: 60px 20px; color: var(--text-muted); }
         .no-results i { font-size: 2rem; margin-bottom: 12px; display: block; }
-        .metric-highlight { color: var(--accent-tertiary); font-family: var(--font-mono); font-weight: 600; }
+        .wl-tag { font-size: 0.65rem; padding: 2px 8px; border-radius: 100px; font-weight: 700; }
+        .wl-guided { background: rgba(35,135,85,0.12); color: #4ade80; }
+        .wl-semi { background: rgba(99,102,241,0.12); color: #818cf8; }
+        .wl-auto { background: rgba(225,145,35,0.12); color: #fb923c; }
     </style>
 </head>
 <body>
@@ -44,53 +55,67 @@
         </div>
     </nav>
 
-    <section class="hero" style="min-height: auto; padding-top: 100px; padding-bottom: 24px;">
+    <section class="hero" style="min-height: auto; padding-top: 100px; padding-bottom: 20px;">
         <div class="hero-content">
             <h1 class="hero-title" style="font-size: clamp(1.6rem, 4vw, 2.5rem);"><span class="gradient-text">Leaderboard</span></h1>
-            <p class="hero-subtitle" style="font-size:0.9rem;">How well can AI agents build a compiler from scratch? Real results from OpenHands SDK and CLI agents with infinite self-loop iteration.</p>
+            <p class="hero-subtitle" style="font-size:0.9rem;">How well can AI agents build a compiler end-to-end? Results from our production-grounded evaluation framework.</p>
         </div>
     </section>
 
-    <section style="position: relative; z-index: 1; padding: 0 24px 120px; max-width: 1400px; margin: 0 auto;">
-        <!-- Tab switcher -->
-        <div style="display: flex; justify-content: center; gap: 4px; margin-bottom: 32px; background: var(--bg-card); border-radius: 10px; padding: 4px; border: 1px solid var(--border-subtle); max-width: 620px; margin-left: auto; margin-right: auto;">
-            <a href="leaderboard.html" style="padding: 10px 24px; border-radius: 8px; background: var(--accent-primary); color: #fff; font-weight: 600; font-size: 0.9rem; text-decoration: none;">YatCC</a>
-            <a href="leaderboard-hard.html" style="padding: 10px 24px; border-radius: 8px; background: transparent; color: var(--text-secondary); font-weight: 600; font-size: 0.9rem; text-decoration: none;">YatCC-Hard</a>
-            <a href="leaderboard-hard-pro.html" style="padding: 10px 24px; border-radius: 8px; background: transparent; color: var(--text-secondary); font-weight: 600; font-size: 0.9rem; text-decoration: none;">YatCC-Hard-Pro</a>
+    <section style="position: relative; z-index: 1; padding: 0 24px 120px; max-width: 1440px; margin: 0 auto;">
+        <!-- Tab: Basic vs Pro -->
+        <div class="lb-tab-row">
+            <button class="lb-tab active" data-tab="basic">RAMP-Basic</button>
+            <button class="lb-tab" data-tab="pro">RAMP-Pro</button>
         </div>
 
-        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 16px; margin-bottom: 32px;" id="summary-cards"></div>
+        <!-- Workload filter (Basic only) -->
+        <div class="workload-row" id="workload-row">
+            <button class="wl-chip active" data-wl="semi">Semi-Guided (Progressive)</button>
+            <button class="wl-chip" data-wl="guided">Guided (Incremental)</button>
+            <button class="wl-chip" data-wl="all">All</button>
+        </div>
 
+        <!-- Scoring buttons -->
+        <div class="scoring-row">
+            <button class="score-btn active" data-score="complete">GCPS (Complete)</button>
+            <button class="score-btn" data-score="strict">E2E-PRS (Strict)</button>
+        </div>
+
+        <!-- Summary cards -->
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); gap: 14px; margin-bottom: 28px;" id="summary-cards"></div>
+
+        <!-- Filter + Sort -->
         <div class="filter-bar">
             <input type="text" id="search-input" placeholder="🔍 Search models..." />
-            <div class="filter-chips" id="backend-chips"><button class="chip active" data-backend="all">All</button></div>
-            <div class="filter-chips" id="sort-chips">
-                <button class="sort-btn active" data-sort="mean_reward">Mean Reward <i class="fas fa-sort-down"></i></button>
-                <button class="sort-btn" data-sort="pass_score">Pass Score <i class="fas fa-sort"></i></button>
-                <button class="sort-btn" data-sort="pipeline">Pipeline <i class="fas fa-sort"></i></button>
-                <button class="sort-btn" data-sort="task3">Task 3 <i class="fas fa-sort"></i></button>
-                <button class="sort-btn" data-sort="resurrections">Resurrections <i class="fas fa-sort"></i></button>
+            <div id="sort-chips" style="display:flex;gap:6px;flex-wrap:wrap;">
+                <button class="sort-btn active" data-sort="pipeline">Pipeline ⬇</button>
+                <button class="sort-btn" data-sort="mean_reward">Mean Reward</button>
+                <button class="sort-btn" data-sort="cost">Cost $</button>
+                <button class="sort-btn" data-sort="elapsed">Time ⬆</button>
             </div>
         </div>
 
+        <!-- Table -->
         <div class="table-wrapper">
             <table class="leaderboard-table">
                 <thead><tr>
-                    <th>#</th><th>Model</th><th>Backend</th>
+                    <th>#</th><th>Model</th><th>Workload</th>
                     <th>T0</th><th>T1</th><th>T2</th><th>T3</th><th>T4</th><th>T5</th>
-                    <th>Mean Reward</th><th>Pass Score</th><th>Pipeline</th><th>🔄</th>
+                    <th>PL</th><th>MR</th><th>Cost $</th><th>Time</th>
                 </tr></thead>
                 <tbody id="leaderboard-body"></tbody>
             </table>
         </div>
 
-        <div style="margin-top: 32px; padding: 24px; background: var(--bg-card); border: 1px solid var(--border-subtle); border-radius: var(--radius-lg);">
-            <h3 style="margin-bottom: 12px; font-size: 1rem;">📊 Metrics Formula</h3>
-            <div style="font-family: var(--font-mono); font-size: 0.85rem; color: var(--text-secondary); line-height: 1.8;">
-                <p><strong>Mean Reward</strong> = Σ(score[i] × weight[i] × bonus[i]) / Σ(weight[i])</p>
-                <p style="padding-left: 20px;">weight = [5%, 20%, 20%, 15%, 30%, 10%] | bonus = 1.2 (no resurrection) / 1.0 (resurrected)</p>
-                <p><strong>Pass Score</strong> = Σ(pass[i] × pass_bonus[i]) / (6 × 1.5) × 100</p>
-                <p style="padding-left: 20px;">pass_bonus = 1.5 (no resurrection) / 1.0 (resurrected)</p>
+        <div style="margin-top: 28px; padding: 20px; background: var(--bg-card); border: 1px solid var(--border-subtle); border-radius: 12px;">
+            <h3 style="margin-bottom: 8px; font-size: 0.95rem;">📊 Scoring & Workload Guide</h3>
+            <div style="font-family: var(--font-mono); font-size: 0.82rem; color: var(--text-secondary); line-height: 1.8;">
+                <p><strong>GCPS (Granular Capability Profiling)</strong> — Each task scored 0–100 independently. Relaxed, incremental evaluation.</p>
+                <p><strong>E2E-PRS (End-to-End Production Readiness)</strong> — Tasks 0–3 must achieve perfect scores. Any failure cascades to zero for subsequent tasks.</p>
+                <p style="margin-top:4px;"><strong>Guided (Incremental)</strong> — New context per task. Scaffolded starter code provided.</p>
+                <p><strong>Semi-Guided (Progressive)</strong> — Persistent context across all 6 tasks. Same agent carries the full project.</p>
+                <p><strong>Autonomous (RAMP-Pro)</strong> — No code framework. Build the full compiler from scratch.</p>
             </div>
         </div>
 
@@ -110,96 +135,159 @@
 
     <script src="assets/js/main.js"></script>
     <script>
-    let DATA = [], currentSort = 'mean_reward', currentBackend = 'all', searchQuery = '';
-    const MODEL_COLORS = {'deepseek-v4-pro':'#4ade80','deepseek-v4-flash':'#22d3ee','deepseek-chat':'#86efac','deepseek-reasoner':'#6ee7b7','qwen3.6-max-preview':'#a78bfa','qwen3.6-flash':'#c4b5fd','qwen3.6-plus':'#ddd6fe','qwen3-coder-flash':'#e9d5ff','qwen3.5-plus-2026-02-15':'#f0abfc','qwen-omni-turbo':'#f5d0fe','glm-5.1':'#fb923c','glm-5':'#fdba74','glm-4.7':'#fed7aa','minimax-m2.7':'#f472b6','minimax-m2.5':'#f9a8d4','mimo-v2.5-pro':'#818cf8','kimi-k2.6':'#fbbf24','kimi-k2-thinking':'#fcd34d','gpt-5.5':'#10b981'};
-    function getInitials(n){return n.split(/[-.]/).map(w=>w[0]).join('').toUpperCase().slice(0,2);}
-    function getColor(n){return MODEL_COLORS[n]||'#6366f1';}
+    // ── State ─────────────────────────────────────────────────────
+    let DATA_BASIC = [], DATA_PRO = [], currentTab = 'basic', currentWL = 'semi',
+        currentScore = 'complete', currentSort = 'pipeline', searchQuery = '';
 
-    function scoreColor(v) {
+    const MODEL_COLORS = {
+        'deepseek-v4-pro':'#4ade80','deepseek-v4-flash':'#22d3ee','deepseek-chat':'#86efac','deepseek-reasoner':'#6ee7b7',
+        'qwen3.6-max-preview':'#a78bfa','qwen3.6-flash':'#c4b5fd','qwen3.6-plus':'#ddd6fe','qwen3-coder-flash':'#e9d5ff',
+        'qwen3-coder-plus':'#f5d0fe','qwen3-max':'#f0abfc','qwen3.5-plus':'#d8b4fe',
+        'glm-5.1':'#fb923c','glm-5':'#fdba74','glm-4.7':'#fed7aa','glm-4.6':'#ffedd5',
+        'minimax-m2.5':'#f472b6','mimo-v2.5-pro':'#818cf8',
+        'kimi-k2.6':'#fbbf24','kimi-k2.5':'#fcd34d','kimi-k2-thinking':'#fde68a',
+        'gpt-5.5':'#10b981','gemini-3.1-flash-lite-preview':'#34d399','gemini-3.1-pro-preview':'#6ee7b7',
+    };
+    function getColor(n){ return MODEL_COLORS[n] || '#6366f1'; }
+    function scoreColor(v){
         const t = Math.max(0, Math.min(100, v)) / 100;
-        const h = t * 120;
-        const s = 65 - t * 15;
-        const l = 50 - t * 8;
-        return `hsl(${h}, ${s}%, ${l}%)`;
+        return `hsl(${t*120}, 65%, ${50-t*8}%)`;
     }
 
-    /* LobeHub SVG icon mapping */
-    const MODEL_ICONS = {
-        'deepseek-v4-pro': 'deepseek', 'deepseek-v4-flash': 'deepseek', 'deepseek-chat': 'deepseek',
-        'deepseek-reasoner': 'deepseek',
-        'qwen3.6-max-preview': 'qwen', 'qwen3.6-flash': 'qwen', 'qwen3.6-plus': 'qwen',
-        'qwen3-coder-flash': 'qwen', 'qwen-omni-turbo': 'qwen', 'qwen3.5-plus-2026-02-15': 'qwen',
-        'glm-5': 'zhipu', 'glm-5.1': 'zhipu', 'glm-4.7': 'zhipu',
-        'minimax-m2.7': 'minimax', 'minimax-m2.5': 'minimax',
-        'mimo-v2.5-pro': null,
-        'kimi-k2.6': 'moonshot', 'kimi-k2-thinking': 'moonshot',
-        'gpt-5.5': 'openai',
-    };
-    const BACKEND_ICONS = {
-        'openhands': 'lobehub', 'codex': 'openai', 'claude': 'anthropic',
-        'kimi': 'moonshot', 'gemini': 'google',
-    };
-    function getModelIconSrc(model) {
-        const key = Object.keys(MODEL_ICONS).find(k => model.includes(k) || model.startsWith(k));
-        const iconId = key ? MODEL_ICONS[key] : null;
-        return iconId ? `assets/icons/${iconId}.svg` : null;
-    }
-    function getBackendIconSrc(backend) {
-        const iconId = BACKEND_ICONS[backend] || null;
-        return iconId ? `assets/icons/${iconId}.svg` : null;
+    // E2E-PRS strict scoring
+    const BASELINE = [100.0, 17.64, 20.55, 1.37, 35.1, 0.0];
+    function e2e_prs(row){
+        const tasks = ['task0','task1','task2','task3','task4','task5'];
+        let ok = true, scores = [];
+        for(let i=0; i<tasks.length; i++){
+            const v = row[tasks[i]] || 0;
+            if(i<4 && v<99.9) ok = false;
+            scores.push(ok ? v : 0);
+        }
+        // T4 must pass functional tests
+        if(ok && (scores[4]||0) < 60) scores[4] = 0;
+        return scores.reduce((a,b)=>a+b,0)/6;
     }
 
-    function renderTable(data) {
+    function getPL(row){
+        if(currentScore === 'strict') return e2e_prs(row);
+        return row.pipeline_score || 0;
+    }
+
+    // ── Render ───────────────────────────────────────────────────
+    function renderTable(data){
         const tbody = document.getElementById('leaderboard-body');
-        if(!data.length){tbody.innerHTML='<tr><td colspan="13"><div class="no-results"><i class="fas fa-search"></i>No models match</div></td></tr>';return;}
+        if(!data.length){
+            tbody.innerHTML = '<tr><td colspan="14"><div class="no-results"><i class="fas fa-search"></i>No models match your filters</div></td></tr>';
+            return;
+        }
         tbody.innerHTML = data.map((e,i) => {
-            const r=i+1, rc=r<=3?`rank-${r}`:'rank-other', c=getColor(e.model);
-            const mi = getModelIconSrc(e.model);
-            const bi = getBackendIconSrc(e.backend);
-            const tasks=['task0','task1','task2','task3','task4','task5'].map(k=>{
-                const v=e[k];if(v===null||v===undefined)return'<td><span style="color:var(--text-muted)">—</span></td>';
-                return`<td><span class="score-val" style="color:${scoreColor(v)}">${v.toFixed(1)}%</span></td>`;
+            const pl = getPL(e), c = getColor(e.model);
+            const tasks = ['task0','task1','task2','task3','task4','task5'].map(k => {
+                const v = e[k] === undefined || e[k] === null ? null : Number(e[k]);
+                if(v === null) return '<td><span style="color:var(--text-muted)">—</span></td>';
+                return `<td><span class="score-val" style="color:${scoreColor(v)}">${v.toFixed(1)}</span></td>`;
             }).join('');
-            return`<tr>
-                <td><span class="rank-badge ${rc}">${r}</span></td>
-                <td><div class="model-name">${mi ? `<img src="${mi}" alt="" style="width:24px;height:24px;border-radius:6px;flex-shrink:0" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">` : ''}<div class="model-icon" style="color:${c};border:1px solid ${c}33;${mi?'display:none':''}">${getInitials(e.model)}</div><strong>${e.model}</strong></div></td>
-                <td><span style="display:flex;align-items:center;gap:4px;color:var(--accent-tertiary);font-family:var(--font-mono);font-size:0.8rem">${bi ? `<img src="${bi}" alt="" style="width:16px;height:16px;border-radius:3px;flex-shrink:0" onerror="this.style.display='none'">` : ''}${e.backend}</span></td>
+            const wl = e.workload || '';
+            const wlTag = wl === 'Guided' ? '<span class="wl-tag wl-guided">G</span>'
+                        : wl === 'Semi-Guided' ? '<span class="wl-tag wl-semi">SG</span>'
+                        : wl === 'Autonomous' ? '<span class="wl-tag wl-auto">A</span>' : '';
+            const cost = e.run_llm_cost_usd || e.cost;
+            const costS = cost && cost > 0 ? `$${cost.toFixed(2)}` : '—';
+            const t = e.elapsed_seconds || e.elapsed || 0;
+            const timeS = t > 0 ? `${(t/60).toFixed(0)}m` : '—';
+            return `<tr>
+                <td><span class="rank-badge rank-other">${i+1}</span></td>
+                <td><div class="model-name"><div class="model-icon" style="color:${c};border:1px solid ${c}33">${(e.model||'').replace(/-/g,' ').split(' ').slice(0,2).map(w=>w[0].toUpperCase()).join('')}</div><strong>${e.model}</strong></div></td>
+                <td>${wlTag}</td>
                 ${tasks}
-                <td><span class="metric-highlight" style="color:${scoreColor(e.mean_reward||0)}">${(e.mean_reward||0).toFixed(2)}</span></td>
-                <td><strong style="color:${scoreColor(e.pass_score||0)}">${(e.pass_score||0).toFixed(1)}%</strong><div class="score-bar"><div class="score-fill" style="width:${e.pass_score||0}%"></div></div></td>
-                <td><strong style="color:${scoreColor(e.pipeline_score||0)}">${(e.pipeline_score||0).toFixed(1)}%</strong><div class="score-bar"><div class="score-fill" style="width:${e.pipeline_score||0}%"></div></div></td>
-                <td style="text-align:center">${e.resurrections||0}</td>
+                <td><strong style="color:${scoreColor(pl)}">${pl.toFixed(1)}</strong></td>
+                <td style="font-size:0.82rem">${(e.mean_reward||0).toFixed(1)}</td>
+                <td style="font-family:var(--font-mono);font-size:0.8rem">${costS}</td>
+                <td style="font-size:0.8rem">${timeS}</td>
             </tr>`;
         }).join('');
     }
 
-    function applyFilters() {
-        let f=[...DATA];
-        if(currentBackend!=='all')f=f.filter(d=>d.backend===currentBackend);
-        if(searchQuery){const q=searchQuery.toLowerCase();f=f.filter(d=>d.model.toLowerCase().includes(q)||d.backend.toLowerCase().includes(q));}
-        const sk=currentSort==='pipeline'?'pipeline_score':currentSort==='resurrections'?'resurrections':currentSort;
-        f.sort((a,b)=>{const va=a[sk]??-1,vb=b[sk]??-1;return sk==='resurrections'?va-vb:vb-va;});
-        renderTable(f);
+    function applyFilters(){
+        let data = currentTab === 'basic' ? [...DATA_BASIC] : [...DATA_PRO];
+        if(currentTab === 'basic' && currentWL !== 'all'){
+            data = data.filter(d => d.workload === (currentWL === 'semi' ? 'Semi-Guided' : 'Guided'));
+        }
+        if(searchQuery){
+            const q = searchQuery.toLowerCase();
+            data = data.filter(d => (d.model||'').toLowerCase().includes(q) || (d.workload||'').toLowerCase().includes(q));
+        }
+        // Sort
+        data.sort((a,b) => {
+            let va, vb;
+            switch(currentSort){
+                case 'mean_reward': va = a.mean_reward || 0; vb = b.mean_reward || 0; break;
+                case 'cost': va = a.run_llm_cost_usd || a.cost || 0; vb = b.run_llm_cost_usd || b.cost || 0; break;
+                case 'elapsed': va = a.elapsed_seconds || a.elapsed || 0; vb = b.elapsed_seconds || b.elapsed || 0; return va - vb;
+                default: va = getPL(a); vb = getPL(b); break;
+            }
+            return vb - va;
+        });
+        renderTable(data);
+        updateSummary(data);
     }
 
-    fetch('assets/data/leaderboard.json').then(r=>r.json()).then(data=>{
-        DATA=data;let latest='';
-        const total=data.length,best=Math.max(...data.map(d=>d.pipeline_score||0)),bestMR=Math.max(...data.map(d=>d.mean_reward||0)),avgRes=(data.reduce((s,d)=>s+(d.resurrections||0),0)/total).toFixed(1);
-        document.getElementById('summary-cards').innerHTML=`
-            <div class="feature-card" style="text-align:center"><div class="stat-value">${total}</div><div class="stat-label">Models</div></div>
-            <div class="feature-card" style="text-align:center"><div class="stat-value">${bestMR.toFixed(2)}</div><div class="stat-label">Best Mean Reward</div></div>
-            <div class="feature-card" style="text-align:center"><div class="stat-value">${best.toFixed(1)}%</div><div class="stat-label">Best Pipeline</div></div>
-            <div class="feature-card" style="text-align:center"><div class="stat-value">${avgRes}</div><div class="stat-label">Avg Resurrections</div></div>
+    function updateSummary(data){
+        const pls = data.map(d => getPL(d)).filter(v => v>0);
+        const costs = data.map(d => d.run_llm_cost_usd || d.cost || 0).filter(v => v>0);
+        document.getElementById('summary-cards').innerHTML = `
+            <div class="feature-card" style="text-align:center"><div class="stat-value" style="font-size:1.5rem">${data.length}</div><div class="stat-label">Configurations</div></div>
+            <div class="feature-card" style="text-align:center"><div class="stat-value" style="font-size:1.5rem">${pls.length ? Math.max(...pls).toFixed(1) : '—'}</div><div class="stat-label">Best PL</div></div>
+            <div class="feature-card" style="text-align:center"><div class="stat-value" style="font-size:1.5rem">${pls.length ? (pls.reduce((a,b)=>a+b,0)/pls.length).toFixed(1) : '—'}</div><div class="stat-label">Avg PL</div></div>
+            <div class="feature-card" style="text-align:center"><div class="stat-value" style="font-size:1.5rem">${costs.length ? 'Up to $' + Math.max(...costs).toFixed(0) : '—'}</div><div class="stat-label">Max Cost</div></div>
         `;
-        const backends=[...new Set(data.map(d=>d.backend))],chipsEl=document.getElementById('backend-chips');
-        backends.forEach(b=>{const ch=document.createElement('button');ch.className='chip';ch.dataset.backend=b;ch.textContent=b;chipsEl.appendChild(ch);});
-        document.getElementById('search-input').addEventListener('input',e=>{searchQuery=e.target.value;applyFilters();});
-        document.querySelectorAll('.chip[data-backend]').forEach(ch=>ch.addEventListener('click',()=>{document.querySelectorAll('.chip[data-backend]').forEach(c=>c.classList.remove('active'));ch.classList.add('active');currentBackend=ch.dataset.backend;applyFilters();}));
-        document.querySelectorAll('.sort-btn[data-sort]').forEach(b=>b.addEventListener('click',()=>{document.querySelectorAll('.sort-btn').forEach(x=>x.classList.remove('active'));b.classList.add('active');currentSort=b.dataset.sort;applyFilters();}));
-        data.forEach(d=>{if(d.date>latest)latest=d.date;});
-        document.getElementById('last-updated').textContent=latest||'N/A';
+    }
+
+    // ── Init ─────────────────────────────────────────────────────
+    fetch('assets/data/leaderboard-basic.json').then(r=>r.json()).then(d=>{ DATA_BASIC = d; }).catch(()=>{});
+    fetch('assets/data/leaderboard-pro.json').then(r=>r.json()).then(d=>{ DATA_PRO = d; }).catch(()=>{});
+
+    Promise.all([
+        fetch('assets/data/leaderboard-basic.json').then(r=>r.json()),
+        fetch('assets/data/leaderboard-pro.json').then(r=>r.json())
+    ]).then(([basic, pro]) => {
+        DATA_BASIC = basic; DATA_PRO = pro;
         applyFilters();
-    }).catch(()=>{document.getElementById('leaderboard-body').innerHTML='<tr><td colspan="13"><div class="no-results"><i class="fas fa-exclamation-triangle"></i>No data</div></td></tr>';});
+    }).catch(() => {
+        document.getElementById('leaderboard-body').innerHTML = '<tr><td colspan="14"><div class="no-results"><i class="fas fa-exclamation-triangle"></i>Failed to load data</div></td></tr>';
+    });
+
+    // ── Event handlers ───────────────────────────────────────────
+    document.querySelectorAll('.lb-tab').forEach(btn => btn.addEventListener('click', () => {
+        document.querySelectorAll('.lb-tab').forEach(b=>b.classList.remove('active'));
+        btn.classList.add('active');
+        currentTab = btn.dataset.tab;
+        document.getElementById('workload-row').style.display = currentTab === 'basic' ? '' : 'none';
+        applyFilters();
+    }));
+    document.querySelectorAll('.wl-chip').forEach(btn => btn.addEventListener('click', () => {
+        document.querySelectorAll('.wl-chip').forEach(b=>b.classList.remove('active'));
+        btn.classList.add('active');
+        currentWL = btn.dataset.wl;
+        applyFilters();
+    }));
+    document.querySelectorAll('.score-btn').forEach(btn => btn.addEventListener('click', () => {
+        document.querySelectorAll('.score-btn').forEach(b=>b.classList.remove('active'));
+        btn.classList.add('active');
+        currentScore = btn.dataset.score;
+        applyFilters();
+    }));
+    document.querySelectorAll('.sort-btn').forEach(btn => btn.addEventListener('click', () => {
+        document.querySelectorAll('.sort-btn').forEach(b=>b.classList.remove('active'));
+        btn.classList.add('active');
+        currentSort = btn.dataset.sort;
+        applyFilters();
+    }));
+    document.getElementById('search-input').addEventListener('input', e => {
+        searchQuery = e.target.value;
+        applyFilters();
+    });
     </script>
 </body>
 </html>

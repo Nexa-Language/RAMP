@@ -7,6 +7,49 @@
     <link rel="stylesheet" href="assets/css/style.css">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <style>
+        /* Hero: two-column */
+        .hero-row { display: flex; align-items: flex-start; gap: 48px; max-width: 1200px; margin: 0 auto; padding: 40px 24px 60px; }
+        .hero-left { flex: 0 0 52%; }
+        .hero-right { flex: 1; position: relative; }
+        .hero-right::before {
+            content: ''; position: absolute; left: -24px; top: 20px; bottom: 20px;
+            width: 1px; background: linear-gradient(180deg, transparent, var(--border-accent, #6366f140), var(--accent-primary, #6366f1), var(--border-accent, #6366f140), transparent);
+        }
+        .hero-badge { margin-bottom: 8px; }
+        .hero-title { margin-bottom: 8px; }
+        .hero-subtitle { max-width: 90%; }
+        .hero-stats { display: grid; grid-template-columns: repeat(4, 1fr); gap: 20px; margin: 28px 0; }
+        .hero-actions { margin-bottom: 0; }
+
+        /* Mini leaderboard */
+        .mini-lb { background: var(--bg-card, #111118); border: 1px solid var(--border-subtle, #1e1e2e); border-radius: 12px; padding: 20px 24px; position: relative; }
+        .mini-lb h3 { font-size: 0.95rem; margin-bottom: 4px; color: var(--text-primary); }
+        .mini-lb .subtitle { font-size: 0.78rem; color: var(--text-muted); margin-bottom: 14px; }
+        .mini-lb table { width: 100%; font-size: 0.78rem; border-collapse: collapse; }
+        .mini-lb th { text-align: left; padding: 6px 8px; color: var(--text-muted); font-weight: 600; font-size: 0.7rem; text-transform: uppercase; letter-spacing: 0.5px; border-bottom: 1px solid var(--border-subtle); }
+        .mini-lb td { padding: 5px 8px; border-bottom: 1px solid rgba(255,255,255,0.03); }
+        .mini-lb .rank { width: 26px; text-align: center; font-weight: 700; font-family: 'JetBrains Mono', monospace; font-size: 0.75rem; }
+        .mini-lb .model-name { font-weight: 600; color: var(--text-primary); font-size: 0.78rem; }
+        .mini-lb .pl { font-family: 'JetBrains Mono', monospace; font-weight: 700; color: var(--accent-primary); font-size: 0.8rem; text-align: right; }
+        .mini-lb .mr { color: var(--text-secondary); font-size: 0.72rem; text-align: right; }
+
+        /* Callout annotations */
+        .callout { margin-top: 16px; padding: 10px 14px; border-radius: 8px; font-size: 0.75rem; line-height: 1.5; position: relative; }
+        .callout-red { background: rgba(210,55,55,0.08); border-left: 3px solid #d23737; color: #f0a0a0; }
+        .callout-amber { background: rgba(225,145,35,0.08); border-left: 3px solid #e19123; color: #f0c080; }
+        .callout-green { background: rgba(35,135,85,0.08); border-left: 3px solid #238755; color: #80d0a0; }
+        .callout .arrow { font-size: 1.2rem; margin-right: 4px; }
+
+        /* Features */
+        .features { position: relative; z-index: 1; padding: 60px 24px 80px; }
+
+        @media (max-width: 860px) {
+            .hero-row { flex-direction: column; }
+            .hero-right::before { display: none; }
+            .hero-left { flex: auto; }
+        }
+    </style>
 </head>
 <body>
     <canvas id="particles"></canvas>
@@ -29,120 +72,110 @@
         </div>
     </nav>
 
-    <!-- Hero Section -->
-    <section class="hero">
-        <div class="hero-content">
-            <div class="hero-badge">🚀 The First Serial Agent Benchmark</div>
-            <h1 class="hero-title">
-                <span class="gradient-text">RAMP</span>
-            </h1>
-            <p class="hero-subtitle">
-                Can AI agents <em>evolve</em>? Test them on a real compiler construction pipeline —
-                from lexer to code generation — with automatic resurrection when they fail.
-            </p>
-            <div class="hero-actions">
-                <a href="https://github.com/Nexa-Language/RAMP" class="btn btn-primary" target="_blank">
-                    <i class="fab fa-github"></i> Get Started
-                </a>
-                <a href="leaderboard.html" class="btn btn-secondary">
-                    <i class="fas fa-chart-bar"></i> Leaderboard
-                </a>
-            </div>
-            <div class="hero-stats">
-                <div class="stat">
-                    <span class="stat-value">6</span>
-                    <span class="stat-label">Serial Tasks</span>
+    <!-- Hero: Left-Content + Right-MiniLB -->
+    <section class="hero" style="min-height: auto; padding-top: 100px; padding-bottom: 10px;">
+        <div class="hero-row">
+            <!-- LEFT -->
+            <div class="hero-left">
+                <div class="hero-badge">🏭 Production-Grounded Agent Evaluation Framework</div>
+                <h1 class="hero-title"><span class="gradient-text">RAMP</span></h1>
+                <p class="hero-subtitle">
+                    <strong>Benchmarks are Not Enough.</strong><br>
+                    RAMP measures AI agents in a real compiler construction pipeline — from lexer to code generation — under <em>persistent production conditions</em> with automatic failure diagnosis via resurrection.
+                </p>
+                <div class="hero-stats">
+                    <div class="stat">
+                        <span class="stat-value">22+</span>
+                        <span class="stat-label">Models Evaluated</span>
+                    </div>
+                    <div class="stat">
+                        <span class="stat-value">6</span>
+                        <span class="stat-label">Serial Tasks</span>
+                    </div>
+                    <div class="stat">
+                        <span class="stat-value">0</span>
+                        <span class="stat-label">Zero-Shot Passes</span>
+                    </div>
+                    <div class="stat">
+                        <span class="stat-value">87.0</span>
+                        <span class="stat-label">Best Score (PL)</span>
+                    </div>
                 </div>
-                <div class="stat">
-                    <span class="stat-value">19</span>
-                    <span class="stat-label">Models Tested</span>
-                </div>
-                <div class="stat">
-                    <span class="stat-value">73</span>
-                    <span class="stat-label">Test Cases</span>
-                </div>
-                <div class="stat">
-                    <span class="stat-value">∞</span>
-                    <span class="stat-label">Self-Loop</span>
-                </div>
-            </div>
-        </div>
-        <div class="hero-visual">
-            <div class="pipeline-diagram">
-                <div class="pipe-node" data-task="0">
-                    <div class="pipe-icon">🔧</div>
-                    <div class="pipe-label">Setup</div>
-                </div>
-                <div class="pipe-arrow">→</div>
-                <div class="pipe-node" data-task="1">
-                    <div class="pipe-icon">📝</div>
-                    <div class="pipe-label">Lexer</div>
-                </div>
-                <div class="pipe-arrow">→</div>
-                <div class="pipe-node" data-task="2">
-                    <div class="pipe-icon">🌳</div>
-                    <div class="pipe-label">Parser</div>
-                </div>
-                <div class="pipe-arrow">→</div>
-                <div class="pipe-node" data-task="3">
-                    <div class="pipe-icon">⚙️</div>
-                    <div class="pipe-label">IR Gen</div>
-                </div>
-                <div class="pipe-arrow">→</div>
-                <div class="pipe-node" data-task="4">
-                    <div class="pipe-icon">🔥</div>
-                    <div class="pipe-label">IR Opt</div>
-                </div>
-                <div class="pipe-arrow">→</div>
-                <div class="pipe-node" data-task="5">
-                    <div class="pipe-icon">🏗️</div>
-                    <div class="pipe-label">Asm Gen</div>
+                <div class="hero-actions">
+                    <a href="https://github.com/Nexa-Language/RAMP" class="btn btn-primary" target="_blank">
+                        <i class="fab fa-github"></i> Get Started
+                    </a>
+                    <a href="leaderboard.html" class="btn btn-secondary">
+                        <i class="fas fa-chart-bar"></i> Full Leaderboard
+                    </a>
                 </div>
             </div>
-            <div class="resurrection-indicator">
-                <span class="res-icon">🔄</span>
-                <span>Auto-Resurrection on Failure</span>
+
+            <!-- RIGHT: Mini Leaderboard -->
+            <div class="hero-right">
+                <div class="mini-lb">
+                    <h3>🏆 RAMP-Basic Top 5</h3>
+                    <p class="subtitle">Semi-Guided Progressive · GCPS scoring</p>
+                    <table>
+                        <thead><tr><th class="rank">#</th><th>Model</th><th class="pl">PL</th><th class="mr">MR</th></tr></thead>
+                        <tbody id="mini-lb-body">
+                            <tr><td colspan="4" style="text-align:center;color:var(--text-muted)">Loading...</td></tr>
+                        </tbody>
+                    </table>
+                    <div class="callout callout-red">
+                        <span class="arrow">⤷</span> <strong>No model achieves zero-shot pipeline pass</strong> — even frontier models fail to complete all 6 stages without resurrection.
+                    </div>
+                    <div class="callout callout-amber">
+                        <span class="arrow">⤷</span> <strong>Strongest model scores only 87.0</strong> under relaxed scoring; under production-readiness scoring (E2E-PRS), nearly all models collapse.
+                    </div>
+                    <div class="callout callout-green">
+                        <span class="arrow">⤷</span> <strong>Cost does not predict outcome</strong> (R² ≈ 0). The most expensive model ($67) barely outperforms the cheapest ($0.07).
+                    </div>
+                    <p style="margin-top:14px; font-size:0.75rem; color:var(--text-muted); text-align:right;">
+                        <a href="leaderboard.html" style="color:var(--accent-primary);">View all 22+ models →</a>
+                    </p>
+                </div>
             </div>
         </div>
     </section>
 
-    <!-- Features Section -->
+    <!-- Features -->
     <section class="features">
         <div class="container">
             <h2 class="section-title">Why RAMP?</h2>
             <p class="section-subtitle">
-                Existing benchmarks test isolated tasks. RAMP tests <strong>evolution</strong>.
+                Current benchmarks test isolated tasks in sterile environments. RAMP evaluates models under <strong>realistic production conditions</strong>.
             </p>
             <div class="features-grid">
                 <div class="feature-card">
                     <div class="feature-icon">🔗</div>
-                    <h3>Strong Serial Pipeline</h3>
-                    <p>Tasks are causally dependent. Task 2 needs Task 1's output. This tests real knowledge accumulation.</p>
+                    <h3>Serial Dependency Chain</h3>
+                    <p>Six compiler construction tasks form a strict causal pipeline. Task 2 needs Task 1's output — just like real engineering.</p>
                 </div>
                 <div class="feature-card">
                     <div class="feature-icon">🔄</div>
-                    <h3>Auto-Resurrection</h3>
-                    <p>When an agent fails at Task N, golden answers are injected so we can still evaluate Task N+1.</p>
+                    <h3>Resurrection-Based Diagnosis</h3>
+                    <p>When an agent fails, we inject the correct intermediate artifact and continue — decomposing cascading failure into diagnostic components.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">📊</div>
+                    <h3>Two Scoring Paradigms</h3>
+                    <p><strong>GCPS</strong> measures incremental capability. <strong>E2E-PRS</strong> measures production readiness. Same traces, complementary insights.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">💰</div>
+                    <h3>Cost-Aware Evaluation</h3>
+                    <p>Track token usage, wall-clock time, and API cost per task — not just outcome scores. Process metrics as first-class signals.</p>
                 </div>
                 <div class="feature-card">
                     <div class="feature-icon">🤖</div>
                     <h3>Multi-Backend</h3>
-                    <p>Supports OpenHands SDK, Claude Code, Codex CLI, Kimi CLI, Gemini CLI, and raw OpenAI API.</p>
+                    <p>OpenHands SDK · Claude Code · Codex CLI · Kimi CLI — unified API through AIhub gateway for fair comparisons.</p>
                 </div>
                 <div class="feature-card">
-                    <div class="feature-icon">♾️</div>
-                    <h3>Infinite Self-Loop</h3>
-                    <p>Agents iterate autonomously until task completion. No artificial turn limits. Real autonomous coding.</p>
-                </div>
-                <div class="feature-card">
-                    <div class="feature-icon">📊</div>
-                    <h3>Multi-Dimensional Metrics</h3>
-                    <p>Mean Reward with resurrection bonus, Pass Score, pipeline score, and node pass rates.</p>
-                </div>
-                <div class="feature-card">
-                    <div class="feature-icon">🎓</div>
-                    <h3>Real-World Difficulty</h3>
-                    <p>Based on a full-semester compiler course. Students take months. Can AI do it in hours?</p>
+                    <div class="feature-icon">🏭</div>
+                    <h3>Production-Grounded</h3>
+                    <p>Built on YatCC, a full-semester compiler course platform used by hundreds of students. Real workload, real evaluation.</p>
                 </div>
             </div>
         </div>
@@ -157,7 +190,7 @@
                     <div class="step-number">01</div>
                     <div class="step-content">
                         <h3>Choose Your Agent</h3>
-                        <p>Select from OpenHands SDK, Claude Code, Codex, Gemini CLI, or any OpenAI-compatible API.</p>
+                        <p>Select from OpenHands SDK, Claude Code, Codex, Kimi CLI, or any OpenAI-compatible API via AIhub.</p>
                     </div>
                 </div>
                 <div class="step">
@@ -170,25 +203,25 @@
                 <div class="step">
                     <div class="step-number">03</div>
                     <div class="step-content">
-                        <h3>Watch Evolution</h3>
-                        <p>Agent reads docs, writes code, compiles, tests, debugs — autonomously iterating.</p>
+                        <h3>Observe & Diagnose</h3>
+                        <p>Agent reads docs, writes code, compiles, tests — under persistent context. Resurrection kicks in on failure.</p>
                     </div>
                 </div>
                 <div class="step">
                     <div class="step-number">04</div>
                     <div class="step-content">
-                        <h3>Get Results</h3>
-                        <p>Detailed JSON/CSV/Markdown reports with multi-dimensional metrics.</p>
+                        <h3>Get Multi-Dimensional Results</h3>
+                        <p>Detailed reports with outcome scores <em>and</em> process metrics: cost, tokens, rounds, elapsed time.</p>
                     </div>
                 </div>
             </div>
         </div>
     </section>
 
-    <!-- CTA Section -->
+    <!-- CTA -->
     <section class="cta">
         <div class="container">
-            <h2>Ready to Test Your Agent?</h2>
+            <h2>Ready to Assess Your Agent in Production?</h2>
             <div class="cta-code">
                 <pre><code>pip install ramp
 ramp run --backend openhands --model your-model --tasks 0-5</code></pre>
@@ -206,7 +239,7 @@ ramp run --backend openhands --model your-model --tasks 0-5</code></pre>
                 <div class="footer-brand">
                     <span class="logo-icon">⚡</span>
                     <span class="logo-text">RAMP</span>
-                    <p>Serial Agent Benchmark with Resurrection</p>
+                    <p>Production-Grounded Agent Evaluation Framework</p>
                 </div>
                 <div class="footer-links">
                     <a href="https://github.com/Nexa-Language/RAMP">GitHub</a>
@@ -216,11 +249,31 @@ ramp run --backend openhands --model your-model --tasks 0-5</code></pre>
                 </div>
             </div>
             <div class="footer-bottom">
-                <p>&copy; 2026 RAMP. Built with ❤️ for the AI Agent community.</p>
+                <p>&copy; 2026 RAMP. Production-grounded evaluation for the AI agent community.</p>
             </div>
         </div>
     </footer>
 
     <script src="assets/js/main.js"></script>
+    <script>
+    // Load top 5 from Semi-Guided (leaderboard-hard.json) for mini leaderboard
+    fetch('assets/data/leaderboard-hard.json')
+        .then(r => r.json())
+        .then(data => {
+            data.sort((a, b) => b.pipeline_score - a.pipeline_score);
+            const top5 = data.slice(0, 5);
+            document.getElementById('mini-lb-body').innerHTML = top5.map((e, i) => `
+                <tr>
+                    <td class="rank">${i+1}</td>
+                    <td class="model-name">${e.model}</td>
+                    <td class="pl">${(e.pipeline_score||0).toFixed(1)}</td>
+                    <td class="mr">${(e.mean_reward||0).toFixed(1)}</td>
+                </tr>
+            `).join('');
+        })
+        .catch(() => {
+            document.getElementById('mini-lb-body').innerHTML = '<tr><td colspan="4" style="text-align:center;color:var(--text-muted)">Data unavailable</td></tr>';
+        });
+    </script>
 </body>
 </html>

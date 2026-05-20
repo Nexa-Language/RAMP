@@ -20,9 +20,9 @@
     "task2": 100.0,
     "task3": 100.0,
     "task4": 48.25,
-    "task5": 0.0,
+    "task5": 100.0,
     "mean_reward": 74.47,
-    "pipeline_score": 74.71,
+    "pipeline_score": 91.38,
     "resurrections": 4,
     "elapsed": 5440.69,
     "rank": 2
