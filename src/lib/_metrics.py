@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 TASK_WEIGHTS = [1.0, 2.0, 2.0, 3.0, 3.0, 4.0]
+# TASK_WEIGHTS = [1.0, 4.0, 4.0, 3.0, 6.0, 2.0]
 NO_RESURRECTION_BONUS = 1.2
 RESURRECTION_BONUS = 1.0
 NO_RESURRECTION_PASS_BONUS = 1.5

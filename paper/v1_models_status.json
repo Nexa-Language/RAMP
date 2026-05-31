@@ -1,0 +1,136 @@
+[
+  "deepseek-chat",有cache hit      engineer 上下文过长
+  "deepseek-reasoner",有cache hit  engineer 上下文过长
+  "deepseek-v4-pro",有cache hit    engineer
+  "deepseek-v4-flash",有cache hit  engineer
+  "glm-4.7",有cache hit            engineer 上下文过长 
+  "glm-5.1",有cache hit            engineer 上下文过长
+  "glm-4.6", 有 hit                engineer 上下文过长
+  "kimi-k2.6",有cache hit          engineer 上下文过长
+  "kimi-k2.5",有cache hit          engineer
+  "gpt-5.5", 没cache hit           engineer 部分信息缺失
+  "qwen3.6-max-preview",有 hit     engineer 上下文过长 
+  "qwen3.5-plus", 有cache hit      engineer
+  "qwen3-coder-flash",有cache hit  engineer
+  "minimax-m2.5",有cache hit       engineer 上下文过长
+  
+  "glm-5",有cache hit              engineer
+  "qwen3.6-plus",有cache hit       engineer  有问题，要剪切，要再次算分
+  "qwen3.6-flash",有cache hit      engineer 工具调用参数格式不合法
+  "kimi-k2-thinking", 有 hit       engineer 工具调用消息序列不合法 有问题
+  "claude-opus-4-7", 没cache hit   跑了test，有点奇怪，全fail
+
+
+  "qwen3-coder-plus", 有 hit 
+  "qwen3-max", 有 hit   
+  "kimi-k2-thinking", 有 hit 先不跑
+  "gemini-3.1-flash-lite-preview",+oh 有 hit
+  "gemini-3.1-pro-preview"+oh 有 hit
+  "gpt-5.5",+oh 有 hit 
+
+]qwen3.6-plus,qwen3.6-flash,qwen3.6-max-preview,qwen3.5-plus-2026-02-15,qwen-omni-turbo,minimax-m2.7,kimi-k2-thinking
+
+去看看 new prompt 的 glm-5 上下文可视化
+
+[本轮结束 · 最终状态]
+engineer-openhand-500-glm-5.1-tasks-0-5: calls 233/500 fail 3 used=8392s rem=9608s scores
+[100.0,0.0,97.66,0.0,36.62,0.0]
+engineer-openhand-500-deepseek-v4-pro-tasks-0-5: calls 303/500 fail 0 used=8392s rem=9608s scores
+[100.0,100.0,100.0,83.56,38.63,100.0]
+engineer-openhand-500-deepseek-reasoner-tasks-0-5: calls 104/500 fail 4 used=8392s rem=9608s scores
+[100.0,0.0,0.0,0.0,0.0,0.0]
+engineer-openhand-500-mimo-v2.5-pro-tasks-0-5: calls 1/500 fail 6 used=8391s rem=9609s scores
+[100.0,17.64,20.55,1.37,35.77,0.0]
+engineer-openhand-500-deepseek-v4-flash-tasks-0-5: calls 325/500 fail 0 used=8391s rem=9609s scores
+[100.0,100.0,31.62,36.99,38.96,100.0]
+engineer-openhand-500-kimi-k2.5-tasks-0-5: calls 287/500 fail 0 used=8390s rem=9610s scores
+[100.0,100.0,22.18,24.66,39.7,9.38]
+engineer-openhand-500-kimi-k2.6-tasks-0-5: calls 332/500 fail 4 used=8070s rem=9930s scores
+[100.0,95.92,31.35,1.37,37.47,0.0]
+engineer-openhand-500-deepseek-chat-tasks-0-5: calls 215/500 fail 3 used=4673s rem=13327s scores
+[100.0,72.93,30.89,0.0,35.7,0.0]
+engineer-openhand-500-qwen3-coder-flash-tasks-0-5: calls 69/500 fail 0 used=4583s rem=13417s scores
+[100.0,56.02,20.55,1.37,35.14,0.0]
+engineer-openhand-500-glm-4.7-tasks-0-5: calls 272/500 fail 5 used=3965s rem=14035s scores
+[100.0,94.82,0.0,1.37,36.17,0.0]
+engineer-openhand-500-minimax-m2.5-tasks-0-5: calls 456/500 fail 2 used=3946s rem=14054s scores
+[100.0,64.22,0.0,2.74,36.37,0.0]
+engineer-openhand-500-openhands-qwen3.5-plus-tasks-0-5: calls 195/500 fail 0 used=2113s rem=15887s scores [100.0,100.0,0.0,0.0,38.04,0.0]
+engineer-openhand-500-openhands-kimi-k2-thinking-tasks-0-5: calls 4/500 fail 6 used=2112s rem=15888s scores [100.0,17.64,20.55,1.37,38.22,0.0]
+engineer-openhand-500-openhands-qwen3.6-plus-tasks-0-5: calls 533/500 fail 0 used=8415s rem=9585s scores [0.0,0.0,0.0,0.0,0.0,0.0]
+engineer-openhand-500-openhands-qwen3.6-flash-tasks-0-5: calls 144/500 fail 4 used=1316s rem=16684s scores [100.0,100.0,20.55,1.37,36.83,0.0]
+run-20260518-015203-claude-claude-opus-4-7-tasks-0-2: calls 3/4 fail 3 used=137s rem=3463s scores [100.0,17.64,20.55,0.0,0.0,0.0]
+run-20260518-015223-codex-gpt-5.5-tasks-0-2: calls 3/4 fail 0 used=242s rem=3358s scores [100.0,17.64,20.55,0.0,0.0,0.0]
+engineer-codex-500-codex-gpt-5.5-tasks-0-5: calls 6/500 fail 0 used=589s rem=17411s scores [100.0,17.64,20.55,1.37,35.11,0.0]
+
+kimi test-cache 不太对劲：
+kimi的行为：
+为每个 task 新建会话，那上下文呢？
+并没有实现真正的整个实验共享上下文。
+每轮调用中拥有大量的 step 调用。
+[本轮结束 · 最终状态]
+run-20260518-104832-kimi-kimi-k2.5-tasks-0-2: calls 1/4 fail 0 used=3604s rem=0s scores [0.0,0.0,0.0,0.0,0.0,0.0]
+run-20260518-104832-kimi-kimi-k2.6-tasks-0-2: calls 1/4 fail 0 used=3603s rem=0s scores [100.0,100.0,0.0,0.0,0.0,0.0]
+run-20260518-104832-kimi-mimo-v2.5-pro-tasks-0-2: calls 1/4 fail 0 used=3603s rem=0s scores [100.0,17.64,20.55,0.0,0.0,0.0]
+run-20260518-104832-kimi-qwen3.6-flash-tasks-0-2: calls 3/4 fail 2 used=3602s rem=0s scores [100.0,17.64,20.55,0.0,0.0,0.0]
+run-20260518-104832-kimi-glm-5-tasks-0-2: calls 1/4 fail 0 used=3601s rem=0s scores [100.0,100.0,46.0,0.0,0.0,0.0]
+run-20260518-104832-kimi-deepseek-v4-pro-tasks-0-2: calls 0/4 fail 0 used=3601s rem=0s scores [0.0,0.0,0.0,0.0,0.0,0.0]
+run-20260518-104832-kimi-deepseek-chat-tasks-0-2: calls 1/4 fail 0 used=3600s rem=0s scores [100.0,100.0,0.0,0.0,0.0,0.0]
+run-20260518-104832-kimi-glm-4.7-tasks-0-2: calls 3/4 fail 2 used=3600s rem=0s scores [100.0,98.75,0.0,0.0,0.0,0.0]
+
+[test-cache] kimi-k2.5 run_id=run-20260518-104832-kimi-kimi-k2.5-tasks-0-2 cache_hit=False cache_read=0 cache_write=0
+[test-cache] kimi-k2.6 run_id=run-20260518-104832-kimi-kimi-k2.6-tasks-0-2 cache_hit=False cache_read=0 cache_write=0
+[test-cache] mimo-v2.5-pro run_id=run-20260518-104832-kimi-mimo-v2.5-pro-tasks-0-2 cache_hit=False cache_read=0 cache_write=0
+[test-cache] qwen3.6-flash run_id=run-20260518-104832-kimi-qwen3.6-flash-tasks-0-2 cache_hit=False cache_read=0 cache_write=0
+[test-cache] glm-5 run_id=run-20260518-104832-kimi-glm-5-tasks-0-2 cache_hit=False cache_read=0 cache_write=0
+[test-cache] deepseek-v4-pro run_id=run-20260518-104832-kimi-deepseek-v4-pro-tasks-0-2 cache_hit=False cache_read=0 cache_write=0
+[test-cache] deepseek-chat run_id=run-20260518-104832-kimi-deepseek-chat-tasks-0-2 cache_hit=False cache_read=0 cache
+
+
+
+
+轮数分析：
+好的模型单轮输出 token 更多
+好的模型能持续更多轮数
+
+规划长程任务：
+得分更高的模型，平均每轮能拿到的分数更多。
+表现糟糕的模型，会选择早早结束。例如，qwen3-coder-flash 只运行了 70 轮不到，在task2-5的轮数都不超过10轮。
+（qwen3-coder-flash 在 workload1 的 task2-4 中表现糟糕）
+agent 规划任务的能力、心理韧性
+
+模型性价比：
+观察模型性价比（mean-reward / total-cost）发现，模型表现与性价比无显著相关性。
+性价比取决于模型价格与agent的任务解决方式。优先于采摘低垂果子但避开真正有难度的任务的agent会有更好的性价比。
+而专注于真正重要且有难度任务但失败的agent会获得更低的性价比。
+但是由于 YatCC 任务量巨大，模型需要输出大量token才能完成任务，因此模型的 token 价格方差对模型性价比有决定性的影响。
+
+关于失败的原因和恢复机制的作用的分析之后才能给出。
+
+agent因素：backend、长程任务（上下文不提）
+真实业务场景因素：无框架
+现在只关心 progressive ：有框架+长程+（复活&无复活）
+
+结论：
+1. **“实际场景中，最好的模型只能完成到xx阶段；没有模型可以完成xx阶段，对应xx分。”剩下按宽松计分讨论。**
+  编译阶段：跑步图片（点状图）
+2. 分数分析：
+超过60%的在阶段性任务表现良好的模型，在长程工作中的得分下降超过60%。
+最好的模型（deepseek-v4-pro）也只能获得不到 80% 的通过率。
+以放松为主体，以严苛为宣传。
+严苛：t0-5 必须正确 （0分或100分）
+放松：t0-3 部分不正确，但是有复活，有多少分是多少分（目前最高85分）t4 也能反映 pass 功能测试性，也能严苛。
+3. 性价比：图片（比例图）
+
+4. 失败归因/分类，尽量量化：“为什么大部分模型止步于t3”（统计图）
+5. 具体两个事例分析，识别 agent 工作行为、心理韧性、（各 task 时间开销收集）
+6. Imc 对比：上下文影响：agent
+
+
+7. YatCC 系统环境：内存峰值占用、tool 调用比例
+8. 代码质量、可读性
+9. backend：
+
+
+
+
