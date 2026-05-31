@@ -1,0 +1,76 @@
+{
+  "benchmark": "EvoBench-v2",
+  "agent_backend": "openhands",
+  "agent_model": "claude-opus-4-7",
+  "context_mode": "pipeline",
+  "run_id": "engineer-500-v2-openhands-claude-opus-4-7-tasks-0-5",
+  "timestamp": "2026-05-19T07:21:34Z",
+  "total_elapsed_seconds": 11913.785155534744,
+  "tasks": [
+    {
+      "task_id": 0,
+      "score": 100.0,
+      "max_score": 100.0,
+      "passed": true,
+      "test_count": 1,
+      "passed_count": 1,
+      "elapsed_seconds": 93.08021259307861,
+      "backend": "openhands"
+    },
+    {
+      "task_id": 1,
+      "score": 100.0,
+      "max_score": 100.0,
+      "passed": true,
+      "test_count": 73,
+      "passed_count": 73,
+      "elapsed_seconds": 1019.3095293045044,
+      "backend": "openhands"
+    },
+    {
+      "task_id": 2,
+      "score": 100.0,
+      "max_score": 100.0,
+      "passed": true,
+      "test_count": 73,
+      "passed_count": 73,
+      "elapsed_seconds": 605.9186573028564,
+      "backend": "openhands"
+    },
+    {
+      "task_id": 3,
+      "score": 100.0,
+      "max_score": 100.0,
+      "passed": true,
+      "test_count": 73,
+      "passed_count": 73,
+      "elapsed_seconds": 865.7448105812073,
+      "backend": "openhands"
+    },
+    {
+      "task_id": 4,
+      "score": 68.4,
+      "max_score": 100.0,
+      "passed": true,
+      "test_count": 12,
+      "passed_count": 4,
+      "elapsed_seconds": 7203.639748096466,
+      "backend": "openhands"
+    },
+    {
+      "task_id": 5,
+      "score": 100.0,
+      "max_score": 100.0,
+      "passed": true,
+      "test_count": 64,
+      "passed_count": 64,
+      "elapsed_seconds": 2005.9914927482605,
+      "backend": "openhands"
+    }
+  ],
+  "metrics": {
+    "zero_shot_pass": true,
+    "prior_non_full_score_count": 1,
+    "total_iterations": 500
+  }
+}

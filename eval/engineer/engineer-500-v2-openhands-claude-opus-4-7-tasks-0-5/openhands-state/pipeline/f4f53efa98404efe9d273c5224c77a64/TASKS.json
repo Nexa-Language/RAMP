@@ -1,0 +1,27 @@
+[
+  {
+    "title": "Extend SYsULexer.tokens to include all new token types",
+    "notes": "",
+    "status": "todo"
+  },
+  {
+    "title": "Extend SYsULexer.cpp clang->antlr mapping to cover new tokens",
+    "notes": "",
+    "status": "todo"
+  },
+  {
+    "title": "Rewrite SYsUParser.g4 with full C-like grammar (precedence ladder, void/const, if/else, while, break/continue, function call, multiplicative, relational, equality, logical, etc.)",
+    "notes": "",
+    "status": "todo"
+  },
+  {
+    "title": "Extend Ast2Asg.{hpp,cpp} to handle new expressions (multiplicative/relational/equality/logical/parens/calls/index/unary !), statements (if/while/break/continue), declarations (void, const, function params)",
+    "notes": "",
+    "status": "todo"
+  },
+  {
+    "title": "Iteratively fix failing cases until task2-score is maxed",
+    "notes": "",
+    "status": "todo"
+  }
+]

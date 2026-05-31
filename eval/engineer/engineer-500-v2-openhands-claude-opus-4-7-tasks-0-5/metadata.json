@@ -1,0 +1,17 @@
+{
+  "run_id": "engineer-500-v2-openhands-claude-opus-4-7-tasks-0-5",
+  "backend": "openhands",
+  "model": "claude-opus-4-7",
+  "tasks": "0-5",
+  "context_mode": "pipeline",
+  "max_iterations": 500,
+  "image": "evobench-openhands:bachelor",
+  "api_base": "https://api.duckcoding.ai/v1",
+  "api_key_name": "claude-opus-4-7-cc-hard",
+  "llm_cache_prompt": 1,
+  "prompt_cache_retention": "24h",
+  "litellm_log_level": "",
+  "max_agent_hours": 5,
+  "container": "oh-engineer-500-v2-openhands-claude-opus-4-7-tasks-0-5",
+  "started_at": "2026-05-19T04:02:56Z"
+}
